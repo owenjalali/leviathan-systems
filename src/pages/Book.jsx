@@ -1,74 +1,83 @@
+import { useEffect } from 'react'
+
 export default function Book() {
+  // Reinitialize Calendly widget when component mounts
+  useEffect(() => {
+    if (window.Calendly) {
+      window.Calendly.initInlineWidget({
+        url: 'https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37',
+        parentElement: document.getElementById('calendly-embed'),
+      })
+    }
+  }, [])
+
   return (
-    <div>
+    <div className="bg-[#0a0a0a] pt-20">
       {/* Hero */}
-      <section className="py-24 sm:py-32">
+      <section className="py-12 sm:py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="mx-auto max-w-2xl text-center">
-            <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">
-              Book a Consultation
+            <h1 className="animate-fade-in-up text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              Book a <span className="text-[#d4af37]">Consultation</span>
             </h1>
-            <p className="mt-6 text-lg text-gray-600">
+            <p className="animate-fade-in-up delay-100 mt-6 text-lg text-gray-400">
               Schedule a free 30-minute call to discuss how AI can transform your business.
             </p>
           </div>
         </div>
       </section>
 
-      {/* Calendly Embed Placeholder */}
-      <section className="pb-24 sm:pb-32">
-        <div className="mx-auto max-w-3xl px-6 lg:px-8">
-          <div className="rounded-2xl border-2 border-dashed border-gray-300 bg-gray-50 p-12 text-center">
-            <p className="text-gray-500">
-              Calendly widget will be embedded here
-            </p>
-            <p className="mt-2 text-sm text-gray-400">
-              Add your Calendly embed code to activate scheduling
-            </p>
-            {
-              
-              <div
-                className="calendly-inline-widget"
-                data-url="https://calendly.com/leviathanaidev"
-                style={{ minWidth: '320px', height: '700px' }}
-              />
-            }
+      {/* Calendly Embed */}
+      <section className="pb-16">
+        <div className="mx-auto max-w-2xl px-6 lg:px-8">
+          <div className="animate-fade-in-up delay-200 rounded-2xl overflow-hidden shadow-2xl">
+            <div
+              id="calendly-embed"
+              className="calendly-inline-widget"
+              data-url="https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37"
+              style={{ minWidth: '280px', height: '600px' }}
+            />
           </div>
+        </div>
+      </section>
 
-          {/* What to Expect */}
-          <div className="mt-16">
-            <h2 className="text-2xl font-bold text-gray-900 text-center">
-              What to Expect
-            </h2>
-            <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-3">
-              <div className="text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f] text-white font-bold">
-                  1
+      {/* What to Expect */}
+      <section className="border-t border-[#1a1a1a] py-20">
+        <div className="mx-auto max-w-4xl px-6 lg:px-8">
+          <h2 className="text-2xl font-bold text-white text-center sm:text-3xl">
+            What to <span className="text-[#d4af37]">Expect</span>
+          </h2>
+          <div className="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-3">
+            {[
+              {
+                step: '1',
+                title: 'Discovery',
+                description: 'We learn about your business and current processes',
+              },
+              {
+                step: '2',
+                title: 'Solution Design',
+                description: 'We show you how AI can solve your specific challenges',
+              },
+              {
+                step: '3',
+                title: 'Next Steps',
+                description: 'We outline a clear path to implementation',
+              },
+            ].map((item, index) => (
+              <div
+                key={item.step}
+                className={`text-center animate-fade-in-up delay-${(index + 1) * 100}`}
+              >
+                <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-[#d4af37] text-black font-bold text-xl">
+                  {item.step}
                 </div>
-                <h3 className="mt-4 font-semibold text-gray-900">Discovery</h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  We learn about your business and current processes
+                <h3 className="mt-6 font-semibold text-white text-lg">{item.title}</h3>
+                <p className="mt-2 text-sm text-gray-400">
+                  {item.description}
                 </p>
               </div>
-              <div className="text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f] text-white font-bold">
-                  2
-                </div>
-                <h3 className="mt-4 font-semibold text-gray-900">Solution Design</h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  We show you how AI can solve your specific challenges
-                </p>
-              </div>
-              <div className="text-center">
-                <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-[#1e3a5f] text-white font-bold">
-                  3
-                </div>
-                <h3 className="mt-4 font-semibold text-gray-900">Next Steps</h3>
-                <p className="mt-2 text-sm text-gray-600">
-                  We outline a clear path to implementation
-                </p>
-              </div>
-            </div>
+            ))}
           </div>
         </div>
       </section>

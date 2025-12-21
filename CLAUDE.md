@@ -35,21 +35,32 @@ src/
 
 ## Design System
 
-- **Primary**: #1e3a5f (dark blue)
-- **Primary Dark**: #0f2744
-- **Accent**: #3b82f6 (blue)
-- **Style**: Clean, minimal, professional with lots of whitespace
+- **Black**: #0a0a0a (background)
+- **Black Light**: #1a1a1a (cards, sections)
+- **Gray Dark**: #2d2d2d (borders)
+- **Gold**: #d4af37 (accent, CTAs)
+- **Gold Light**: #f4d03f (hover states)
+- **Style**: Dark, minimal, professional with gold accents
 
 ## Key Files
 
-- `src/layouts/MainLayout.jsx` - Navigation, footer, page wrapper
-- `src/pages/Book.jsx` - Calendly embed placeholder (needs configuration)
-- `src/index.css` - CSS custom properties for theme colors
+- `src/layouts/MainLayout.jsx` - Navigation, footer, page wrapper with logo
+- `src/pages/Book.jsx` - Calendly embed (leviathanaidev)
+- `src/index.css` - CSS animations and theme variables
+- `src/components/ScrollToTop.jsx` - Ensures pages scroll to top on navigation
 
 ## Integrations
 
-- **Calendly**: Book.jsx has placeholder for Calendly embed widget
+- **Calendly**: Embedded in Book.jsx (https://calendly.com/leviathanaidev)
 - **n8n**: Future integration for appointment automation
+
+## Animations
+
+Custom CSS animations defined in index.css:
+- `animate-fade-in-up` - Fade in from bottom
+- `animate-slide-in-left/right` - Slide animations
+- `card-hover` - Lift effect on cards
+- `delay-100` to `delay-500` - Staggered animation delays
 
 ## Service Tiers
 
