@@ -43,8 +43,8 @@ export default function MainLayout() {
               <img
                 src={logo}
                 alt="Leviathan Systems"
-                className="h-12 w-auto transition-transform duration-300 group-hover:scale-105"
-                style={{ mixBlendMode: 'lighten' }}
+                className="h-12 w-auto transition-transform duration-300 group-hover:scale-105 rounded-lg"
+                style={{ mixBlendMode: 'multiply', filter: 'invert(1) brightness(1.2)' }}
               />
               <span className="text-xs font-bold text-white mt-1 tracking-wider">
                 LEVIATHAN <span className="text-[#d4af37]">SYSTEMS</span>
@@ -137,8 +137,8 @@ export default function MainLayout() {
                 <img
                   src={logo}
                   alt="Leviathan Systems"
-                  className="h-14 w-auto"
-                  style={{ mixBlendMode: 'lighten' }}
+                  className="h-14 w-auto rounded-lg"
+                  style={{ mixBlendMode: 'multiply', filter: 'invert(1) brightness(1.2)' }}
                 />
                 <span className="text-sm font-bold text-white mt-2 tracking-wider">
                   LEVIATHAN <span className="text-[#d4af37]">SYSTEMS</span>
