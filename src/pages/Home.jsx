@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom'
 import { Bot, Clock, TrendingUp, Shield, ArrowRight, Sparkles } from 'lucide-react'
+import AnimatedStats from '../components/AnimatedStats'
 
 const features = [
   {
@@ -115,24 +116,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Stats Section */}
-      <section className="py-16 border-t border-[#1a1a1a]">
-        <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <div className="grid grid-cols-2 gap-8 md:grid-cols-4">
-            {[
-              { value: '24/7', label: 'Availability' },
-              { value: '99.9%', label: 'Uptime' },
-              { value: '10x', label: 'Efficiency Gain' },
-              { value: '< 1s', label: 'Response Time' },
-            ].map((stat, index) => (
-              <div key={stat.label} className={`text-center animate-fade-in-up delay-${(index + 1) * 100}`}>
-                <div className="text-3xl sm:text-4xl font-bold text-[#d4af37]">{stat.value}</div>
-                <div className="mt-2 text-sm text-gray-500">{stat.label}</div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      {/* Animated Stats Section */}
+      <AnimatedStats />
 
       {/* CTA Section */}
       <section className="py-24 sm:py-32 border-t border-[#1a1a1a]">
