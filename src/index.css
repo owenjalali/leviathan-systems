@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+/* Leviathan Systems - Custom Theme */
+:root {
+  --color-primary: #1e3a5f;
+  --color-primary-dark: #0f2744;
+  --color-primary-light: #2d5a8a;
+  --color-accent: #3b82f6;
+  --color-text: #1f2937;
+  --color-text-light: #6b7280;
+  --color-bg: #ffffff;
+  --color-bg-alt: #f9fafb;
+}
