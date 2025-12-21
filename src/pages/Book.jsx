@@ -25,21 +25,14 @@ export default function Book() {
             <p className="mt-2 text-sm text-gray-400">
               Add your Calendly embed code to activate scheduling
             </p>
-            {/*
-              To add Calendly:
-              1. Get your embed code from calendly.com
-              2. Replace this placeholder with the Calendly inline widget
-
-              Example:
+            {
+              
               <div
                 className="calendly-inline-widget"
-                data-url="https://calendly.com/your-link"
+                data-url="https://calendly.com/leviathanaidev"
                 style={{ minWidth: '320px', height: '700px' }}
               />
-
-              Add this script to index.html:
-              <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
-            */}
+            }
           </div>
 
           {/* What to Expect */}
