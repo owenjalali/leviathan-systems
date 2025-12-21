@@ -2,7 +2,7 @@ import { Link, Outlet, useLocation } from 'react-router-dom'
 import { Menu, X } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import ScrollToTop from '../components/ScrollToTop'
-import logo from '../assets/Leviathan Systems.png'
+import logo from '../assets/logo.png'
 
 const navigation = [
   { name: 'Home', href: '/' },
