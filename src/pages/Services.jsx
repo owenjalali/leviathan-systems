@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Phone, MessageSquare, Calendar, Database, Mail, ChevronRight } from 'lucide-react'
+import { ArrowRight, Phone, MessageSquare, Calendar, Database, Mail, Filter, Route, Bell, CheckCircle } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 const services = [
@@ -56,12 +56,12 @@ const services = [
 ]
 
 const flowSteps = [
-  { label: 'Lead comes in', color: 'from-[#d4af37]/20 to-[#d4af37]/10' },
-  { label: 'Qualified', color: 'from-[#d4af37]/25 to-[#d4af37]/15' },
-  { label: 'Routed', color: 'from-[#d4af37]/30 to-[#d4af37]/20' },
-  { label: 'Booked', color: 'from-[#d4af37]/35 to-[#d4af37]/25' },
-  { label: 'Followed up', color: 'from-[#d4af37]/40 to-[#d4af37]/30' },
-  { label: 'CRM updated', color: 'from-[#d4af37]/50 to-[#d4af37]/40' }
+  { label: 'Lead Captured', desc: 'Phone, chat, form', icon: Phone },
+  { label: 'Qualified', desc: 'Smart questions', icon: Filter },
+  { label: 'Routed', desc: 'Right person', icon: Route },
+  { label: 'Booked', desc: 'Auto-scheduled', icon: Calendar },
+  { label: 'Reminded', desc: 'No no-shows', icon: Bell },
+  { label: 'Synced', desc: 'CRM updated', icon: CheckCircle }
 ]
 
 export default function Services() {
@@ -158,119 +158,157 @@ export default function Services() {
       <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a] overflow-hidden">
         <div
           ref={flowRef}
-          className={`mx-auto max-w-5xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-6xl px-6 transition-all duration-1000 ${
             flowVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-            The System
-          </p>
+          <div className="text-center mb-16">
+            <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+              The System
+            </p>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-16">
-            How it fits together.
-          </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white">
+              How it fits together.
+            </h2>
+          </div>
 
           {/* Premium Flow Diagram */}
           <div className="relative">
             {/* Desktop flow */}
             <div className="hidden lg:block">
-              <div className="relative">
-                {/* Connecting line */}
-                <div
-                  className="absolute top-1/2 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#d4af37]/30 to-transparent -translate-y-1/2 z-0"
-                  style={{
-                    opacity: flowVisible ? 1 : 0,
-                    transition: 'opacity 1s ease 0.3s'
-                  }}
-                />
-
-                {/* Animated shimmer line */}
-                <div
-                  className="absolute top-1/2 left-0 right-0 h-px -translate-y-1/2 z-0 overflow-hidden"
-                  style={{
-                    opacity: flowVisible ? 1 : 0,
-                    transition: 'opacity 1s ease 0.5s'
-                  }}
-                >
-                  <div className="w-full h-full flow-line" />
-                </div>
-
-                <div className="flex items-center justify-between relative z-10">
-                  {flowSteps.map((step, index) => (
-                    <div
-                      key={step.label}
-                      className="flex flex-col items-center transition-all duration-700"
+              {/* SVG Connection Lines */}
+              <svg
+                className="absolute inset-0 w-full h-full pointer-events-none"
+                style={{ zIndex: 0 }}
+              >
+                <defs>
+                  <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#d4af37" stopOpacity="0.1" />
+                    <stop offset="50%" stopColor="#d4af37" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#d4af37" stopOpacity="0.1" />
+                  </linearGradient>
+                  <filter id="glow">
+                    <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                    <feMerge>
+                      <feMergeNode in="coloredBlur"/>
+                      <feMergeNode in="SourceGraphic"/>
+                    </feMerge>
+                  </filter>
+                </defs>
+                {/* Animated connection lines */}
+                {[0, 1, 2, 3, 4].map((i) => (
+                  <g key={i}>
+                    {/* Base line */}
+                    <line
+                      x1={`${8 + i * 16.8}%`}
+                      y1="50%"
+                      x2={`${24.8 + i * 16.8}%`}
+                      y2="50%"
+                      stroke="url(#lineGradient)"
+                      strokeWidth="2"
+                      className="transition-all duration-1000"
                       style={{
-                        transitionDelay: flowVisible ? `${300 + index * 150}ms` : '0ms',
                         opacity: flowVisible ? 1 : 0,
-                        transform: flowVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.9)'
+                        transitionDelay: `${400 + i * 150}ms`
+                      }}
+                    />
+                    {/* Animated pulse */}
+                    <circle
+                      r="4"
+                      fill="#d4af37"
+                      filter="url(#glow)"
+                      className="flow-pulse"
+                      style={{
+                        opacity: flowVisible ? 0.8 : 0,
+                        animationDelay: `${i * 0.3}s`
                       }}
                     >
-                      {/* Node */}
-                      <div className={`flow-node relative w-20 h-20 rounded-2xl bg-gradient-to-br ${step.color} border border-[#d4af37]/30 flex items-center justify-center group cursor-default`}>
-                        <span className="text-[#d4af37] text-lg font-bold">{index + 1}</span>
+                      <animateMotion
+                        dur="2s"
+                        repeatCount="indefinite"
+                        path={`M${80 + i * 168},100 L${248 + i * 168},100`}
+                      />
+                    </circle>
+                  </g>
+                ))}
+              </svg>
 
-                        {/* Glow effect */}
-                        <div className="absolute inset-0 rounded-2xl bg-[#d4af37]/10 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+              <div className="flex items-stretch justify-between relative z-10">
+                {flowSteps.map((step, index) => (
+                  <div
+                    key={step.label}
+                    className="flex flex-col items-center flex-1 max-w-[140px] transition-all duration-700"
+                    style={{
+                      transitionDelay: flowVisible ? `${200 + index * 120}ms` : '0ms',
+                      opacity: flowVisible ? 1 : 0,
+                      transform: flowVisible ? 'translateY(0)' : 'translateY(30px)'
+                    }}
+                  >
+                    {/* Node */}
+                    <div className="relative group">
+                      <div className={`relative w-16 h-16 rounded-2xl bg-[#0a0a0a] border-2 border-[#d4af37]/30 flex items-center justify-center transition-all duration-300 group-hover:border-[#d4af37] group-hover:shadow-lg group-hover:shadow-[#d4af37]/20`}>
+                        <step.icon className="w-6 h-6 text-[#d4af37]" />
+                        {/* Pulse ring on hover */}
+                        <div className="absolute inset-0 rounded-2xl border-2 border-[#d4af37]/0 group-hover:border-[#d4af37]/40 group-hover:scale-110 transition-all duration-300" />
                       </div>
-
-                      {/* Label */}
-                      <p className="text-sm text-gray-400 mt-4 text-center max-w-[100px] font-medium">
-                        {step.label}
-                      </p>
-
-                      {/* Connector arrow (except last) */}
-                      {index < flowSteps.length - 1 && (
-                        <div
-                          className="absolute top-1/2 -translate-y-1/2 left-full -ml-2"
-                          style={{
-                            opacity: flowVisible ? 1 : 0,
-                            transition: `opacity 0.5s ease ${0.5 + index * 0.15}s`
-                          }}
-                        >
-                          <ChevronRight className="w-5 h-5 text-[#d4af37]/40" />
-                        </div>
-                      )}
+                      {/* Step number */}
+                      <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#d4af37] flex items-center justify-center">
+                        <span className="text-black text-xs font-bold">{index + 1}</span>
+                      </div>
                     </div>
-                  ))}
-                </div>
+
+                    {/* Label */}
+                    <p className="text-sm text-white mt-4 text-center font-medium">
+                      {step.label}
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1 text-center">
+                      {step.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
             </div>
 
-            {/* Mobile flow */}
+            {/* Mobile flow - Vertical */}
             <div className="lg:hidden">
-              <div className="relative pl-8">
-                {/* Vertical line */}
+              <div className="relative">
+                {/* Vertical animated line */}
                 <div
-                  className="absolute left-[15px] top-0 bottom-0 w-px bg-gradient-to-b from-[#d4af37]/10 via-[#d4af37]/30 to-[#d4af37]/10"
+                  className="absolute left-7 top-8 bottom-8 w-0.5 overflow-hidden"
                   style={{
                     opacity: flowVisible ? 1 : 0,
-                    transform: flowVisible ? 'scaleY(1)' : 'scaleY(0)',
-                    transformOrigin: 'top',
-                    transition: 'all 1s ease 0.3s'
+                    transition: 'opacity 0.5s ease 0.3s'
                   }}
-                />
+                >
+                  <div className="w-full h-full bg-gradient-to-b from-[#d4af37]/10 via-[#d4af37]/40 to-[#d4af37]/10" />
+                  <div className="absolute top-0 left-0 w-full h-8 bg-[#d4af37]/60 animate-flow-down" />
+                </div>
 
-                <div className="space-y-8">
+                <div className="space-y-6">
                   {flowSteps.map((step, index) => (
                     <div
                       key={step.label}
-                      className="flex items-center gap-6 relative transition-all duration-500"
+                      className="flex items-start gap-4 relative transition-all duration-500"
                       style={{
                         transitionDelay: flowVisible ? `${200 + index * 100}ms` : '0ms',
                         opacity: flowVisible ? 1 : 0,
                         transform: flowVisible ? 'translateX(0)' : 'translateX(-20px)'
                       }}
                     >
-                      {/* Dot */}
-                      <div className="absolute left-[-8px] w-4 h-4 rounded-full bg-[#0d0d0d] border-2 border-[#d4af37]/40 z-10" />
-
                       {/* Node */}
-                      <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${step.color} border border-[#d4af37]/30 flex items-center justify-center shrink-0`}>
-                        <span className="text-[#d4af37] text-sm font-bold">{index + 1}</span>
+                      <div className="relative shrink-0">
+                        <div className="w-14 h-14 rounded-xl bg-[#0a0a0a] border-2 border-[#d4af37]/30 flex items-center justify-center">
+                          <step.icon className="w-5 h-5 text-[#d4af37]" />
+                        </div>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#d4af37] flex items-center justify-center">
+                          <span className="text-black text-[10px] font-bold">{index + 1}</span>
+                        </div>
                       </div>
 
-                      <p className="text-gray-400 font-medium">{step.label}</p>
+                      <div className="pt-2">
+                        <p className="text-white font-medium">{step.label}</p>
+                        <p className="text-gray-500 text-sm mt-0.5">{step.desc}</p>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -279,9 +317,9 @@ export default function Services() {
           </div>
 
           <p
-            className="text-center text-gray-500 mt-16 transition-all duration-700"
+            className="text-center text-gray-500 mt-16 text-sm transition-all duration-700"
             style={{
-              transitionDelay: flowVisible ? '1200ms' : '0ms',
+              transitionDelay: flowVisible ? '1000ms' : '0ms',
               opacity: flowVisible ? 1 : 0
             }}
           >

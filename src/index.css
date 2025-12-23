@@ -11,10 +11,26 @@
   --color-gold: #d4af37;
   --color-gold-light: #f4d03f;
   --color-white: #fafafa;
+
+  /* Typography */
+  --font-heading: 'Space Grotesk', sans-serif;
+  --font-body: 'Inter', sans-serif;
 }
 
 html {
   scroll-behavior: smooth;
+}
+
+body {
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Headings use Space Grotesk */
+h1, h2, h3, h4, h5, h6 {
+  font-family: var(--font-heading);
+  letter-spacing: -0.02em;
 }
 
 /* ================================
@@ -515,6 +531,24 @@ html {
 .animate-fade-section {
   animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
   animation-delay: inherit;
+}
+
+/* Flow diagram animations */
+@keyframes flowDown {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(1000%);
+  }
+}
+
+.animate-flow-down {
+  animation: flowDown 3s linear infinite;
+}
+
+.flow-pulse {
+  animation: pulse 2s ease-in-out infinite;
 }
 
 /* ================================

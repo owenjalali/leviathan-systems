@@ -363,16 +363,7 @@ export default function Home() {
             Engineered. Not hacked together.
           </h2>
 
-          <div className="space-y-8 relative">
-            {/* Timeline line */}
-            <div
-              className="absolute left-[23px] top-4 bottom-4 w-px bg-gradient-to-b from-[#d4af37]/20 via-[#d4af37]/40 to-[#d4af37]/20 transition-all duration-1000"
-              style={{
-                opacity: processVisible ? 1 : 0,
-                transform: processVisible ? 'scaleY(1)' : 'scaleY(0)',
-                transformOrigin: 'top'
-              }}
-            />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {[
               { num: '01', title: 'Diagnose', desc: 'Map your inbound flow and find the leaks.' },
               { num: '02', title: 'Design', desc: 'Build the workflow, rules, and safeguards.' },
@@ -383,22 +374,20 @@ export default function Home() {
             ].map((step, i) => (
               <div
                 key={step.num}
-                className="flex gap-6 items-baseline relative transition-all duration-500"
+                className="group relative p-6 rounded-xl border border-[#1a1a1a] bg-[#0d0d0d]/50 hover:border-[#d4af37]/30 transition-all duration-500"
                 style={{
-                  transitionDelay: processVisible ? `${i * 120}ms` : '0ms',
+                  transitionDelay: processVisible ? `${i * 100}ms` : '0ms',
                   opacity: processVisible ? 1 : 0,
-                  transform: processVisible ? 'translateX(0)' : 'translateX(-20px)'
+                  transform: processVisible ? 'translateY(0)' : 'translateY(20px)'
                 }}
               >
-                <div className="relative z-10">
-                  <div className="w-12 h-12 flex items-center justify-center">
-                    <span className="text-[#d4af37]/60 text-2xl font-bold">{step.num}</span>
-                  </div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-[#0a0a0a] border-2 border-[#d4af37]/40 rounded-full timeline-dot" />
+                {/* Number badge */}
+                <div className="absolute -top-3 -left-3 w-10 h-10 rounded-lg bg-gradient-to-br from-[#d4af37]/20 to-[#d4af37]/5 border border-[#d4af37]/30 flex items-center justify-center">
+                  <span className="text-[#d4af37] text-sm font-bold">{step.num}</span>
                 </div>
-                <div className="pb-4">
-                  <h3 className="text-lg font-semibold text-white">{step.title}</h3>
-                  <p className="text-gray-400 mt-1">{step.desc}</p>
+                <div className="pt-2">
+                  <h3 className="text-lg font-semibold text-white mb-2 group-hover:text-[#d4af37] transition-colors">{step.title}</h3>
+                  <p className="text-gray-400 text-sm">{step.desc}</p>
                 </div>
               </div>
             ))}
