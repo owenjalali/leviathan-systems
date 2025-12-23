@@ -358,7 +358,7 @@ export default function Services() {
             ].map((tool, i) => (
               <span
                 key={tool}
-                className="px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full tag-hover transition-all duration-500"
+                className="px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full hover:border-[#d4af37]/40 hover:text-gray-300 transition-all duration-150"
                 style={{
                   transitionDelay: integrationsVisible ? `${200 + i * 40}ms` : '0ms',
                   opacity: integrationsVisible ? 1 : 0,

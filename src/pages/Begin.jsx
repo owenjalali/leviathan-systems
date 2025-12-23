@@ -188,11 +188,13 @@ export default function Begin() {
     }
 
     try {
-      // Send to Formspree (replace with your form ID)
-      const response = await fetch('https://formspree.io/f/xwpkgjka', {
+      // Send to Formspree - submissions go to leviathanaidev@gmail.com
+      // Note: You need to verify this form at formspree.io after first submission
+      const response = await fetch('https://formspree.io/f/mwpkpqjd', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Accept': 'application/json'
         },
         body: JSON.stringify(submitData)
       })
@@ -381,7 +383,12 @@ export default function Begin() {
                         </button>
 
                         {countryDropdownOpen && (
-                          <div className="absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto">
+                          <div className="absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto overscroll-contain"
+                            style={{
+                              scrollbarWidth: 'thin',
+                              scrollbarColor: '#d4af37 #1a1a1a'
+                            }}
+                          >
                             {countries.map((country) => (
                               <button
                                 key={country.code}

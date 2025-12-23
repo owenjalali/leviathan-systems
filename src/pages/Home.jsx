@@ -27,13 +27,13 @@ export default function Home() {
             Leviathan Systems
           </p>
 
-          <h1 className="hero-title text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-8">
+          <h1 className="hero-title text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-[1.1] mb-8">
             Stop losing leads
             <br />
             <span className="text-gray-500">when you're busy.</span>
           </h1>
 
-          <p className="hero-subtitle text-lg sm:text-xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10">
+          <p className="hero-subtitle text-xl sm:text-2xl text-gray-400 max-w-2xl mx-auto leading-relaxed mb-10">
             We build automation systems that answer, qualify, and book—so revenue
             doesn't depend on someone picking up the phone.
           </p>
@@ -395,7 +395,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* WHO IT'S FOR */}
+      {/* WHO WE HELP */}
       <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a]">
         <div
           ref={fitRef}
@@ -404,7 +404,7 @@ export default function Home() {
           }`}
         >
           <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-            Fit
+            Who We Help
           </p>
 
           <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
@@ -419,7 +419,7 @@ export default function Home() {
             {['Home services', 'Agencies', 'Clinics', 'Professional services', 'Multi-location businesses'].map((industry, i) => (
               <span
                 key={industry}
-                className="px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full tag-hover transition-all duration-500"
+                className="px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full hover:border-[#d4af37]/40 hover:text-gray-300 transition-all duration-150"
                 style={{
                   transitionDelay: fitVisible ? `${300 + i * 80}ms` : '0ms',
                   opacity: fitVisible ? 1 : 0

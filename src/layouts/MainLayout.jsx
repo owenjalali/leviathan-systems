@@ -36,15 +36,12 @@ export default function MainLayout() {
       }`}>
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
           <div className="flex-1">
-            <Link to="/" className="flex items-center gap-3 group">
+            <Link to="/" className="group">
               <img
                 src={logo}
                 alt="Leviathan Systems"
-                className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+                className="h-14 w-auto transition-transform duration-300 group-hover:scale-105"
               />
-              <span className="text-sm font-semibold text-white tracking-wide hidden sm:block">
-                LEVIATHAN
-              </span>
             </Link>
           </div>
 
@@ -124,15 +121,12 @@ export default function MainLayout() {
         <div className="mx-auto max-w-6xl px-6 py-16">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="md:col-span-2">
-              <div className="flex items-center gap-3 mb-4">
+              <div className="mb-4">
                 <img
                   src={logo}
                   alt="Leviathan Systems"
-                  className="h-10 w-auto"
+                  className="h-14 w-auto"
                 />
-                <span className="text-sm font-semibold text-white tracking-wide">
-                  LEVIATHAN
-                </span>
               </div>
               <p className="text-gray-500 text-sm leading-relaxed max-w-sm">
                 We build automation systems that answer, qualify, and book—so you don't lose revenue when you're busy.
