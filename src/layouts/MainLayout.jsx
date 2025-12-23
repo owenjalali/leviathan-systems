@@ -1,5 +1,5 @@
 import { Link, Outlet, useLocation } from 'react-router-dom'
-import { Menu, X } from 'lucide-react'
+import { Menu, X, ArrowRight } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import ScrollToTop from '../components/ScrollToTop'
 import logo from '../assets/logo.png'
@@ -7,8 +7,7 @@ import logo from '../assets/logo.png'
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Services', href: '/services' },
-  { name: 'Contact', href: '/contact' },
+  { name: 'Infrastructure', href: '/infrastructure' },
 ]
 
 export default function MainLayout() {
@@ -32,9 +31,9 @@ export default function MainLayout() {
       <ScrollToTop />
 
       {/* Navigation */}
-      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-[#0a0a0a]/95 backdrop-blur-md border-b border-[#2d2d2d] shadow-lg'
+          ? 'bg-[#0a0a0a]/90 backdrop-blur-xl border-b border-[#1a1a1a]'
           : 'bg-transparent'
       }`}>
         <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8">
@@ -43,9 +42,9 @@ export default function MainLayout() {
               <img
                 src={logo}
                 alt="Leviathan Systems"
-                className="h-12 w-auto transition-transform duration-300 group-hover:scale-110 drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                className="h-12 w-auto transition-all duration-500 group-hover:scale-105 drop-shadow-[0_0_12px_rgba(212,175,55,0.2)]"
               />
-              <span className="text-xs font-bold text-white mt-1 tracking-wider">
+              <span className="text-xs font-bold text-white mt-1.5 tracking-[0.15em]">
                 LEVIATHAN <span className="text-[#d4af37]">SYSTEMS</span>
               </span>
             </Link>
@@ -56,7 +55,7 @@ export default function MainLayout() {
             <button
               type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-300 hover:text-[#d4af37] transition-colors"
+              className="-m-2.5 inline-flex items-center justify-center rounded-full p-2.5 text-gray-400 hover:text-white transition-colors duration-300"
             >
               {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
@@ -70,12 +69,12 @@ export default function MainLayout() {
                 to={item.href}
                 className={`text-sm font-medium transition-all duration-300 relative group ${
                   location.pathname === item.href
-                    ? 'text-[#d4af37]'
-                    : 'text-gray-300 hover:text-white'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 {item.name}
-                <span className={`absolute -bottom-1 left-0 h-0.5 bg-[#d4af37] transition-all duration-300 ${
+                <span className={`absolute -bottom-1.5 left-0 h-px bg-[#d4af37] transition-all duration-500 ${
                   location.pathname === item.href ? 'w-full' : 'w-0 group-hover:w-full'
                 }`} />
               </Link>
@@ -84,39 +83,40 @@ export default function MainLayout() {
 
           <div className="hidden lg:flex lg:flex-1 lg:justify-end">
             <Link
-              to="/book"
-              className="rounded-full bg-[#d4af37] px-6 py-2.5 text-sm font-semibold text-black shadow-sm hover:bg-[#f4d03f] transition-all duration-300 hover:shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+              to="/begin"
+              className="group inline-flex items-center gap-2 text-sm font-medium text-[#d4af37] hover:text-[#f4d03f] transition-all duration-500"
             >
-              Book a Call
+              <span className="hover-line">Begin</span>
+              <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-1" />
             </Link>
           </div>
         </nav>
 
         {/* Mobile menu */}
-        <div className={`lg:hidden transition-all duration-300 overflow-hidden ${
+        <div className={`lg:hidden transition-all duration-500 overflow-hidden ${
           mobileMenuOpen ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="space-y-1 px-6 pb-6 bg-[#0a0a0a]/95 backdrop-blur-md">
+          <div className="space-y-1 px-6 pb-8 pt-2 bg-[#0a0a0a]/95 backdrop-blur-xl border-t border-[#1a1a1a]">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 to={item.href}
                 onClick={() => setMobileMenuOpen(false)}
-                className={`block py-3 text-base font-medium transition-colors ${
+                className={`block py-4 text-base font-medium transition-colors duration-300 ${
                   location.pathname === item.href
-                    ? 'text-[#d4af37]'
-                    : 'text-gray-300 hover:text-white'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
                 }`}
               >
                 {item.name}
               </Link>
             ))}
             <Link
-              to="/book"
+              to="/begin"
               onClick={() => setMobileMenuOpen(false)}
-              className="mt-4 block rounded-full bg-[#d4af37] px-6 py-2.5 text-center text-sm font-semibold text-black"
+              className="mt-4 block py-4 text-base font-medium text-[#d4af37]"
             >
-              Book a Call
+              Begin
             </Link>
           </div>
         </div>
@@ -128,56 +128,59 @@ export default function MainLayout() {
       </main>
 
       {/* Footer */}
-      <footer className="bg-[#0a0a0a] border-t border-[#2d2d2d]">
-        <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-12">
-            <div className="animate-fade-in-up">
-              <div className="flex flex-col items-start mb-4">
+      <footer className="bg-[#0a0a0a] border-t border-[#1a1a1a]">
+        <div className="mx-auto max-w-7xl px-6 py-20 lg:px-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-16">
+            <div>
+              <div className="flex flex-col items-start mb-6">
                 <img
                   src={logo}
                   alt="Leviathan Systems"
-                  className="h-14 w-auto drop-shadow-[0_0_10px_rgba(212,175,55,0.3)]"
+                  className="h-14 w-auto drop-shadow-[0_0_12px_rgba(212,175,55,0.2)]"
                 />
-                <span className="text-sm font-bold text-white mt-2 tracking-wider">
+                <span className="text-sm font-bold text-white mt-2 tracking-[0.15em]">
                   LEVIATHAN <span className="text-[#d4af37]">SYSTEMS</span>
                 </span>
               </div>
-              <p className="text-gray-400 text-sm leading-relaxed">
-                Autonomous AI agents for small businesses. Automate your operations and scale effortlessly.
+              <p className="text-gray-500 text-sm leading-relaxed max-w-xs">
+                Autonomous revenue infrastructure for operations where control matters.
               </p>
             </div>
-            <div className="animate-fade-in-up delay-100">
-              <h4 className="text-sm font-semibold mb-6 text-[#d4af37]">Quick Links</h4>
-              <ul className="space-y-3 text-sm text-gray-400">
+            <div>
+              <h4 className="text-sm font-medium text-gray-400 mb-6 tracking-wide">Navigation</h4>
+              <ul className="space-y-4 text-sm text-gray-500">
                 {navigation.map((item) => (
                   <li key={item.name}>
                     <Link
                       to={item.href}
-                      className="hover:text-[#d4af37] transition-colors duration-300 flex items-center gap-2 group"
+                      className="hover:text-white transition-colors duration-300"
                     >
-                      <span className="h-px w-0 bg-[#d4af37] transition-all duration-300 group-hover:w-4" />
                       {item.name}
                     </Link>
                   </li>
                 ))}
+                <li>
+                  <Link
+                    to="/begin"
+                    className="hover:text-white transition-colors duration-300"
+                  >
+                    Begin
+                  </Link>
+                </li>
               </ul>
             </div>
-            <div className="animate-fade-in-up delay-200">
-              <h4 className="text-sm font-semibold mb-6 text-[#d4af37]">Contact</h4>
-              <p className="text-sm text-gray-400 mb-4">
-                Ready to automate your business?
-              </p>
-              <Link
-                to="/book"
-                className="inline-flex items-center gap-2 text-[#d4af37] hover:text-[#f4d03f] transition-colors text-sm font-medium group"
+            <div>
+              <h4 className="text-sm font-medium text-gray-400 mb-6 tracking-wide">Contact</h4>
+              <a
+                href="mailto:hello@leviathansystems.com"
+                className="text-sm text-gray-500 hover:text-white transition-colors duration-300"
               >
-                Schedule a consultation
-                <span className="transition-transform duration-300 group-hover:translate-x-1">→</span>
-              </Link>
+                hello@leviathansystems.com
+              </a>
             </div>
           </div>
-          <div className="mt-12 pt-8 border-t border-[#2d2d2d] text-center text-sm text-gray-500">
-            © {currentYear} Leviathan Systems. All rights reserved.
+          <div className="mt-16 pt-10 border-t border-[#1a1a1a] text-center text-sm text-gray-600">
+            {currentYear} Leviathan Systems
           </div>
         </div>
       </footer>

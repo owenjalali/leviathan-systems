@@ -1,11 +1,12 @@
 @import "tailwindcss";
 
-/* Leviathan Systems - Black, Silver & Gold Theme */
+/* Leviathan Systems - Infrastructure Design System */
 :root {
   --color-black: #0a0a0a;
-  --color-black-light: #1a1a1a;
-  --color-gray-dark: #2d2d2d;
-  --color-gray: #4a4a4a;
+  --color-black-light: #0d0d0d;
+  --color-gray-dark: #1a1a1a;
+  --color-gray: #2d2d2d;
+  --color-gray-mid: #4a4a4a;
   --color-silver: #9ca3af;
   --color-silver-light: #d1d5db;
   --color-gold: #d4af37;
@@ -19,11 +20,16 @@ html {
   scroll-behavior: smooth;
 }
 
-/* Custom animations */
-@keyframes fadeInUp {
+/* ================================
+   SYSTEM-LIKE ANIMATIONS
+   Slow, deliberate, purposeful
+   ================================ */
+
+/* Slow fade rise - for headlines */
+@keyframes fadeRise {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(20px);
   }
   to {
     opacity: 1;
@@ -31,37 +37,73 @@ html {
   }
 }
 
+/* Subtle fade in */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes slideInLeft {
+/* Layer slide - sections feel like layers */
+@keyframes slideLayer {
   from {
     opacity: 0;
-    transform: translateX(-30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    transform: translateY(0);
   }
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
+/* Slow drift - background motion */
+@keyframes drift {
+  0%, 100% {
+    transform: translate(0, 0) scale(1);
   }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+  25% {
+    transform: translate(10px, -10px) scale(1.02);
+  }
+  50% {
+    transform: translate(-5px, 5px) scale(1);
+  }
+  75% {
+    transform: translate(-10px, -5px) scale(1.01);
   }
 }
 
-@keyframes scaleIn {
+/* Pulse glow - subtle ambient glow */
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+/* Line flow - for system connections */
+@keyframes lineFlow {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+/* Grid pulse - subtle grid animation */
+@keyframes gridPulse {
+  0%, 100% { opacity: 0.02; }
+  50% { opacity: 0.04; }
+}
+
+/* Slow scale reveal */
+@keyframes scaleReveal {
   from {
     opacity: 0;
-    transform: scale(0.9);
+    transform: scale(0.95);
   }
   to {
     opacity: 1;
@@ -69,47 +111,101 @@ html {
   }
 }
 
-@keyframes shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+/* ================================
+   ANIMATION CLASSES
+   Timing: 0.8s-1.2s for authority
+   ================================ */
+
+/* Primary reveal - headlines */
+.animate-reveal {
+  animation: fadeRise 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* Fade in - body text */
+.animate-fade {
+  animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* Animation classes */
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+/* Layer - sections */
+.animate-layer {
+  animation: slideLayer 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-.animate-fade-in {
-  animation: fadeIn 0.5s ease-out forwards;
+/* Scale reveal - cards */
+.animate-scale {
+  animation: scaleReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
-.animate-slide-in-left {
-  animation: slideInLeft 0.6s ease-out forwards;
+/* Background drift */
+.animate-drift {
+  animation: drift 20s ease-in-out infinite;
 }
 
-.animate-slide-in-right {
-  animation: slideInRight 0.6s ease-out forwards;
+/* Ambient glow */
+.animate-glow {
+  animation: pulseGlow 8s ease-in-out infinite;
 }
 
-.animate-scale-in {
-  animation: scaleIn 0.5s ease-out forwards;
+/* ================================
+   STAGGERED DELAYS
+   Longer delays for gravitas
+   ================================ */
+
+.delay-100 { animation-delay: 0.15s; opacity: 0; }
+.delay-200 { animation-delay: 0.3s; opacity: 0; }
+.delay-300 { animation-delay: 0.45s; opacity: 0; }
+.delay-400 { animation-delay: 0.6s; opacity: 0; }
+.delay-500 { animation-delay: 0.75s; opacity: 0; }
+.delay-600 { animation-delay: 0.9s; opacity: 0; }
+
+/* ================================
+   HOVER STATES
+   Instant response, subtle effect
+   ================================ */
+
+/* Button hover - calm glow */
+.hover-glow {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.hover-glow:hover {
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
 }
 
-/* Staggered animation delays */
-.delay-100 { animation-delay: 0.1s; opacity: 0; }
-.delay-200 { animation-delay: 0.2s; opacity: 0; }
-.delay-300 { animation-delay: 0.3s; opacity: 0; }
-.delay-400 { animation-delay: 0.4s; opacity: 0; }
-.delay-500 { animation-delay: 0.5s; opacity: 0; }
+/* Card hover - subtle lift */
+.hover-lift {
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* Link hover - underline grow */
+.hover-line {
+  position: relative;
+}
+
+.hover-line::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: #d4af37;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.hover-line:hover::after {
+  width: 100%;
+}
+
+/* ================================
+   TYPOGRAPHY
+   Engineered, precise, confident
+   ================================ */
 
 /* Gold gradient text */
 .text-gold-gradient {
@@ -119,40 +215,109 @@ html {
   background-clip: text;
 }
 
-/* Shimmer effect for buttons */
-.btn-gold-shimmer {
-  background: linear-gradient(90deg, #d4af37 0%, #f4d03f 25%, #d4af37 50%, #f4d03f 75%, #d4af37 100%);
+/* ================================
+   SYSTEM VISUALS
+   Lines, grids, flows
+   ================================ */
+
+/* Flowing line */
+.line-flow {
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.3) 50%,
+    transparent 100%
+  );
   background-size: 200% 100%;
-  animation: shimmer 3s linear infinite;
+  animation: lineFlow 4s linear infinite;
 }
 
-/* Smooth hover transitions */
-.hover-lift {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Grid overlay */
+.grid-overlay {
+  background-image:
+    linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  animation: gridPulse 8s ease-in-out infinite;
 }
 
-.hover-lift:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.15);
+/* Ambient orb */
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  animation: drift 25s ease-in-out infinite;
 }
 
-/* Card hover effect */
-.card-hover {
-  transition: all 0.3s ease;
+/* ================================
+   DEPTH & LAYERING
+   Soft shadows, subtle gradients
+   ================================ */
+
+/* Section depth */
+.section-depth {
+  position: relative;
 }
 
-.card-hover:hover {
-  transform: translateY(-8px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+.section-depth::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.1) 50%,
+    transparent 100%
+  );
 }
 
-/* Gold border glow */
-.gold-glow {
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+/* Card depth */
+.card-depth {
+  background: linear-gradient(180deg,
+    rgba(26, 26, 26, 0.8) 0%,
+    rgba(10, 10, 10, 0.9) 100%
+  );
+  border: 1px solid rgba(45, 45, 45, 0.5);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.02);
 }
 
-/* Calendly widget styling */
+/* ================================
+   CALENDLY WIDGET
+   ================================ */
+
 .calendly-inline-widget {
-  border-radius: 12px;
+  border-radius: 16px;
   overflow: hidden;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.3);
+}
+
+/* ================================
+   SCROLL-TRIGGERED ANIMATIONS
+   For intersection observer
+   ================================ */
+
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ================================
+   RESPONSIVE ADJUSTMENTS
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
