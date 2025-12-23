@@ -1,6 +1,6 @@
 @import "tailwindcss";
 
-/* Leviathan Systems - Infrastructure Design System */
+/* Leviathan Systems - Premium Design System */
 :root {
   --color-black: #0a0a0a;
   --color-black-light: #0d0d0d;
@@ -8,28 +8,23 @@
   --color-gray: #2d2d2d;
   --color-gray-mid: #4a4a4a;
   --color-silver: #9ca3af;
-  --color-silver-light: #d1d5db;
   --color-gold: #d4af37;
   --color-gold-light: #f4d03f;
-  --color-gold-dark: #b8960c;
   --color-white: #fafafa;
 }
 
-/* Smooth scrolling */
 html {
   scroll-behavior: smooth;
 }
 
 /* ================================
-   SYSTEM-LIKE ANIMATIONS
-   Slow, deliberate, purposeful
+   KEYFRAME ANIMATIONS
    ================================ */
 
-/* Slow fade rise - for headlines */
-@keyframes fadeRise {
+@keyframes fadeUp {
   from {
     opacity: 0;
-    transform: translateY(20px);
+    transform: translateY(30px);
   }
   to {
     opacity: 1;
@@ -37,70 +32,12 @@ html {
   }
 }
 
-/* Subtle fade in */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-/* Layer slide - sections feel like layers */
-@keyframes slideLayer {
-  from {
-    opacity: 0;
-    transform: translateY(40px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-/* Slow drift - background motion */
-@keyframes drift {
-  0%, 100% {
-    transform: translate(0, 0) scale(1);
-  }
-  25% {
-    transform: translate(10px, -10px) scale(1.02);
-  }
-  50% {
-    transform: translate(-5px, 5px) scale(1);
-  }
-  75% {
-    transform: translate(-10px, -5px) scale(1.01);
-  }
-}
-
-/* Pulse glow - subtle ambient glow */
-@keyframes pulseGlow {
-  0%, 100% {
-    opacity: 0.3;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.05);
-  }
-}
-
-/* Line flow - for system connections */
-@keyframes lineFlow {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 200% 50%;
-  }
-}
-
-/* Grid pulse - subtle grid animation */
-@keyframes gridPulse {
-  0%, 100% { opacity: 0.02; }
-  50% { opacity: 0.04; }
-}
-
-/* Slow scale reveal */
-@keyframes scaleReveal {
+@keyframes scaleIn {
   from {
     opacity: 0;
     transform: scale(0.95);
@@ -111,181 +48,458 @@ html {
   }
 }
 
-/* ================================
-   ANIMATION CLASSES
-   Timing: 0.8s-1.2s for authority
-   ================================ */
-
-/* Primary reveal - headlines */
-.animate-reveal {
-  animation: fadeRise 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+@keyframes slideRight {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-/* Fade in - body text */
-.animate-fade {
+@keyframes slideLeft {
+  from {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.4;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(212, 175, 55, 0.1);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(212, 175, 55, 0.2);
+  }
+}
+
+@keyframes flowLine {
+  0% {
+    stroke-dashoffset: 100;
+  }
+  100% {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes nodeAppear {
+  from {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes drawLine {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+/* ================================
+   SCROLL REVEAL ANIMATIONS
+   ================================ */
+
+.animate-on-scroll {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.animate-on-scroll-left {
+  opacity: 0;
+  transform: translateX(-30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll-left.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-on-scroll-right {
+  opacity: 0;
+  transform: translateX(30px);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll-right.visible {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+.animate-on-scroll-scale {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.animate-on-scroll-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* Staggered children */
+.stagger-children > * {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stagger-children.visible > *:nth-child(1) { transition-delay: 0ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(2) { transition-delay: 100ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(3) { transition-delay: 200ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(4) { transition-delay: 300ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(5) { transition-delay: 400ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(6) { transition-delay: 500ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(7) { transition-delay: 600ms; opacity: 1; transform: translateY(0); }
+.stagger-children.visible > *:nth-child(8) { transition-delay: 700ms; opacity: 1; transform: translateY(0); }
+
+/* ================================
+   HERO ANIMATIONS
+   ================================ */
+
+.hero-title {
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.hero-subtitle {
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.2s forwards;
+  opacity: 0;
+}
+
+.hero-cta {
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) 0.4s forwards;
+  opacity: 0;
+}
+
+.hero-badge {
   animation: fadeIn 0.8s ease-out forwards;
 }
 
-/* Layer - sections */
-.animate-layer {
-  animation: slideLayer 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+/* Floating background orbs */
+.bg-orb {
+  animation: float 20s ease-in-out infinite;
 }
 
-/* Scale reveal - cards */
-.animate-scale {
-  animation: scaleReveal 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-}
-
-/* Background drift */
-.animate-drift {
-  animation: drift 20s ease-in-out infinite;
-}
-
-/* Ambient glow */
-.animate-glow {
-  animation: pulseGlow 8s ease-in-out infinite;
+.bg-orb-slow {
+  animation: float 30s ease-in-out infinite;
 }
 
 /* ================================
-   STAGGERED DELAYS
-   Longer delays for gravitas
+   CARD STYLES
    ================================ */
 
-.delay-100 { animation-delay: 0.15s; opacity: 0; }
-.delay-200 { animation-delay: 0.3s; opacity: 0; }
-.delay-300 { animation-delay: 0.45s; opacity: 0; }
-.delay-400 { animation-delay: 0.6s; opacity: 0; }
-.delay-500 { animation-delay: 0.75s; opacity: 0; }
-.delay-600 { animation-delay: 0.9s; opacity: 0; }
+.card-premium {
+  background: linear-gradient(180deg, rgba(26, 26, 26, 0.6) 0%, rgba(10, 10, 10, 0.8) 100%);
+  border: 1px solid rgba(45, 45, 45, 0.5);
+  border-radius: 16px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.card-premium:hover {
+  border-color: rgba(212, 175, 55, 0.3);
+  transform: translateY(-4px);
+  box-shadow:
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(212, 175, 55, 0.1);
+}
+
+.card-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-glow::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(212, 175, 55, 0.05),
+    transparent
+  );
+  transition: left 0.5s ease;
+}
+
+.card-glow:hover::before {
+  left: 100%;
+}
 
 /* ================================
-   HOVER STATES
-   Instant response, subtle effect
+   BUTTON STYLES
    ================================ */
 
-/* Button hover - calm glow */
-.hover-glow {
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.btn-primary {
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.hover-glow:hover {
-  box-shadow: 0 0 30px rgba(212, 175, 55, 0.25);
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    45deg,
+    transparent 30%,
+    rgba(255, 255, 255, 0.1) 50%,
+    transparent 70%
+  );
+  transform: translateX(-100%);
+  transition: transform 0.6s ease;
 }
 
-/* Card hover - subtle lift */
-.hover-lift {
-  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+.btn-primary:hover::before {
+  transform: translateX(100%);
 }
 
-.hover-lift:hover {
+.btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
 }
 
-/* Link hover - underline grow */
-.hover-line {
+/* ================================
+   FLOW DIAGRAM
+   ================================ */
+
+.flow-node {
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.flow-node:hover {
+  transform: scale(1.05);
+}
+
+.flow-node.active {
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.4);
+}
+
+.flow-line {
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgba(212, 175, 55, 0.1) 0%,
+    rgba(212, 175, 55, 0.5) 50%,
+    rgba(212, 175, 55, 0.1) 100%
+  );
+  position: relative;
+  overflow: hidden;
+}
+
+.flow-line::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(90deg,
+    transparent,
+    rgba(212, 175, 55, 0.8),
+    transparent
+  );
+  animation: shimmer 2s infinite;
+}
+
+.flow-connector {
+  width: 40px;
+  height: 2px;
+  background: linear-gradient(90deg,
+    rgba(212, 175, 55, 0.2),
+    rgba(212, 175, 55, 0.4)
+  );
   position: relative;
 }
 
-.hover-line::after {
+.flow-connector::after {
   content: '';
   position: absolute;
-  bottom: -2px;
-  left: 0;
-  width: 0;
-  height: 1px;
-  background: #d4af37;
-  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.hover-line:hover::after {
-  width: 100%;
+  right: -4px;
+  top: -3px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid rgba(212, 175, 55, 0.4);
+  border-top: 2px solid rgba(212, 175, 55, 0.4);
+  transform: rotate(45deg);
 }
 
 /* ================================
-   TYPOGRAPHY
-   Engineered, precise, confident
+   TEXT EFFECTS
    ================================ */
 
-/* Gold gradient text */
-.text-gold-gradient {
+.text-gradient-gold {
   background: linear-gradient(135deg, #d4af37 0%, #f4d03f 50%, #d4af37 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
-/* ================================
-   SYSTEM VISUALS
-   Lines, grids, flows
-   ================================ */
-
-/* Flowing line */
-.line-flow {
-  background: linear-gradient(90deg,
-    transparent 0%,
-    rgba(212, 175, 55, 0.3) 50%,
-    transparent 100%
-  );
-  background-size: 200% 100%;
-  animation: lineFlow 4s linear infinite;
-}
-
-/* Grid overlay */
-.grid-overlay {
-  background-image:
-    linear-gradient(rgba(212, 175, 55, 0.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(212, 175, 55, 0.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-  animation: gridPulse 8s ease-in-out infinite;
-}
-
-/* Ambient orb */
-.ambient-orb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  animation: drift 25s ease-in-out infinite;
+.text-glow {
+  text-shadow: 0 0 40px rgba(212, 175, 55, 0.3);
 }
 
 /* ================================
-   DEPTH & LAYERING
-   Soft shadows, subtle gradients
+   SECTION STYLES
    ================================ */
 
-/* Section depth */
-.section-depth {
+.section-fade-border {
   position: relative;
 }
 
-.section-depth::before {
+.section-fade-border::before {
   content: '';
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60%;
   height: 1px;
   background: linear-gradient(90deg,
     transparent 0%,
-    rgba(212, 175, 55, 0.1) 50%,
+    rgba(212, 175, 55, 0.2) 50%,
     transparent 100%
   );
 }
 
-/* Card depth */
-.card-depth {
+/* ================================
+   PROCESS TIMELINE
+   ================================ */
+
+.timeline-line {
+  position: absolute;
+  left: 23px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
   background: linear-gradient(180deg,
-    rgba(26, 26, 26, 0.8) 0%,
-    rgba(10, 10, 10, 0.9) 100%
+    rgba(212, 175, 55, 0.1) 0%,
+    rgba(212, 175, 55, 0.3) 50%,
+    rgba(212, 175, 55, 0.1) 100%
   );
-  border: 1px solid rgba(45, 45, 45, 0.5);
-  box-shadow:
-    0 4px 20px rgba(0, 0, 0, 0.3),
-    inset 0 1px 0 rgba(255, 255, 255, 0.02);
+}
+
+.timeline-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #0a0a0a;
+  border: 2px solid rgba(212, 175, 55, 0.4);
+  transition: all 0.3s ease;
+}
+
+.timeline-dot:hover {
+  border-color: #d4af37;
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
 }
 
 /* ================================
-   CALENDLY WIDGET
+   INTEGRATION TAGS
+   ================================ */
+
+.tag-hover {
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.tag-hover:hover {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+  transform: translateY(-2px);
+}
+
+/* ================================
+   FORM STYLES
+   ================================ */
+
+.input-premium {
+  transition: all 0.3s ease;
+}
+
+.input-premium:focus {
+  border-color: #d4af37;
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.1);
+}
+
+.chip-select {
+  transition: all 0.2s ease;
+}
+
+.chip-select:hover:not(.selected) {
+  border-color: rgba(212, 175, 55, 0.4);
+  background: rgba(212, 175, 55, 0.05);
+}
+
+/* ================================
+   AMBIENT EFFECTS
+   ================================ */
+
+.ambient-glow {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(100px);
+  pointer-events: none;
+  animation: pulse 8s ease-in-out infinite;
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(rgba(212, 175, 55, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(212, 175, 55, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+}
+
+/* ================================
+   CALENDLY
    ================================ */
 
 .calendly-inline-widget {
@@ -295,23 +509,16 @@ html {
 }
 
 /* ================================
-   SCROLL-TRIGGERED ANIMATIONS
-   For intersection observer
+   FORM SECTION FADE
    ================================ */
 
-.reveal-on-scroll {
-  opacity: 0;
-  transform: translateY(30px);
-  transition: all 1s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-}
-
-.reveal-on-scroll.revealed {
-  opacity: 1;
-  transform: translateY(0);
+.animate-fade-section {
+  animation: fadeUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  animation-delay: inherit;
 }
 
 /* ================================
-   RESPONSIVE ADJUSTMENTS
+   RESPONSIVE + REDUCED MOTION
    ================================ */
 
 @media (prefers-reduced-motion: reduce) {
