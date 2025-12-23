@@ -1,6 +1,7 @@
 import { Link } from 'react-router-dom'
 import { ArrowRight, Phone, MessageSquare, Calendar, Database, Mail, Filter, Route, Bell, CheckCircle } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import servicesImage from '../assets/Leviathan Systems Services.png'
 
 const services = [
   {
@@ -77,23 +78,46 @@ export default function Services() {
       <section className="py-24">
         <div
           ref={heroRef}
-          className={`mx-auto max-w-4xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-6xl px-6 transition-all duration-[1500ms] ${
             heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-            Services
-          </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Text Content */}
+            <div>
+              <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+                Services
+              </p>
 
-          <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-6">
-            What we build for
-            <br />
-            <span className="text-gray-500">service businesses.</span>
-          </h1>
+              <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-6">
+                What we build for
+                <br />
+                <span className="text-gray-500">service businesses.</span>
+              </h1>
 
-          <p className="text-xl text-gray-400 max-w-2xl">
-            Every system is custom. Here's what's possible.
-          </p>
+              <p className="text-xl text-gray-400 max-w-lg">
+                Every system is custom. Here's what's possible.
+              </p>
+            </div>
+
+            {/* Image */}
+            <div
+              className={`relative transition-all duration-[1500ms] ${
+                heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
+              }`}
+              style={{ transitionDelay: '200ms' }}
+            >
+              <div className="relative">
+                {/* Glow effect behind image */}
+                <div className="absolute inset-0 bg-[#d4af37]/10 blur-3xl rounded-full scale-75" />
+                <img
+                  src={servicesImage}
+                  alt="Leviathan Systems Services"
+                  className="relative w-full h-auto rounded-2xl shadow-2xl shadow-black/50"
+                />
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -158,7 +182,7 @@ export default function Services() {
       <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a] overflow-hidden">
         <div
           ref={flowRef}
-          className={`mx-auto max-w-6xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-6xl px-6 transition-all duration-[1500ms] ${
             flowVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -206,7 +230,7 @@ export default function Services() {
                       y2="50%"
                       stroke="url(#lineGradient)"
                       strokeWidth="2"
-                      className="transition-all duration-1000"
+                      className="transition-all duration-[1500ms]"
                       style={{
                         opacity: flowVisible ? 1 : 0,
                         transitionDelay: `${400 + i * 150}ms`
@@ -332,7 +356,7 @@ export default function Services() {
       <section className="py-24 border-t border-[#1a1a1a] section-fade-border">
         <div
           ref={integrationsRef}
-          className={`mx-auto max-w-4xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-4xl px-6 transition-all duration-[1500ms] ${
             integrationsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -358,11 +382,13 @@ export default function Services() {
             ].map((tool, i) => (
               <span
                 key={tool}
-                className="px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full hover:border-[#d4af37]/40 hover:text-gray-300 transition-all duration-150"
+                className={`px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full tag-hover instant-hover cursor-default ${
+                  integrationsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
+                }`}
                 style={{
-                  transitionDelay: integrationsVisible ? `${200 + i * 40}ms` : '0ms',
-                  opacity: integrationsVisible ? 1 : 0,
-                  transform: integrationsVisible ? 'translateY(0)' : 'translateY(10px)'
+                  transition: integrationsVisible
+                    ? `opacity 0.5s ease ${200 + i * 40}ms, transform 0.5s ease ${200 + i * 40}ms`
+                    : 'opacity 0.5s ease, transform 0.5s ease'
                 }}
               >
                 {tool}
@@ -389,7 +415,7 @@ export default function Services() {
 
         <div
           ref={ctaRef}
-          className={`mx-auto max-w-3xl px-6 text-center relative z-10 transition-all duration-1000 ${
+          className={`mx-auto max-w-3xl px-6 text-center relative z-10 transition-all duration-[1500ms] ${
             ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >

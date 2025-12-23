@@ -158,7 +158,7 @@ h1, h2, h3, h4, h5, h6 {
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(30px);
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-on-scroll.visible {
@@ -169,7 +169,7 @@ h1, h2, h3, h4, h5, h6 {
 .animate-on-scroll-left {
   opacity: 0;
   transform: translateX(-30px);
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-on-scroll-left.visible {
@@ -180,7 +180,7 @@ h1, h2, h3, h4, h5, h6 {
 .animate-on-scroll-right {
   opacity: 0;
   transform: translateX(30px);
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-on-scroll-right.visible {
@@ -191,7 +191,7 @@ h1, h2, h3, h4, h5, h6 {
 .animate-on-scroll-scale {
   opacity: 0;
   transform: scale(0.9);
-  transition: all 1.2s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 1.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .animate-on-scroll-scale.visible {
@@ -464,12 +464,20 @@ h1, h2, h3, h4, h5, h6 {
    ================================ */
 
 .tag-hover {
-  transition: all 0.15s ease;
+  transition: border-color 0.1s ease, background 0.1s ease, color 0.1s ease !important;
 }
 
 .tag-hover:hover {
-  border-color: rgba(212, 175, 55, 0.4);
-  background: rgba(212, 175, 55, 0.05);
+  border-color: rgba(212, 175, 55, 0.4) !important;
+  background: rgba(212, 175, 55, 0.05) !important;
+  color: #d1d5db !important;
+}
+
+/* Instant hover for staggered items */
+.instant-hover {
+  transition-property: border-color, background-color, color !important;
+  transition-duration: 0.1s !important;
+  transition-delay: 0s !important;
 }
 
 /* ================================

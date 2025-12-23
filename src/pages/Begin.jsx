@@ -106,23 +106,39 @@ export default function Begin() {
     return digits.length >= 7 && digits.length <= 15
   }
 
-  const formatPhone = (value) => {
+  const formatPhone = (value, countryDial) => {
     // Remove non-digits
     const digits = value.replace(/\D/g, '')
 
-    // Format based on length (US/CA format)
-    if (formData.country.dial === '+1') {
+    // Format based on country (US/CA format)
+    if (countryDial === '+1') {
       if (digits.length <= 3) return digits
       if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
       return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
     }
 
+    // For other countries, just return digits with spaces for readability
+    if (digits.length > 6) {
+      return digits.slice(0, 3) + ' ' + digits.slice(3, 6) + ' ' + digits.slice(6)
+    } else if (digits.length > 3) {
+      return digits.slice(0, 3) + ' ' + digits.slice(3)
+    }
     return digits
   }
 
   const handlePhoneChange = (e) => {
-    const formatted = formatPhone(e.target.value)
+    const formatted = formatPhone(e.target.value, formData.country.dial)
     updateField('phone', formatted)
+  }
+
+  // Reformat phone when country changes
+  const handleCountryChange = (country) => {
+    updateField('country', country)
+    if (formData.phone) {
+      const reformatted = formatPhone(formData.phone, country.dial)
+      updateField('phone', reformatted)
+    }
+    setCountryDropdownOpen(false)
   }
 
   const validateForm = () => {
@@ -154,6 +170,14 @@ export default function Begin() {
 
     if (!formData.volume) {
       newErrors.volume = 'Please select your monthly volume'
+    }
+
+    if (formData.channels.length === 0) {
+      newErrors.channels = 'Please select at least one channel'
+    }
+
+    if (formData.painPoints.length === 0) {
+      newErrors.painPoints = 'Please select at least one issue'
     }
 
     setErrors(newErrors)
@@ -189,8 +213,7 @@ export default function Begin() {
 
     try {
       // Send to Formspree - submissions go to leviathanaidev@gmail.com
-      // Note: You need to verify this form at formspree.io after first submission
-      const response = await fetch('https://formspree.io/f/mwpkpqjd', {
+      const response = await fetch('https://formspree.io/f/xbdrwznd', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -242,7 +265,7 @@ export default function Begin() {
 
         <div
           ref={heroRef}
-          className={`mx-auto max-w-2xl px-6 text-center relative z-10 transition-all duration-1000 ${
+          className={`mx-auto max-w-2xl px-6 text-center relative z-10 transition-all duration-[1500ms] ${
             heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -393,10 +416,7 @@ export default function Begin() {
                               <button
                                 key={country.code}
                                 type="button"
-                                onClick={() => {
-                                  updateField('country', country)
-                                  setCountryDropdownOpen(false)
-                                }}
+                                onClick={() => handleCountryChange(country)}
                                 className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#1a1a1a] transition-colors text-left ${
                                   formData.country.code === country.code ? 'bg-[#1a1a1a]' : ''
                                 }`}
@@ -434,7 +454,7 @@ export default function Begin() {
               {/* VOLUME + CHANNELS */}
               <div className="animate-fade-section" style={{ animationDelay: '0.3s' }}>
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  Volume + Channels
+                  Volume + Channels *
                 </p>
                 <div className="space-y-6">
                   <div>
@@ -459,13 +479,18 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-3">Channels you use</label>
+                    <label className="block text-sm text-gray-400 mb-3">Channels you use *</label>
                     <div className="flex flex-wrap gap-2">
                       {channels.map(channel => (
                         <button
                           key={channel}
                           type="button"
-                          onClick={() => toggleArrayField('channels', channel)}
+                          onClick={() => {
+                            toggleArrayField('channels', channel)
+                            if (errors.channels) {
+                              setErrors(prev => ({ ...prev, channels: '' }))
+                            }
+                          }}
                           className={`chip-select px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
                             formData.channels.includes(channel)
                               ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
@@ -476,6 +501,12 @@ export default function Begin() {
                         </button>
                       ))}
                     </div>
+                    {errors.channels && (
+                      <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.channels}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -483,14 +514,19 @@ export default function Begin() {
               {/* PAIN POINTS */}
               <div className="animate-fade-section" style={{ animationDelay: '0.4s' }}>
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  What are you trying to fix?
+                  What are you trying to fix? *
                 </p>
                 <div className="flex flex-wrap gap-2">
                   {painPoints.map(point => (
                     <button
                       key={point}
                       type="button"
-                      onClick={() => toggleArrayField('painPoints', point)}
+                      onClick={() => {
+                        toggleArrayField('painPoints', point)
+                        if (errors.painPoints) {
+                          setErrors(prev => ({ ...prev, painPoints: '' }))
+                        }
+                      }}
                       className={`chip-select px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
                         formData.painPoints.includes(point)
                           ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
@@ -501,12 +537,18 @@ export default function Begin() {
                     </button>
                   ))}
                 </div>
+                {errors.painPoints && (
+                  <p className="text-red-500 text-sm mt-2 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.painPoints}
+                  </p>
+                )}
               </div>
 
               {/* TOOLS */}
               <div className="animate-fade-section" style={{ animationDelay: '0.5s' }}>
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  Current Tools
+                  Current Tools <span className="text-gray-500 normal-case tracking-normal">(Optional)</span>
                 </p>
                 <div className="space-y-6">
                   <div>

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight, Phone, MessageSquare, Calendar, RefreshCw } from 'lucide-react'
+import { ArrowRight, Phone, MessageSquare, Calendar, RefreshCw, PhoneMissed, Clock, ClipboardList, AlertTriangle, Bot, Workflow, Plug, Settings, X, Check } from 'lucide-react'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 export default function Home() {
@@ -80,48 +80,57 @@ export default function Home() {
       <section className="py-24 border-t border-[#1a1a1a] section-fade-border">
         <div
           ref={problemRef}
-          className={`mx-auto max-w-4xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-5xl px-6 transition-all duration-[1500ms] ${
             problemVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-            The Problem
-          </p>
+          <div className="text-center mb-16">
+            <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+              The Problem
+            </p>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12">
-            Leads don't wait.
-          </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Leads don't wait.
+            </h2>
+            <p className="text-gray-500 text-lg max-w-xl mx-auto">
+              While you're busy running your business, opportunities slip away.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-10">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-12">
             {[
-              "You miss calls while you're on the job.",
-              "Slow follow-up kills conversions.",
-              "Admin work steals time from real work.",
-              "CRM and calendar fall out of sync."
+              { icon: PhoneMissed, text: "You miss calls while you're on the job.", color: 'from-red-500/20 to-red-500/5' },
+              { icon: Clock, text: "Slow follow-up kills conversions.", color: 'from-orange-500/20 to-orange-500/5' },
+              { icon: ClipboardList, text: "Admin work steals time from real work.", color: 'from-yellow-500/20 to-yellow-500/5' },
+              { icon: AlertTriangle, text: "CRM and calendar fall out of sync.", color: 'from-amber-500/20 to-amber-500/5' }
             ].map((item, i) => (
               <div
-                key={item}
-                className="flex items-start gap-4 transition-all duration-500"
+                key={item.text}
+                className="group relative p-5 rounded-xl border border-[#1a1a1a] bg-[#0d0d0d]/50 hover:border-red-500/30 transition-all duration-300"
                 style={{
                   transitionDelay: problemVisible ? `${i * 100}ms` : '0ms',
                   opacity: problemVisible ? 1 : 0,
-                  transform: problemVisible ? 'translateX(0)' : 'translateX(-20px)'
+                  transform: problemVisible ? 'translateY(0)' : 'translateY(20px)'
                 }}
               >
-                <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full mt-2.5 shrink-0" />
-                <p className="text-gray-400 text-lg">{item}</p>
+                <div className="flex items-start gap-4">
+                  <div className={`w-10 h-10 rounded-lg bg-gradient-to-br ${item.color} border border-red-500/20 flex items-center justify-center shrink-0`}>
+                    <item.icon className="w-5 h-5 text-red-400" />
+                  </div>
+                  <p className="text-gray-400 text-base pt-1.5">{item.text}</p>
+                </div>
               </div>
             ))}
           </div>
 
           <p
-            className="text-xl text-white transition-all duration-700"
+            className="text-center text-xl text-white font-medium transition-all duration-700"
             style={{
               transitionDelay: problemVisible ? '400ms' : '0ms',
               opacity: problemVisible ? 1 : 0
             }}
           >
-            Every gap is money gone.
+            Every gap is <span className="text-red-400">money gone</span>.
           </p>
         </div>
       </section>
@@ -130,69 +139,54 @@ export default function Home() {
       <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a]">
         <div
           ref={buildRef}
-          className={`mx-auto max-w-5xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-5xl px-6 transition-all duration-[1500ms] ${
             buildVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-            What We Build
-          </p>
+          <div className="text-center mb-16">
+            <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+              What We Build
+            </p>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
-            Automation systems for revenue and operations.
-          </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Automation systems for revenue and operations.
+            </h2>
 
-          <p className="text-gray-400 text-lg mb-12 max-w-2xl">
-            Custom-built for your workflow. Not a template.
-          </p>
+            <p className="text-gray-500 text-lg max-w-2xl mx-auto">
+              Custom-built for your workflow. Not a template.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-16 gap-y-6">
-            <div className="space-y-4">
-              {[
-                'Inbound call handling',
-                'Web chat + SMS capture',
-                'Lead qualification',
-                'Appointment scheduling'
-              ].map((item, i) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-4 transition-all duration-500"
-                  style={{
-                    transitionDelay: buildVisible ? `${i * 80}ms` : '0ms',
-                    opacity: buildVisible ? 1 : 0,
-                    transform: buildVisible ? 'translateX(0)' : 'translateX(-20px)'
-                  }}
-                >
-                  <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full" />
-                  <span className="text-gray-300">{item}</span>
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-12">
+            {[
+              { icon: Phone, label: 'Inbound call handling' },
+              { icon: MessageSquare, label: 'Web chat + SMS' },
+              { icon: Bot, label: 'Lead qualification' },
+              { icon: Calendar, label: 'Appointment scheduling' },
+              { icon: RefreshCw, label: 'Follow-up sequences' },
+              { icon: Plug, label: 'CRM integration' },
+              { icon: Workflow, label: 'Pipeline automation' },
+              { icon: Settings, label: 'Notifications + handoffs' }
+            ].map((item, i) => (
+              <div
+                key={item.label}
+                className="group p-4 rounded-xl border border-[#1a1a1a] bg-[#0a0a0a]/50 hover:border-[#d4af37]/30 hover:bg-[#d4af37]/5 transition-all duration-300 text-center"
+                style={{
+                  transitionDelay: buildVisible ? `${i * 60}ms` : '0ms',
+                  opacity: buildVisible ? 1 : 0,
+                  transform: buildVisible ? 'translateY(0) scale(1)' : 'translateY(20px) scale(0.95)'
+                }}
+              >
+                <div className="w-12 h-12 mx-auto rounded-xl bg-gradient-to-br from-[#d4af37]/20 to-[#d4af37]/5 border border-[#d4af37]/20 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-300">
+                  <item.icon className="w-5 h-5 text-[#d4af37]" />
                 </div>
-              ))}
-            </div>
-            <div className="space-y-4">
-              {[
-                'Follow-up sequences',
-                'CRM integration',
-                'Pipeline automation',
-                'Notifications + handoffs'
-              ].map((item, i) => (
-                <div
-                  key={item}
-                  className="flex items-center gap-4 transition-all duration-500"
-                  style={{
-                    transitionDelay: buildVisible ? `${(i + 4) * 80}ms` : '0ms',
-                    opacity: buildVisible ? 1 : 0,
-                    transform: buildVisible ? 'translateX(0)' : 'translateX(-20px)'
-                  }}
-                >
-                  <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full" />
-                  <span className="text-gray-300">{item}</span>
-                </div>
-              ))}
-            </div>
+                <p className="text-gray-400 text-sm group-hover:text-gray-300 transition-colors">{item.label}</p>
+              </div>
+            ))}
           </div>
 
           <div
-            className="mt-12 transition-all duration-500"
+            className="text-center transition-all duration-500"
             style={{
               transitionDelay: buildVisible ? '600ms' : '0ms',
               opacity: buildVisible ? 1 : 0
@@ -213,28 +207,39 @@ export default function Home() {
       <section className="py-24 border-t border-[#1a1a1a] section-fade-border">
         <div
           ref={clarityRef}
-          className={`mx-auto max-w-5xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-5xl px-6 transition-all duration-[1500ms] ${
             clarityVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-            Clarity
-          </p>
+          <div className="text-center mb-16">
+            <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+              Clarity
+            </p>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-12">
-            We're an automation agency.
-          </h2>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              We're an automation agency.
+            </h2>
+            <p className="text-gray-500 text-lg max-w-xl mx-auto">
+              Here's exactly what that means.
+            </p>
+          </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {/* We Are */}
             <div
-              className="transition-all duration-700"
+              className="p-6 rounded-2xl border border-[#d4af37]/20 bg-gradient-to-br from-[#d4af37]/5 to-transparent transition-all duration-700"
               style={{
                 transitionDelay: clarityVisible ? '200ms' : '0ms',
                 opacity: clarityVisible ? 1 : 0,
                 transform: clarityVisible ? 'translateX(0)' : 'translateX(-30px)'
               }}
             >
-              <h3 className="text-lg font-semibold text-white mb-6">We are</h3>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-[#d4af37]/20 border border-[#d4af37]/30 flex items-center justify-center">
+                  <Check className="w-5 h-5 text-[#d4af37]" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">We are</h3>
+              </div>
               <div className="space-y-4">
                 {[
                   'Builders + implementers',
@@ -244,27 +249,36 @@ export default function Home() {
                 ].map((item, i) => (
                   <div
                     key={item}
-                    className="flex items-center gap-4 transition-all duration-500"
+                    className="flex items-center gap-3 transition-all duration-500"
                     style={{
                       transitionDelay: clarityVisible ? `${300 + i * 80}ms` : '0ms',
                       opacity: clarityVisible ? 1 : 0
                     }}
                   >
-                    <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full" />
-                    <span className="text-gray-400">{item}</span>
+                    <div className="w-5 h-5 rounded-full bg-[#d4af37]/10 flex items-center justify-center shrink-0">
+                      <Check className="w-3 h-3 text-[#d4af37]" />
+                    </div>
+                    <span className="text-gray-300">{item}</span>
                   </div>
                 ))}
               </div>
             </div>
+
+            {/* We're Not */}
             <div
-              className="transition-all duration-700"
+              className="p-6 rounded-2xl border border-[#2d2d2d] bg-[#0d0d0d]/50 transition-all duration-700"
               style={{
                 transitionDelay: clarityVisible ? '400ms' : '0ms',
                 opacity: clarityVisible ? 1 : 0,
                 transform: clarityVisible ? 'translateX(0)' : 'translateX(30px)'
               }}
             >
-              <h3 className="text-lg font-semibold text-white mb-6">We're not</h3>
+              <div className="flex items-center gap-3 mb-6">
+                <div className="w-10 h-10 rounded-lg bg-[#2d2d2d] border border-[#3d3d3d] flex items-center justify-center">
+                  <X className="w-5 h-5 text-gray-500" />
+                </div>
+                <h3 className="text-lg font-semibold text-white">We're not</h3>
+              </div>
               <div className="space-y-4">
                 {[
                   'A chatbot company',
@@ -274,13 +288,15 @@ export default function Home() {
                 ].map((item, i) => (
                   <div
                     key={item}
-                    className="flex items-center gap-4 transition-all duration-500"
+                    className="flex items-center gap-3 transition-all duration-500"
                     style={{
                       transitionDelay: clarityVisible ? `${500 + i * 80}ms` : '0ms',
                       opacity: clarityVisible ? 1 : 0
                     }}
                   >
-                    <div className="w-4 h-px bg-[#2d2d2d]" />
+                    <div className="w-5 h-5 rounded-full bg-[#1a1a1a] flex items-center justify-center shrink-0">
+                      <X className="w-3 h-3 text-gray-600" />
+                    </div>
                     <span className="text-gray-500">{item}</span>
                   </div>
                 ))}
@@ -294,7 +310,7 @@ export default function Home() {
       <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a]">
         <div
           ref={outcomesRef}
-          className={`mx-auto max-w-5xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-5xl px-6 transition-all duration-[1500ms] ${
             outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -351,7 +367,7 @@ export default function Home() {
       <section className="py-24 border-t border-[#1a1a1a] section-fade-border relative">
         <div
           ref={processRef}
-          className={`mx-auto max-w-4xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-4xl px-6 transition-all duration-[1500ms] ${
             processVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -399,7 +415,7 @@ export default function Home() {
       <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a]">
         <div
           ref={fitRef}
-          className={`mx-auto max-w-4xl px-6 transition-all duration-1000 ${
+          className={`mx-auto max-w-4xl px-6 transition-all duration-[1500ms] ${
             fitVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
@@ -419,10 +435,11 @@ export default function Home() {
             {['Home services', 'Agencies', 'Clinics', 'Professional services', 'Multi-location businesses'].map((industry, i) => (
               <span
                 key={industry}
-                className="px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full hover:border-[#d4af37]/40 hover:text-gray-300 transition-all duration-150"
+                className={`px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full tag-hover instant-hover cursor-default ${
+                  fitVisible ? 'opacity-100' : 'opacity-0'
+                }`}
                 style={{
-                  transitionDelay: fitVisible ? `${300 + i * 80}ms` : '0ms',
-                  opacity: fitVisible ? 1 : 0
+                  transition: fitVisible ? `opacity 0.5s ease ${300 + i * 80}ms` : 'opacity 0.5s ease'
                 }}
               >
                 {industry}
@@ -439,7 +456,7 @@ export default function Home() {
 
         <div
           ref={ctaRef}
-          className={`mx-auto max-w-3xl px-6 text-center relative z-10 transition-all duration-1000 ${
+          className={`mx-auto max-w-3xl px-6 text-center relative z-10 transition-all duration-[1500ms] ${
             ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
