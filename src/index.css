@@ -522,29 +522,38 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================
-   COUNTRY DROPDOWN SCROLLBAR
+   CUSTOM SCROLLBAR (WHITE)
    ================================ */
 
-.country-dropdown {
+/* For Firefox */
+* {
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.4) transparent;
 }
 
-.country-dropdown::-webkit-scrollbar {
-  width: 6px;
+/* For Chrome, Safari, Edge */
+*::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
 }
 
-.country-dropdown::-webkit-scrollbar-track {
+*::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.country-dropdown::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.5);
-  border-radius: 3px;
+*::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
 }
 
-.country-dropdown::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.7);
+*::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.6);
+}
+
+/* Country selector specific */
+.country-selector [style*="overflow"] {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
 }
 
 /* ================================

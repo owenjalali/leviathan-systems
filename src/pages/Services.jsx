@@ -102,7 +102,7 @@ export default function Services() {
 
             {/* Image */}
             <div
-              className={`relative transition-all duration-[1500ms] ${
+              className={`relative transition-all duration-[1500ms] overflow-hidden ${
                 heroVisible ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
               }`}
               style={{ transitionDelay: '200ms' }}
@@ -113,7 +113,8 @@ export default function Services() {
                 <img
                   src={servicesImage}
                   alt="Leviathan Systems Services"
-                  className="relative w-full h-auto scale-110 lg:scale-125"
+                  className="relative w-full h-auto scale-125 lg:scale-150"
+                  style={{ mixBlendMode: 'lighten' }}
                 />
               </div>
             </div>

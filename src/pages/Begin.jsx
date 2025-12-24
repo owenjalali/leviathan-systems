@@ -406,7 +406,14 @@ export default function Begin() {
                         </button>
 
                         {countryDropdownOpen && (
-                          <div className="country-dropdown absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50 max-h-60 overflow-y-scroll">
+                          <div
+                            className="absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50"
+                            style={{
+                              maxHeight: '240px',
+                              overflowY: 'auto',
+                              WebkitOverflowScrolling: 'touch'
+                            }}
+                          >
                             {countries.map((country) => (
                               <button
                                 key={country.code}
@@ -653,21 +660,6 @@ export default function Begin() {
             </div>
           )}
 
-        </div>
-      </section>
-
-      {/* NOT READY */}
-      <section className="py-16 border-t border-[#1a1a1a]">
-        <div className="mx-auto max-w-2xl px-6 text-center">
-          <p className="text-sm text-gray-600">
-            Prefer email?{' '}
-            <a
-              href="mailto:hello@leviathansystems.com"
-              className="text-gray-400 hover:text-[#d4af37] transition-colors duration-300"
-            >
-              hello@leviathansystems.com
-            </a>
-          </p>
         </div>
       </section>
 
