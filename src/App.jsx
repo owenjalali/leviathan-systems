@@ -1,8 +1,7 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
-import Services from './pages/Services'
-import Begin from './pages/Begin'
+import Audit from './pages/Audit'
 
 function App() {
   return (
@@ -10,8 +9,10 @@ function App() {
       <Routes>
         <Route path="/" element={<MainLayout />}>
           <Route index element={<Home />} />
-          <Route path="services" element={<Services />} />
-          <Route path="begin" element={<Begin />} />
+          <Route path="audit" element={<Audit />} />
+          {/* Redirect old routes */}
+          <Route path="begin" element={<Navigate to="/audit" replace />} />
+          <Route path="services" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

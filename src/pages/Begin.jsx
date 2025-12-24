@@ -63,7 +63,6 @@ export default function Begin() {
     });
     setCountryDropdownOpen(true);
   };
-  // 🔼 END OF NEW BLOCK 🔼
 
   const [formData, setFormData] = useState({
     businessName: "",
@@ -86,7 +85,6 @@ export default function Begin() {
 
   const updateField = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    // Clear error when user types
     if (errors[field]) {
       setErrors((prev) => ({ ...prev, [field]: "" }));
     }
@@ -101,24 +99,19 @@ export default function Begin() {
     }));
   };
 
-  // Validation functions
   const validateEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
   };
 
   const validatePhone = (phone) => {
-    // Remove all non-digits
     const digits = phone.replace(/\D/g, "");
-    // Check if it has a reasonable length (7-15 digits)
     return digits.length >= 7 && digits.length <= 15;
   };
 
   const formatPhone = (value, countryDial) => {
-    // Remove non-digits
     const digits = value.replace(/\D/g, "");
 
-    // Format based on country (US/CA format)
     if (countryDial === "+1") {
       if (digits.length <= 3) return digits;
       if (digits.length <= 6)
@@ -129,7 +122,6 @@ export default function Begin() {
       )}`;
     }
 
-    // For other countries, just return digits with spaces for readability
     if (digits.length > 6) {
       return (
         digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6)
@@ -145,7 +137,6 @@ export default function Begin() {
     updateField("phone", formatted);
   };
 
-  // Reformat phone when country changes
   const handleCountryChange = (country) => {
     updateField("country", country);
     if (formData.phone) {
@@ -208,7 +199,6 @@ export default function Begin() {
     setIsSubmitting(true);
     setSubmitError("");
 
-    // Prepare form data for submission
     const submitData = {
       businessName: formData.businessName,
       website: formData.website,
@@ -226,7 +216,6 @@ export default function Begin() {
     };
 
     try {
-      // Send to Formspree - submissions go to leviathanaidev@gmail.com
       const response = await fetch("https://formspree.io/f/xbdrwznd", {
         method: "POST",
         headers: {
@@ -250,17 +239,15 @@ export default function Begin() {
     }
   };
 
-  // Initialize Calendly when step 2 is shown
   useEffect(() => {
     if (step === 2 && window.Calendly) {
       window.Calendly.initInlineWidget({
-        url: "https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37",
+        url: "https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=00d4cf",
         parentElement: document.getElementById("calendly-embed"),
       });
     }
   }, [step]);
 
-  // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (countryDropdownOpen && !e.target.closest(".country-selector")) {
@@ -272,11 +259,13 @@ export default function Begin() {
   }, [countryDropdownOpen]);
 
   return (
-    <div className="bg-[#0a0a0a] pt-24 min-h-screen">
+    <div className="bg-[#050510] pt-24 min-h-screen">
       {/* HERO */}
       <section className="py-16 relative overflow-hidden">
-        {/* Background glow */}
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full bg-[#d4af37]/[0.02] blur-[100px] pointer-events-none" />
+        {/* Background orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="orb-glow absolute top-0 left-1/2 -translate-x-1/2 w-[500px] h-[400px]" />
+        </div>
 
         <div
           ref={heroRef}
@@ -286,15 +275,15 @@ export default function Begin() {
               : "opacity-0 translate-y-8"
           }`}
         >
-          <p className="hero-badge text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+          <span className="inline-block px-4 py-2 mb-6 text-xs font-semibold tracking-[0.3em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
             Begin
-          </p>
+          </span>
 
-          <h1 className="hero-title text-3xl sm:text-4xl font-bold text-white leading-tight mb-6">
+          <h1 className="hero-title text-3xl sm:text-4xl font-bold text-[#e8ecf0] leading-tight mb-6">
             Let's see if automation fits.
           </h1>
 
-          <p className="hero-subtitle text-lg text-gray-400 leading-relaxed">
+          <p className="hero-subtitle text-lg text-[#8899a6] leading-relaxed">
             This isn't a sales call. It's a short diagnostic to see where leads
             are slipping and what a system would look like.
           </p>
@@ -302,7 +291,7 @@ export default function Begin() {
       </section>
 
       {/* FORM / CALENDAR */}
-      <section className="py-12 border-t border-[#1a1a1a] section-fade-border">
+      <section className="py-12 border-t border-[#00fff7]/10 section-glow-border">
         <div className="mx-auto max-w-2xl px-6">
           {step === 1 && (
             <form onSubmit={handleSubmit} className="space-y-12">
@@ -311,12 +300,12 @@ export default function Begin() {
                 className="animate-fade-section"
                 style={{ animationDelay: "0.1s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+                <span className="inline-block px-3 py-1.5 mb-6 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
                   Business Details
-                </p>
+                </span>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Business name *
                     </label>
                     <input
@@ -325,10 +314,10 @@ export default function Begin() {
                       onChange={(e) =>
                         updateField("businessName", e.target.value)
                       }
-                      className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
+                      className={`input-abyss w-full px-4 py-3 ${
                         errors.businessName
                           ? "border-red-500"
-                          : "border-[#2d2d2d] focus:border-[#d4af37]"
+                          : ""
                       }`}
                       placeholder="Your company name"
                     />
@@ -340,28 +329,28 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Website (optional)
                     </label>
                     <input
                       type="url"
                       value={formData.website}
                       onChange={(e) => updateField("website", e.target.value)}
-                      className="input-premium w-full bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-[#d4af37] focus:outline-none"
+                      className="input-abyss w-full px-4 py-3"
                       placeholder="https://"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Industry *
                     </label>
                     <select
                       value={formData.industry}
                       onChange={(e) => updateField("industry", e.target.value)}
-                      className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white focus:outline-none transition-colors ${
+                      className={`input-abyss w-full px-4 py-3 ${
                         errors.industry
                           ? "border-red-500"
-                          : "border-[#2d2d2d] focus:border-[#d4af37]"
+                          : ""
                       }`}
                     >
                       <option value="">Select industry</option>
@@ -386,22 +375,22 @@ export default function Begin() {
                 className="animate-fade-section"
                 style={{ animationDelay: "0.2s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+                <span className="inline-block px-3 py-1.5 mb-6 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
                   Contact
-                </p>
+                </span>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Your name *
                     </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => updateField("name", e.target.value)}
-                      className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
+                      className={`input-abyss w-full px-4 py-3 ${
                         errors.name
                           ? "border-red-500"
-                          : "border-[#2d2d2d] focus:border-[#d4af37]"
+                          : ""
                       }`}
                     />
                     {errors.name && (
@@ -412,17 +401,17 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Email *
                     </label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => updateField("email", e.target.value)}
-                      className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
+                      className={`input-abyss w-full px-4 py-3 ${
                         errors.email
                           ? "border-red-500"
-                          : "border-[#2d2d2d] focus:border-[#d4af37]"
+                          : ""
                       }`}
                       placeholder="you@company.com"
                     />
@@ -434,7 +423,7 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Phone *
                     </label>
                     <div className="flex gap-2">
@@ -444,16 +433,16 @@ export default function Begin() {
                           ref={countryButtonRef}
                           type="button"
                           onClick={openDropdown}
-                          className="flex items-center gap-2 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-3 py-3 text-white hover:border-[#d4af37]/50 transition-colors min-w-[120px]"
+                          className="flex items-center gap-2 bg-[#0a1628] border border-[#00fff7]/15 rounded-lg px-3 py-3 text-[#e8ecf0] hover:border-[#00fff7]/50 transition-colors min-w-[120px]"
                         >
                           <span className="text-xl">
                             {formData.country.flag}
                           </span>
-                          <span className="text-gray-400 text-sm">
+                          <span className="text-[#8899a6] text-sm">
                             {formData.country.dial}
                           </span>
                           <ChevronDown
-                            className={`w-4 h-4 text-gray-500 ml-auto transition-transform ${
+                            className={`w-4 h-4 text-[#8899a6] ml-auto transition-transform ${
                               countryDropdownOpen ? "rotate-180" : ""
                             }`}
                           />
@@ -503,10 +492,10 @@ export default function Begin() {
                         type="tel"
                         value={formData.phone}
                         onChange={handlePhoneChange}
-                        className={`input-premium flex-1 bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
+                        className={`input-abyss flex-1 px-4 py-3 ${
                           errors.phone
                             ? "border-red-500"
-                            : "border-[#2d2d2d] focus:border-[#d4af37]"
+                            : ""
                         }`}
                         placeholder={
                           formData.country.dial === "+1"
@@ -530,21 +519,21 @@ export default function Begin() {
                 className="animate-fade-section"
                 style={{ animationDelay: "0.3s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  Volume + Channels *
-                </p>
+                <span className="inline-block px-3 py-1.5 mb-6 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
+                  Volume + Channels
+                </span>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Monthly inbound interactions *
                     </label>
                     <select
                       value={formData.volume}
                       onChange={(e) => updateField("volume", e.target.value)}
-                      className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white focus:outline-none transition-colors ${
+                      className={`input-abyss w-full px-4 py-3 ${
                         errors.volume
                           ? "border-red-500"
-                          : "border-[#2d2d2d] focus:border-[#d4af37]"
+                          : ""
                       }`}
                     >
                       <option value="">Select volume</option>
@@ -562,7 +551,7 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-3">
+                    <label className="block text-sm text-[#8899a6] mb-3">
                       Channels you use *
                     </label>
                     <div className="flex flex-wrap gap-2">
@@ -576,10 +565,10 @@ export default function Begin() {
                               setErrors((prev) => ({ ...prev, channels: "" }));
                             }
                           }}
-                          className={`chip-select px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
+                          className={`tag-ocean px-4 py-2 text-sm transition-all duration-300 ${
                             formData.channels.includes(channel)
-                              ? "bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20"
-                              : "bg-transparent text-gray-400 border-[#2d2d2d] hover:border-[#d4af37]/50 hover:text-gray-300"
+                              ? "bg-[#00fff7] text-[#050510] border-[#00fff7] shadow-lg shadow-[#00fff7]/30"
+                              : ""
                           }`}
                         >
                           {channel}
@@ -601,9 +590,9 @@ export default function Begin() {
                 className="animate-fade-section"
                 style={{ animationDelay: "0.4s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  What are you trying to fix? *
-                </p>
+                <span className="inline-block px-3 py-1.5 mb-6 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
+                  What are you trying to fix?
+                </span>
                 <div className="flex flex-wrap gap-2">
                   {painPoints.map((point) => (
                     <button
@@ -615,10 +604,10 @@ export default function Begin() {
                           setErrors((prev) => ({ ...prev, painPoints: "" }));
                         }
                       }}
-                      className={`chip-select px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
+                      className={`tag-ocean px-4 py-2 text-sm transition-all duration-300 ${
                         formData.painPoints.includes(point)
-                          ? "bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20"
-                          : "bg-transparent text-gray-400 border-[#2d2d2d] hover:border-[#d4af37]/50 hover:text-gray-300"
+                          ? "bg-[#00fff7] text-[#050510] border-[#00fff7] shadow-lg shadow-[#00fff7]/30"
+                          : ""
                       }`}
                     >
                       {point}
@@ -638,27 +627,24 @@ export default function Begin() {
                 className="animate-fade-section"
                 style={{ animationDelay: "0.5s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  Current Tools{" "}
-                  <span className="text-gray-500 normal-case tracking-normal">
-                    (Optional)
-                  </span>
-                </p>
+                <span className="inline-block px-3 py-1.5 mb-6 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
+                  Current Tools <span className="text-[#8899a6] normal-case tracking-normal">(Optional)</span>
+                </span>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       CRM you use
                     </label>
                     <input
                       type="text"
                       value={formData.crm}
                       onChange={(e) => updateField("crm", e.target.value)}
-                      className="input-premium w-full bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-[#d4af37] focus:outline-none"
+                      className="input-abyss w-full px-4 py-3"
                       placeholder="e.g. HubSpot, Salesforce, GoHighLevel"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label className="block text-sm text-[#8899a6] mb-2">
                       Scheduling tool
                     </label>
                     <input
@@ -667,7 +653,7 @@ export default function Begin() {
                       onChange={(e) =>
                         updateField("schedulingTool", e.target.value)
                       }
-                      className="input-premium w-full bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-[#d4af37] focus:outline-none"
+                      className="input-abyss w-full px-4 py-3"
                       placeholder="e.g. Calendly, ServiceTitan"
                     />
                   </div>
@@ -686,11 +672,11 @@ export default function Begin() {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="btn-primary w-full group flex items-center justify-center gap-3 bg-[#d4af37] text-black py-4 rounded-full font-semibold hover:bg-[#f4d03f] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-glow w-full group flex items-center justify-center gap-3 py-4 text-lg disabled:opacity-50 disabled:cursor-not-allowed"
               >
                 {isSubmitting ? (
                   <>
-                    <div className="w-5 h-5 border-2 border-black/30 border-t-black rounded-full animate-spin" />
+                    <div className="w-5 h-5 border-2 border-[#050510]/30 border-t-[#050510] rounded-full animate-spin" />
                     Submitting...
                   </>
                 ) : (
@@ -706,11 +692,11 @@ export default function Begin() {
           {step === 2 && (
             <div className="space-y-12">
               {/* Success message */}
-              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#d4af37]/10 to-transparent border border-[#d4af37]/20 rounded-xl animate-fade-section">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#d4af37] to-[#f4d03f] flex items-center justify-center shadow-lg shadow-[#d4af37]/30">
-                  <Check className="h-5 w-5 text-black" />
+              <div className="flex items-center gap-3 p-4 bg-gradient-to-r from-[#00fff7]/10 to-transparent border border-[#00fff7]/20 rounded-xl animate-fade-section glow-border">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#00fff7] to-[#4ade80] flex items-center justify-center shadow-lg shadow-[#00fff7]/30">
+                  <Check className="h-5 w-5 text-[#050510]" />
                 </div>
-                <p className="text-white font-medium">
+                <p className="text-[#e8ecf0] font-medium">
                   Thanks, {formData.name}. Now pick a time.
                 </p>
               </div>
@@ -720,17 +706,17 @@ export default function Begin() {
                 className="animate-fade-section"
                 style={{ animationDelay: "0.2s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-4">
+                <span className="inline-block px-3 py-1.5 mb-4 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
                   Pick a Time
-                </p>
-                <p className="text-gray-400 mb-6">
+                </span>
+                <p className="text-[#8899a6] mb-6">
                   30 minutes. We'll review your answers beforehand.
                 </p>
-                <div className="rounded-2xl overflow-hidden border border-[#1a1a1a] shadow-2xl shadow-black/50">
+                <div className="rounded-2xl overflow-hidden border border-[#00fff7]/20 shadow-2xl shadow-black/50 glow-border">
                   <div
                     id="calendly-embed"
                     className="calendly-inline-widget"
-                    data-url="https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37"
+                    data-url="https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=00d4cf"
                     style={{ minWidth: "280px", height: "650px" }}
                   />
                 </div>
@@ -738,12 +724,12 @@ export default function Begin() {
 
               {/* What happens next */}
               <div
-                className="border-t border-[#1a1a1a] pt-12 animate-fade-section"
+                className="border-t border-[#00fff7]/10 pt-12 animate-fade-section"
                 style={{ animationDelay: "0.4s" }}
               >
-                <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+                <span className="inline-block px-3 py-1.5 mb-6 text-xs font-semibold tracking-[0.2em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
                   After You Book
-                </p>
+                </span>
                 <div className="space-y-4">
                   {[
                     "We review your answers before the call.",
@@ -752,12 +738,12 @@ export default function Begin() {
                   ].map((item, index) => (
                     <div
                       key={item}
-                      className="flex gap-4 p-4 rounded-lg bg-[#0d0d0d]/50 border border-[#1a1a1a]/50 transition-all duration-300 hover:border-[#d4af37]/20"
+                      className="card-abyss flex gap-4 p-4"
                     >
-                      <span className="text-[#d4af37] font-bold text-lg">
+                      <span className="text-[#00fff7] font-bold text-lg glow-text">
                         {index + 1}.
                       </span>
-                      <p className="text-gray-400">{item}</p>
+                      <p className="text-[#8899a6]">{item}</p>
                     </div>
                   ))}
                 </div>

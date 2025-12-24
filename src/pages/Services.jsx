@@ -72,30 +72,36 @@ export default function Services() {
   const [ctaRef, ctaVisible] = useScrollAnimation(0.15)
 
   return (
-    <div className="bg-[#0a0a0a] pt-24">
+    <div className="bg-[#050510] pt-24">
 
       {/* HERO */}
-      <section className="py-24">
+      <section className="py-24 relative overflow-hidden">
+        {/* Ambient orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="orb-glow absolute top-0 right-1/4 w-[400px] h-[400px]" />
+          <div className="orb-purple absolute bottom-0 left-1/4 w-[300px] h-[300px]" />
+        </div>
+
         <div
           ref={heroRef}
-          className={`mx-auto max-w-6xl px-6 transition-all duration-[1500ms] ${
+          className={`mx-auto max-w-6xl px-6 relative z-10 transition-all duration-[1500ms] ${
             heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             {/* Text Content */}
             <div>
-              <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+              <span className="inline-block px-4 py-2 mb-6 text-xs font-semibold tracking-[0.3em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
                 Services
-              </p>
+              </span>
 
-              <h1 className="text-4xl sm:text-5xl font-bold text-white leading-tight mb-6">
+              <h1 className="text-4xl sm:text-5xl font-bold text-[#e8ecf0] leading-tight mb-6">
                 What we build for
                 <br />
-                <span className="text-gray-500">service businesses.</span>
+                <span className="text-[#8899a6]">service businesses.</span>
               </h1>
 
-              <p className="text-xl text-gray-400 max-w-lg">
+              <p className="text-xl text-[#8899a6] max-w-lg">
                 Every system is custom. Here's what's possible.
               </p>
             </div>
@@ -109,7 +115,7 @@ export default function Services() {
             >
               <div className="relative">
                 {/* Glow effect behind image */}
-                <div className="absolute inset-0 bg-[#d4af37]/10 blur-3xl rounded-full scale-75" />
+                <div className="absolute inset-0 bg-[#00fff7]/10 blur-3xl rounded-full scale-75" />
                 <img
                   src={servicesImage}
                   alt="Leviathan Systems Services"
@@ -122,7 +128,7 @@ export default function Services() {
       </section>
 
       {/* SERVICES LIST */}
-      <section className="py-12 border-t border-[#1a1a1a] section-fade-border">
+      <section className="py-12 border-t border-[#00fff7]/10 section-glow-border relative">
         <div className="mx-auto max-w-5xl px-6">
           <div className="space-y-0">
             {services.map((service, index) => {
@@ -131,7 +137,7 @@ export default function Services() {
                 <div
                   key={service.title}
                   ref={ref}
-                  className={`py-16 ${index !== services.length - 1 ? 'border-b border-[#1a1a1a]' : ''} transition-all duration-700 ${
+                  className={`py-16 ${index !== services.length - 1 ? 'border-b border-[#00fff7]/10' : ''} transition-all duration-700 ${
                     isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
                   }`}
                 >
@@ -144,13 +150,13 @@ export default function Services() {
                         transform: isVisible ? 'translateX(0)' : 'translateX(-20px)'
                       }}
                     >
-                      <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-[#d4af37]/20 to-[#d4af37]/5 border border-[#d4af37]/20 flex items-center justify-center mb-6">
-                        <service.icon className="h-6 w-6 text-[#d4af37]" />
+                      <div className="icon-orb w-14 h-14 flex items-center justify-center mb-6">
+                        <service.icon className="h-6 w-6 text-[#00fff7]" />
                       </div>
-                      <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4">
+                      <h2 className="text-2xl sm:text-3xl font-bold text-[#e8ecf0] mb-4">
                         {service.title}
                       </h2>
-                      <p className="text-lg text-gray-400">
+                      <p className="text-lg text-[#8899a6]">
                         {service.description}
                       </p>
                     </div>
@@ -165,8 +171,8 @@ export default function Services() {
                             transform: isVisible ? 'translateX(0)' : 'translateX(20px)'
                           }}
                         >
-                          <div className="w-1.5 h-1.5 bg-[#d4af37] rounded-full mt-2.5 shrink-0" />
-                          <p className="text-gray-300">{bullet}</p>
+                          <div className="w-1.5 h-1.5 bg-[#00fff7] rounded-full mt-2.5 shrink-0 shadow-lg shadow-[#00fff7]/50" />
+                          <p className="text-[#8899a6]">{bullet}</p>
                         </div>
                       ))}
                     </div>
@@ -179,19 +185,24 @@ export default function Services() {
       </section>
 
       {/* HOW IT WORKS TOGETHER - Premium Flow Diagram */}
-      <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a] overflow-hidden">
+      <section className="py-24 bg-[#0a1628]/50 border-t border-[#00fff7]/10 overflow-hidden relative">
+        {/* Ambient orb */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="orb-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px]" />
+        </div>
+
         <div
           ref={flowRef}
-          className={`mx-auto max-w-6xl px-6 transition-all duration-[1500ms] ${
+          className={`mx-auto max-w-6xl px-6 relative z-10 transition-all duration-[1500ms] ${
             flowVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
           <div className="text-center mb-16">
-            <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+            <span className="inline-block px-4 py-2 mb-6 text-xs font-semibold tracking-[0.3em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
               The System
-            </p>
+            </span>
 
-            <h2 className="text-3xl sm:text-4xl font-bold text-white">
+            <h2 className="text-3xl sm:text-4xl font-bold text-[#e8ecf0]">
               How it fits together.
             </h2>
           </div>
@@ -206,12 +217,12 @@ export default function Services() {
                 style={{ zIndex: 0 }}
               >
                 <defs>
-                  <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stopColor="#d4af37" stopOpacity="0.1" />
-                    <stop offset="50%" stopColor="#d4af37" stopOpacity="0.5" />
-                    <stop offset="100%" stopColor="#d4af37" stopOpacity="0.1" />
+                  <linearGradient id="lineGradientCyan" x1="0%" y1="0%" x2="100%" y2="0%">
+                    <stop offset="0%" stopColor="#00fff7" stopOpacity="0.1" />
+                    <stop offset="50%" stopColor="#00fff7" stopOpacity="0.5" />
+                    <stop offset="100%" stopColor="#00fff7" stopOpacity="0.1" />
                   </linearGradient>
-                  <filter id="glow">
+                  <filter id="glowCyan">
                     <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
                     <feMerge>
                       <feMergeNode in="coloredBlur"/>
@@ -228,7 +239,7 @@ export default function Services() {
                       y1="50%"
                       x2={`${24.8 + i * 16.8}%`}
                       y2="50%"
-                      stroke="url(#lineGradient)"
+                      stroke="url(#lineGradientCyan)"
                       strokeWidth="2"
                       className="transition-all duration-[1500ms]"
                       style={{
@@ -239,8 +250,8 @@ export default function Services() {
                     {/* Animated pulse */}
                     <circle
                       r="4"
-                      fill="#d4af37"
-                      filter="url(#glow)"
+                      fill="#00fff7"
+                      filter="url(#glowCyan)"
                       className="flow-pulse"
                       style={{
                         opacity: flowVisible ? 0.8 : 0,
@@ -270,22 +281,22 @@ export default function Services() {
                   >
                     {/* Node */}
                     <div className="relative group">
-                      <div className={`relative w-16 h-16 rounded-2xl bg-[#0a0a0a] border-2 border-[#d4af37]/30 flex items-center justify-center transition-all duration-300 group-hover:border-[#d4af37] group-hover:shadow-lg group-hover:shadow-[#d4af37]/20`}>
-                        <step.icon className="w-6 h-6 text-[#d4af37]" />
+                      <div className={`relative w-16 h-16 rounded-2xl bg-[#050510] border-2 border-[#00fff7]/30 flex items-center justify-center transition-all duration-300 group-hover:border-[#00fff7] group-hover:shadow-lg group-hover:shadow-[#00fff7]/20`}>
+                        <step.icon className="w-6 h-6 text-[#00fff7]" />
                         {/* Pulse ring on hover */}
-                        <div className="absolute inset-0 rounded-2xl border-2 border-[#d4af37]/0 group-hover:border-[#d4af37]/40 group-hover:scale-110 transition-all duration-300" />
+                        <div className="absolute inset-0 rounded-2xl border-2 border-[#00fff7]/0 group-hover:border-[#00fff7]/40 group-hover:scale-110 transition-all duration-300" />
                       </div>
                       {/* Step number */}
-                      <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#d4af37] flex items-center justify-center">
-                        <span className="text-black text-xs font-bold">{index + 1}</span>
+                      <div className="absolute -top-2 -right-2 w-6 h-6 rounded-full bg-[#00fff7] flex items-center justify-center shadow-lg shadow-[#00fff7]/30">
+                        <span className="text-[#050510] text-xs font-bold">{index + 1}</span>
                       </div>
                     </div>
 
                     {/* Label */}
-                    <p className="text-sm text-white mt-4 text-center font-medium">
+                    <p className="text-sm text-[#e8ecf0] mt-4 text-center font-medium">
                       {step.label}
                     </p>
-                    <p className="text-xs text-gray-500 mt-1 text-center">
+                    <p className="text-xs text-[#8899a6] mt-1 text-center">
                       {step.desc}
                     </p>
                   </div>
@@ -304,8 +315,8 @@ export default function Services() {
                     transition: 'opacity 0.5s ease 0.3s'
                   }}
                 >
-                  <div className="w-full h-full bg-gradient-to-b from-[#d4af37]/10 via-[#d4af37]/40 to-[#d4af37]/10" />
-                  <div className="absolute top-0 left-0 w-full h-8 bg-[#d4af37]/60 animate-flow-down" />
+                  <div className="w-full h-full bg-gradient-to-b from-[#00fff7]/10 via-[#00fff7]/40 to-[#00fff7]/10" />
+                  <div className="absolute top-0 left-0 w-full h-8 bg-[#00fff7]/60 animate-flow-down" />
                 </div>
 
                 <div className="space-y-6">
@@ -321,17 +332,17 @@ export default function Services() {
                     >
                       {/* Node */}
                       <div className="relative shrink-0">
-                        <div className="w-14 h-14 rounded-xl bg-[#0a0a0a] border-2 border-[#d4af37]/30 flex items-center justify-center">
-                          <step.icon className="w-5 h-5 text-[#d4af37]" />
+                        <div className="w-14 h-14 rounded-xl bg-[#050510] border-2 border-[#00fff7]/30 flex items-center justify-center">
+                          <step.icon className="w-5 h-5 text-[#00fff7]" />
                         </div>
-                        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#d4af37] flex items-center justify-center">
-                          <span className="text-black text-[10px] font-bold">{index + 1}</span>
+                        <div className="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-[#00fff7] flex items-center justify-center shadow-lg shadow-[#00fff7]/30">
+                          <span className="text-[#050510] text-[10px] font-bold">{index + 1}</span>
                         </div>
                       </div>
 
                       <div className="pt-2">
-                        <p className="text-white font-medium">{step.label}</p>
-                        <p className="text-gray-500 text-sm mt-0.5">{step.desc}</p>
+                        <p className="text-[#e8ecf0] font-medium">{step.label}</p>
+                        <p className="text-[#8899a6] text-sm mt-0.5">{step.desc}</p>
                       </div>
                     </div>
                   ))}
@@ -341,7 +352,7 @@ export default function Services() {
           </div>
 
           <p
-            className="text-center text-gray-500 mt-16 text-sm transition-all duration-700"
+            className="text-center text-[#8899a6] mt-16 text-sm transition-all duration-700"
             style={{
               transitionDelay: flowVisible ? '1000ms' : '0ms',
               opacity: flowVisible ? 1 : 0
@@ -353,22 +364,22 @@ export default function Services() {
       </section>
 
       {/* WHAT WE INTEGRATE WITH */}
-      <section className="py-24 border-t border-[#1a1a1a] section-fade-border">
+      <section className="py-24 border-t border-[#00fff7]/10 section-glow-border relative">
         <div
           ref={integrationsRef}
           className={`mx-auto max-w-4xl px-6 transition-all duration-[1500ms] ${
             integrationsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
+          <span className="inline-block px-4 py-2 mb-6 text-xs font-semibold tracking-[0.3em] uppercase text-[#00fff7] bg-[#00fff7]/10 rounded-full border border-[#00fff7]/20">
             Integrations
-          </p>
+          </span>
 
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#e8ecf0] mb-6">
             We work with your tools.
           </h2>
 
-          <p className="text-lg text-gray-400 mb-12 max-w-2xl">
+          <p className="text-lg text-[#8899a6] mb-12 max-w-2xl">
             CRMs, calendars, phone systems, messaging platforms. If it has an API, we can connect it.
           </p>
 
@@ -382,7 +393,7 @@ export default function Services() {
             ].map((tool, i) => (
               <span
                 key={tool}
-                className={`px-4 py-2 text-sm text-gray-500 border border-[#1a1a1a] rounded-full tag-hover instant-hover cursor-default ${
+                className={`tag-ocean px-4 py-2 text-sm cursor-default ${
                   integrationsVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'
                 }`}
                 style={{
@@ -397,7 +408,7 @@ export default function Services() {
           </div>
 
           <p
-            className="text-sm text-gray-600 mt-8 transition-all duration-500"
+            className="text-sm text-[#4a5568] mt-8 transition-all duration-500"
             style={{
               transitionDelay: integrationsVisible ? '900ms' : '0ms',
               opacity: integrationsVisible ? 1 : 0
@@ -409,9 +420,12 @@ export default function Services() {
       </section>
 
       {/* CTA */}
-      <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a] relative overflow-hidden">
-        {/* Ambient glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-[#d4af37]/[0.02] blur-[100px] pointer-events-none" />
+      <section className="py-24 bg-[#0a1628]/30 border-t border-[#00fff7]/10 relative overflow-hidden">
+        {/* Ambient orbs */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="orb-glow absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px]" />
+          <div className="orb-purple absolute top-1/4 right-1/4 w-[300px] h-[300px]" />
+        </div>
 
         <div
           ref={ctaRef}
@@ -419,17 +433,17 @@ export default function Services() {
             ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
           }`}
         >
-          <h2 className="text-3xl sm:text-4xl font-bold text-white mb-6 text-glow">
+          <h2 className="text-3xl sm:text-4xl font-bold text-[#e8ecf0] mb-6 glow-text">
             Not sure what you need?
           </h2>
 
-          <p className="text-xl text-gray-400 mb-12">
+          <p className="text-xl text-[#8899a6] mb-12">
             Start with a conversation. We'll map it out.
           </p>
 
           <Link
             to="/begin"
-            className="btn-primary group inline-flex items-center gap-3 bg-[#d4af37] text-black px-10 py-4 rounded-full font-semibold hover:bg-[#f4d03f] transition-all duration-300"
+            className="btn-glow group inline-flex items-center gap-3 px-10 py-4 text-lg"
           >
             Begin
             <ArrowRight className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-1" />
