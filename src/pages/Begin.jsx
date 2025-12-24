@@ -407,9 +407,9 @@ export default function Begin() {
 
                         {countryDropdownOpen && (
                           <div
-                            className="absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50"
+                            className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-2xl z-[9999] border border-gray-200"
                             style={{
-                              maxHeight: '240px',
+                              maxHeight: '280px',
                               overflowY: 'auto',
                               WebkitOverflowScrolling: 'touch'
                             }}
@@ -419,12 +419,12 @@ export default function Begin() {
                                 key={country.code}
                                 type="button"
                                 onClick={() => handleCountryChange(country)}
-                                className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-[#1a1a1a] transition-colors text-left ${
-                                  formData.country.code === country.code ? 'bg-[#1a1a1a]' : ''
+                                className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition-colors text-left ${
+                                  formData.country.code === country.code ? 'bg-gray-100' : ''
                                 }`}
                               >
                                 <span className="text-xl">{country.flag}</span>
-                                <span className="text-white text-sm">{country.name}</span>
+                                <span className="text-gray-900 text-sm font-medium">{country.name}</span>
                                 <span className="text-gray-500 text-sm ml-auto">{country.dial}</span>
                               </button>
                             ))}
