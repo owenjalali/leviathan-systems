@@ -403,10 +403,10 @@ export default function Audit() {
                                   onClick={() => handleCountryChange(country)}
                                   className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition-colors text-left ${formData.country.code === country.code ? "bg-gray-100" : ""}`}
                                 >
-                                  <span className="text-lg">{country.flag}</span>
-                                  <span className="text-gray-900 text-sm font-bold w-8">{country.code}</span>
+                                  <span className="text-lg leading-none">{country.flag}</span>
+                                  <span className="text-gray-900 text-sm font-bold w-8 text-center">{country.code}</span>
                                   <span className="text-gray-700 text-sm flex-1">{country.name}</span>
-                                  <span className="text-gray-400 text-sm">{country.dial}</span>
+                                  <span className="text-gray-400 text-sm tabular-nums">{country.dial}</span>
                                 </button>
                               ))}
                             </div>

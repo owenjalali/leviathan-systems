@@ -35,63 +35,110 @@ export default function Home() {
           SECTION 1: HERO — TENSION + ACCUSATION
           ============================================ */}
       <section className="min-h-screen flex flex-col justify-center relative overflow-hidden pt-20">
-        {/* Subtle gradient background */}
-        <div className="absolute inset-0 bg-gradient-to-b from-red-950/5 via-transparent to-transparent pointer-events-none" />
+        {/* Premium background layers */}
+        <div className="absolute inset-0 pointer-events-none">
+          {/* Base gradient */}
+          <div className="absolute inset-0 bg-gradient-to-br from-[#050509] via-[#0a0f1a] to-[#050509]" />
 
-        <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24">
+          {/* Ambient glow orbs */}
+          <div className="absolute top-1/4 -left-32 w-96 h-96 bg-[#00d4cf]/8 rounded-full blur-[120px]" />
+          <div className="absolute bottom-1/4 -right-32 w-80 h-80 bg-red-500/6 rounded-full blur-[100px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-[#00d4cf]/3 rounded-full blur-[180px]" />
+
+          {/* Subtle grid pattern overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.02]"
+            style={{
+              backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px),
+                               linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+              backgroundSize: '60px 60px'
+            }}
+          />
+
+          {/* Radial vignette */}
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,#050509_70%)]" />
+
+          {/* Top edge glow */}
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-px bg-gradient-to-r from-transparent via-[#00d4cf]/30 to-transparent" />
+        </div>
+
+        <div className="mx-auto max-w-6xl px-6 py-16 lg:py-24 relative z-10">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
 
             {/* Left: Copy */}
             <div className="max-w-xl">
               {/* Tension headline */}
-              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight mb-6">
-                You're losing leads
-                <span className="block text-[#6b7280]">right now.</span>
-              </h1>
+              <div className="mb-6">
+                <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] tracking-tight">
+                  You're losing leads
+                </h1>
+                <div className="relative inline-block mt-1">
+                  <span className="text-4xl sm:text-5xl lg:text-6xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#6b7280] to-[#4b5563]">
+                    right now.
+                  </span>
+                  {/* Underline accent */}
+                  <div className="absolute -bottom-2 left-0 w-full h-px bg-gradient-to-r from-red-500/50 via-red-500/20 to-transparent" />
+                </div>
+              </div>
 
               {/* Subheadline */}
               <p className="text-lg sm:text-xl text-[#9ca3af] leading-relaxed mb-4">
                 Every minute a lead waits, your close rate drops.
               </p>
               <p className="text-base text-[#6b7280] mb-8">
-                78% of customers buy from whoever responds first. How long does it take you?
+                <span className="text-white/90 font-medium">78% of customers</span> buy from whoever responds first. How long does it take you?
               </p>
 
               {/* CTAs */}
               <div className="flex flex-col sm:flex-row gap-4 mb-8">
                 <button
                   onClick={scrollToCalculator}
-                  className="group inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#00d4cf] hover:bg-[#00e5df] text-[#050509] font-semibold rounded-full transition-all duration-200 hover:shadow-lg hover:shadow-[#00d4cf]/25"
+                  className="group relative inline-flex items-center justify-center gap-2 px-7 py-4 bg-[#00d4cf] hover:bg-[#00e5df] text-[#050509] font-semibold rounded-full transition-all duration-300 hover:shadow-xl hover:shadow-[#00d4cf]/30 hover:scale-[1.02]"
                 >
-                  Run the Lead Leak Check
-                  <ArrowDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                  <span className="relative z-10 flex items-center gap-2">
+                    Run the Lead Leak Check
+                    <ArrowDown className="w-4 h-4 transition-transform group-hover:translate-y-0.5" />
+                  </span>
                 </button>
                 <button
                   onClick={scrollToSystem}
-                  className="inline-flex items-center justify-center gap-2 px-6 py-4 border border-[#2a3441] hover:border-[#3d4a59] text-[#9ca3af] hover:text-white rounded-full transition-all duration-200"
+                  className="group inline-flex items-center justify-center gap-2 px-6 py-4 border border-[#2a3441] hover:border-[#00d4cf]/40 text-[#9ca3af] hover:text-white rounded-full transition-all duration-300 backdrop-blur-sm hover:bg-[#0a0f1a]/50"
                 >
                   See how the system stops it
-                  <ChevronRight className="w-4 h-4" />
+                  <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-0.5" />
                 </button>
               </div>
 
               {/* Trust anchor */}
-              <p className="text-sm text-[#4b5563]">
-                No pitch. No pressure. Just the numbers.
-              </p>
+              <div className="flex items-center gap-3">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#00d4cf]/50" />
+                <p className="text-sm text-[#4b5563]">
+                  No pitch. No pressure. Just the numbers.
+                </p>
+              </div>
             </div>
 
             {/* Right: Calculator (visible on desktop) */}
-            <div className="hidden lg:block">
-              <LossCalculator onComplete={handleCalculatorComplete} />
+            <div className="hidden lg:block relative">
+              {/* Glow behind calculator */}
+              <div className="absolute -inset-4 bg-gradient-to-br from-[#00d4cf]/10 via-transparent to-red-500/5 rounded-3xl blur-xl opacity-60" />
+              <div className="relative">
+                <LossCalculator onComplete={handleCalculatorComplete} />
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Calculator on mobile - full width */}
-      <section className="lg:hidden py-12 px-6 bg-[#050509]">
-        <LossCalculator onComplete={handleCalculatorComplete} />
+      <section className="lg:hidden py-12 px-6 bg-[#050509] relative overflow-hidden">
+        {/* Mobile background ambience */}
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-80 h-80 bg-[#00d4cf]/8 rounded-full blur-[100px]" />
+        </div>
+        <div className="relative">
+          <LossCalculator onComplete={handleCalculatorComplete} />
+        </div>
       </section>
 
 
@@ -210,17 +257,6 @@ export default function Home() {
             ))}
           </div>
 
-          {/* What it connects to */}
-          <div className="p-6 bg-[#0a0f1a]/50 border border-[#1a2332] rounded-xl">
-            <p className="text-[#6b7280] text-sm mb-4">Connects to your existing stack:</p>
-            <div className="flex flex-wrap gap-2">
-              {['CRMs', 'Calendars', 'Phone systems', 'SMS platforms', 'Zapier', 'Make', 'Custom APIs'].map((tool) => (
-                <span key={tool} className="px-3 py-1.5 bg-[#1a2332] text-[#9ca3af] text-xs rounded-lg">
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
 
