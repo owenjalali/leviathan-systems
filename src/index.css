@@ -522,6 +522,32 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* ================================
+   COUNTRY DROPDOWN SCROLLBAR
+   ================================ */
+
+.country-dropdown {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.5) transparent;
+}
+
+.country-dropdown::-webkit-scrollbar {
+  width: 6px;
+}
+
+.country-dropdown::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.country-dropdown::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 3px;
+}
+
+.country-dropdown::-webkit-scrollbar-thumb:hover {
+  background-color: rgba(255, 255, 255, 0.7);
+}
+
+/* ================================
    CALENDLY
    ================================ */
 

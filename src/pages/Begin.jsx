@@ -406,12 +406,7 @@ export default function Begin() {
                         </button>
 
                         {countryDropdownOpen && (
-                          <div className="absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50 max-h-60 overflow-y-auto overscroll-contain"
-                            style={{
-                              scrollbarWidth: 'thin',
-                              scrollbarColor: '#d4af37 #1a1a1a'
-                            }}
-                          >
+                          <div className="country-dropdown absolute top-full left-0 mt-1 w-64 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg shadow-xl z-50 max-h-60 overflow-y-scroll">
                             {countries.map((country) => (
                               <button
                                 key={country.code}

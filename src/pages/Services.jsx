@@ -108,12 +108,12 @@ export default function Services() {
               style={{ transitionDelay: '200ms' }}
             >
               <div className="relative">
-                {/* Glow effect behind image */}
-                <div className="absolute inset-0 bg-[#d4af37]/10 blur-3xl rounded-full scale-75" />
+                {/* Subtle glow effect behind image */}
+                <div className="absolute inset-0 bg-[#d4af37]/5 blur-3xl rounded-full scale-90" />
                 <img
                   src={servicesImage}
                   alt="Leviathan Systems Services"
-                  className="relative w-full h-auto rounded-2xl shadow-2xl shadow-black/50"
+                  className="relative w-full h-auto scale-110 lg:scale-125"
                 />
               </div>
             </div>
