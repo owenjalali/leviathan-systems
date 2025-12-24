@@ -407,7 +407,7 @@ export default function Begin() {
 
                         {countryDropdownOpen && (
                           <div
-                            className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-2xl z-[9999] border border-gray-200"
+                            className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-2xl z-[9999] border border-gray-200 country-dropdown"
                             style={{
                               maxHeight: '280px',
                               overflowY: 'auto',
