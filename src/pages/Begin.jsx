@@ -1,198 +1,212 @@
-import { useState, useEffect } from 'react'
-import { ArrowRight, Check, AlertCircle, ChevronDown } from 'lucide-react'
-import { useScrollAnimation } from '../hooks/useScrollAnimation'
+import { createPortal } from "react-dom";
+import { ArrowRight, Check, AlertCircle, ChevronDown } from "lucide-react";
+import { useScrollAnimation } from "../hooks/useScrollAnimation";
+import { useState, useEffect, useRef } from "react";
 
 const industries = [
-  'Home Services',
-  'Agency / Marketing',
-  'Healthcare / Clinic',
-  'Professional Services',
-  'Real Estate',
-  'Other'
-]
+  "Home Services",
+  "Agency / Marketing",
+  "Healthcare / Clinic",
+  "Professional Services",
+  "Real Estate",
+  "Other",
+];
 
-const volumes = [
-  'Less than 500',
-  '500 – 2,000',
-  '2,000 – 10,000',
-  '10,000+'
-]
+const volumes = ["Less than 500", "500 – 2,000", "2,000 – 10,000", "10,000+"];
 
-const channels = [
-  'Inbound calls',
-  'Web chat',
-  'SMS',
-  'Contact forms',
-  'Other'
-]
+const channels = ["Inbound calls", "Web chat", "SMS", "Contact forms", "Other"];
 
 const painPoints = [
-  'Missed calls / slow response',
-  'Scheduling bottlenecks',
-  'Follow-up falling through',
-  'CRM out of sync',
-  'Lead qualification',
-  'Something else'
-]
+  "Missed calls / slow response",
+  "Scheduling bottlenecks",
+  "Follow-up falling through",
+  "CRM out of sync",
+  "Lead qualification",
+  "Something else",
+];
 
 // Country data with flags and phone codes
 const countries = [
-  { code: 'US', name: 'United States', dial: '+1', flag: '🇺🇸' },
-  { code: 'CA', name: 'Canada', dial: '+1', flag: '🇨🇦' },
-  { code: 'GB', name: 'United Kingdom', dial: '+44', flag: '🇬🇧' },
-  { code: 'AU', name: 'Australia', dial: '+61', flag: '🇦🇺' },
-  { code: 'DE', name: 'Germany', dial: '+49', flag: '🇩🇪' },
-  { code: 'FR', name: 'France', dial: '+33', flag: '🇫🇷' },
-  { code: 'NL', name: 'Netherlands', dial: '+31', flag: '🇳🇱' },
-  { code: 'IE', name: 'Ireland', dial: '+353', flag: '🇮🇪' },
-  { code: 'NZ', name: 'New Zealand', dial: '+64', flag: '🇳🇿' },
-  { code: 'SG', name: 'Singapore', dial: '+65', flag: '🇸🇬' },
-  { code: 'AE', name: 'UAE', dial: '+971', flag: '🇦🇪' },
-  { code: 'IN', name: 'India', dial: '+91', flag: '🇮🇳' },
-  { code: 'MX', name: 'Mexico', dial: '+52', flag: '🇲🇽' },
-  { code: 'BR', name: 'Brazil', dial: '+55', flag: '🇧🇷' },
-]
+  { code: "US", name: "United States", dial: "+1", flag: "🇺🇸" },
+  { code: "CA", name: "Canada", dial: "+1", flag: "🇨🇦" },
+  { code: "GB", name: "United Kingdom", dial: "+44", flag: "🇬🇧" },
+  { code: "AU", name: "Australia", dial: "+61", flag: "🇦🇺" },
+  { code: "DE", name: "Germany", dial: "+49", flag: "🇩🇪" },
+  { code: "FR", name: "France", dial: "+33", flag: "🇫🇷" },
+  { code: "NL", name: "Netherlands", dial: "+31", flag: "🇳🇱" },
+  { code: "IE", name: "Ireland", dial: "+353", flag: "🇮🇪" },
+  { code: "NZ", name: "New Zealand", dial: "+64", flag: "🇳🇿" },
+  { code: "SG", name: "Singapore", dial: "+65", flag: "🇸🇬" },
+  { code: "AE", name: "UAE", dial: "+971", flag: "🇦🇪" },
+  { code: "IN", name: "India", dial: "+91", flag: "🇮🇳" },
+  { code: "MX", name: "Mexico", dial: "+52", flag: "🇲🇽" },
+  { code: "BR", name: "Brazil", dial: "+55", flag: "🇧🇷" },
+];
 
 export default function Begin() {
-  const [step, setStep] = useState(1)
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitError, setSubmitError] = useState('')
-  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false)
+  const [step, setStep] = useState(1);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+  });
+
+  const countryButtonRef = useRef(null);
+
+  const openDropdown = () => {
+    const rect = countryButtonRef.current.getBoundingClientRect();
+    setDropdownPosition({
+      top: rect.bottom + 4,
+      left: rect.left,
+    });
+    setCountryDropdownOpen(true);
+  };
+  // 🔼 END OF NEW BLOCK 🔼
+
   const [formData, setFormData] = useState({
-    businessName: '',
-    website: '',
-    industry: '',
-    name: '',
-    email: '',
+    businessName: "",
+    website: "",
+    industry: "",
+    name: "",
+    email: "",
     country: countries[0],
-    phone: '',
-    volume: '',
+    phone: "",
+    volume: "",
     channels: [],
     painPoints: [],
-    crm: '',
-    schedulingTool: ''
-  })
-  const [errors, setErrors] = useState({})
+    crm: "",
+    schedulingTool: "",
+  });
 
-  const [heroRef, heroVisible] = useScrollAnimation(0.1)
+  const [errors, setErrors] = useState({});
+
+  const [heroRef, heroVisible] = useScrollAnimation(0.1);
 
   const updateField = (field, value) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData((prev) => ({ ...prev, [field]: value }));
     // Clear error when user types
     if (errors[field]) {
-      setErrors(prev => ({ ...prev, [field]: '' }))
+      setErrors((prev) => ({ ...prev, [field]: "" }));
     }
-  }
+  };
 
   const toggleArrayField = (field, value) => {
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [field]: prev[field].includes(value)
-        ? prev[field].filter(v => v !== value)
-        : [...prev[field], value]
-    }))
-  }
+        ? prev[field].filter((v) => v !== value)
+        : [...prev[field], value],
+    }));
+  };
 
   // Validation functions
   const validateEmail = (email) => {
-    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    return regex.test(email)
-  }
+    const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  };
 
   const validatePhone = (phone) => {
     // Remove all non-digits
-    const digits = phone.replace(/\D/g, '')
+    const digits = phone.replace(/\D/g, "");
     // Check if it has a reasonable length (7-15 digits)
-    return digits.length >= 7 && digits.length <= 15
-  }
+    return digits.length >= 7 && digits.length <= 15;
+  };
 
   const formatPhone = (value, countryDial) => {
     // Remove non-digits
-    const digits = value.replace(/\D/g, '')
+    const digits = value.replace(/\D/g, "");
 
     // Format based on country (US/CA format)
-    if (countryDial === '+1') {
-      if (digits.length <= 3) return digits
-      if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`
-      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`
+    if (countryDial === "+1") {
+      if (digits.length <= 3) return digits;
+      if (digits.length <= 6)
+        return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`;
     }
 
     // For other countries, just return digits with spaces for readability
     if (digits.length > 6) {
-      return digits.slice(0, 3) + ' ' + digits.slice(3, 6) + ' ' + digits.slice(6)
+      return (
+        digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6)
+      );
     } else if (digits.length > 3) {
-      return digits.slice(0, 3) + ' ' + digits.slice(3)
+      return digits.slice(0, 3) + " " + digits.slice(3);
     }
-    return digits
-  }
+    return digits;
+  };
 
   const handlePhoneChange = (e) => {
-    const formatted = formatPhone(e.target.value, formData.country.dial)
-    updateField('phone', formatted)
-  }
+    const formatted = formatPhone(e.target.value, formData.country.dial);
+    updateField("phone", formatted);
+  };
 
   // Reformat phone when country changes
   const handleCountryChange = (country) => {
-    updateField('country', country)
+    updateField("country", country);
     if (formData.phone) {
-      const reformatted = formatPhone(formData.phone, country.dial)
-      updateField('phone', reformatted)
+      const reformatted = formatPhone(formData.phone, country.dial);
+      updateField("phone", reformatted);
     }
-    setCountryDropdownOpen(false)
-  }
+    setCountryDropdownOpen(false);
+  };
 
   const validateForm = () => {
-    const newErrors = {}
+    const newErrors = {};
 
     if (!formData.businessName.trim()) {
-      newErrors.businessName = 'Business name is required'
+      newErrors.businessName = "Business name is required";
     }
 
     if (!formData.industry) {
-      newErrors.industry = 'Please select an industry'
+      newErrors.industry = "Please select an industry";
     }
 
     if (!formData.name.trim()) {
-      newErrors.name = 'Your name is required'
+      newErrors.name = "Your name is required";
     }
 
     if (!formData.email.trim()) {
-      newErrors.email = 'Email is required'
+      newErrors.email = "Email is required";
     } else if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address'
+      newErrors.email = "Please enter a valid email address";
     }
 
     if (!formData.phone.trim()) {
-      newErrors.phone = 'Phone number is required'
+      newErrors.phone = "Phone number is required";
     } else if (!validatePhone(formData.phone)) {
-      newErrors.phone = 'Please enter a valid phone number'
+      newErrors.phone = "Please enter a valid phone number";
     }
 
     if (!formData.volume) {
-      newErrors.volume = 'Please select your monthly volume'
+      newErrors.volume = "Please select your monthly volume";
     }
 
     if (formData.channels.length === 0) {
-      newErrors.channels = 'Please select at least one channel'
+      newErrors.channels = "Please select at least one channel";
     }
 
     if (formData.painPoints.length === 0) {
-      newErrors.painPoints = 'Please select at least one issue'
+      newErrors.painPoints = "Please select at least one issue";
     }
 
-    setErrors(newErrors)
-    return Object.keys(newErrors).length === 0
-  }
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
+    e.preventDefault();
 
     if (!validateForm()) {
-      return
+      return;
     }
 
-    setIsSubmitting(true)
-    setSubmitError('')
+    setIsSubmitting(true);
+    setSubmitError("");
 
     // Prepare form data for submission
     const submitData = {
@@ -204,60 +218,61 @@ export default function Begin() {
       phone: `${formData.country.dial} ${formData.phone}`,
       country: formData.country.name,
       volume: formData.volume,
-      channels: formData.channels.join(', '),
-      painPoints: formData.painPoints.join(', '),
+      channels: formData.channels.join(", "),
+      painPoints: formData.painPoints.join(", "),
       crm: formData.crm,
       schedulingTool: formData.schedulingTool,
-      submittedAt: new Date().toISOString()
-    }
+      submittedAt: new Date().toISOString(),
+    };
 
     try {
       // Send to Formspree - submissions go to leviathanaidev@gmail.com
-      const response = await fetch('https://formspree.io/f/xbdrwznd', {
-        method: 'POST',
+      const response = await fetch("https://formspree.io/f/xbdrwznd", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
+          "Content-Type": "application/json",
+          Accept: "application/json",
         },
-        body: JSON.stringify(submitData)
-      })
+        body: JSON.stringify(submitData),
+      });
 
       if (response.ok) {
-        setStep(2)
+        setStep(2);
       } else {
-        throw new Error('Failed to submit form')
+        throw new Error("Failed to submit form");
       }
     } catch (error) {
-      setSubmitError('Something went wrong. Please try again or email us directly.')
+      setSubmitError(
+        "Something went wrong. Please try again or email us directly."
+      );
     } finally {
-      setIsSubmitting(false)
+      setIsSubmitting(false);
     }
-  }
+  };
 
   // Initialize Calendly when step 2 is shown
   useEffect(() => {
     if (step === 2 && window.Calendly) {
       window.Calendly.initInlineWidget({
-        url: 'https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37',
-        parentElement: document.getElementById('calendly-embed'),
-      })
+        url: "https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37",
+        parentElement: document.getElementById("calendly-embed"),
+      });
     }
-  }, [step])
+  }, [step]);
 
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (countryDropdownOpen && !e.target.closest('.country-selector')) {
-        setCountryDropdownOpen(false)
+      if (countryDropdownOpen && !e.target.closest(".country-selector")) {
+        setCountryDropdownOpen(false);
       }
-    }
-    document.addEventListener('click', handleClickOutside)
-    return () => document.removeEventListener('click', handleClickOutside)
-  }, [countryDropdownOpen])
+    };
+    document.addEventListener("click", handleClickOutside);
+    return () => document.removeEventListener("click", handleClickOutside);
+  }, [countryDropdownOpen]);
 
   return (
     <div className="bg-[#0a0a0a] pt-24 min-h-screen">
-
       {/* HERO */}
       <section className="py-16 relative overflow-hidden">
         {/* Background glow */}
@@ -266,7 +281,9 @@ export default function Begin() {
         <div
           ref={heroRef}
           className={`mx-auto max-w-2xl px-6 text-center relative z-10 transition-all duration-[1500ms] ${
-            heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
+            heroVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
           }`}
         >
           <p className="hero-badge text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
@@ -287,24 +304,31 @@ export default function Begin() {
       {/* FORM / CALENDAR */}
       <section className="py-12 border-t border-[#1a1a1a] section-fade-border">
         <div className="mx-auto max-w-2xl px-6">
-
           {step === 1 && (
             <form onSubmit={handleSubmit} className="space-y-12">
-
               {/* BUSINESS DETAILS */}
-              <div className="animate-fade-section" style={{ animationDelay: '0.1s' }}>
+              <div
+                className="animate-fade-section"
+                style={{ animationDelay: "0.1s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
                   Business Details
                 </p>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Business name *</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Business name *
+                    </label>
                     <input
                       type="text"
                       value={formData.businessName}
-                      onChange={(e) => updateField('businessName', e.target.value)}
+                      onChange={(e) =>
+                        updateField("businessName", e.target.value)
+                      }
                       className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
-                        errors.businessName ? 'border-red-500' : 'border-[#2d2d2d] focus:border-[#d4af37]'
+                        errors.businessName
+                          ? "border-red-500"
+                          : "border-[#2d2d2d] focus:border-[#d4af37]"
                       }`}
                       placeholder="Your company name"
                     />
@@ -316,27 +340,35 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Website (optional)</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Website (optional)
+                    </label>
                     <input
                       type="url"
                       value={formData.website}
-                      onChange={(e) => updateField('website', e.target.value)}
+                      onChange={(e) => updateField("website", e.target.value)}
                       className="input-premium w-full bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-[#d4af37] focus:outline-none"
                       placeholder="https://"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Industry *</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Industry *
+                    </label>
                     <select
                       value={formData.industry}
-                      onChange={(e) => updateField('industry', e.target.value)}
+                      onChange={(e) => updateField("industry", e.target.value)}
                       className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white focus:outline-none transition-colors ${
-                        errors.industry ? 'border-red-500' : 'border-[#2d2d2d] focus:border-[#d4af37]'
+                        errors.industry
+                          ? "border-red-500"
+                          : "border-[#2d2d2d] focus:border-[#d4af37]"
                       }`}
                     >
                       <option value="">Select industry</option>
-                      {industries.map(ind => (
-                        <option key={ind} value={ind}>{ind}</option>
+                      {industries.map((ind) => (
+                        <option key={ind} value={ind}>
+                          {ind}
+                        </option>
                       ))}
                     </select>
                     {errors.industry && (
@@ -350,19 +382,26 @@ export default function Begin() {
               </div>
 
               {/* CONTACT */}
-              <div className="animate-fade-section" style={{ animationDelay: '0.2s' }}>
+              <div
+                className="animate-fade-section"
+                style={{ animationDelay: "0.2s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
                   Contact
                 </p>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Your name *</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Your name *
+                    </label>
                     <input
                       type="text"
                       value={formData.name}
-                      onChange={(e) => updateField('name', e.target.value)}
+                      onChange={(e) => updateField("name", e.target.value)}
                       className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
-                        errors.name ? 'border-red-500' : 'border-[#2d2d2d] focus:border-[#d4af37]'
+                        errors.name
+                          ? "border-red-500"
+                          : "border-[#2d2d2d] focus:border-[#d4af37]"
                       }`}
                     />
                     {errors.name && (
@@ -373,13 +412,17 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Email *</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Email *
+                    </label>
                     <input
                       type="email"
                       value={formData.email}
-                      onChange={(e) => updateField('email', e.target.value)}
+                      onChange={(e) => updateField("email", e.target.value)}
                       className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
-                        errors.email ? 'border-red-500' : 'border-[#2d2d2d] focus:border-[#d4af37]'
+                        errors.email
+                          ? "border-red-500"
+                          : "border-[#2d2d2d] focus:border-[#d4af37]"
                       }`}
                       placeholder="you@company.com"
                     />
@@ -391,45 +434,68 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Phone *</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Phone *
+                    </label>
                     <div className="flex gap-2">
                       {/* Country Selector */}
                       <div className="relative country-selector">
                         <button
+                          ref={countryButtonRef}
                           type="button"
-                          onClick={() => setCountryDropdownOpen(!countryDropdownOpen)}
+                          onClick={openDropdown}
                           className="flex items-center gap-2 bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-3 py-3 text-white hover:border-[#d4af37]/50 transition-colors min-w-[120px]"
                         >
-                          <span className="text-xl">{formData.country.flag}</span>
-                          <span className="text-gray-400 text-sm">{formData.country.dial}</span>
-                          <ChevronDown className={`w-4 h-4 text-gray-500 ml-auto transition-transform ${countryDropdownOpen ? 'rotate-180' : ''}`} />
+                          <span className="text-xl">
+                            {formData.country.flag}
+                          </span>
+                          <span className="text-gray-400 text-sm">
+                            {formData.country.dial}
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 text-gray-500 ml-auto transition-transform ${
+                              countryDropdownOpen ? "rotate-180" : ""
+                            }`}
+                          />
                         </button>
 
-                        {countryDropdownOpen && (
-                          <div
-                            className="absolute top-full left-0 mt-1 w-64 bg-white rounded-lg shadow-2xl z-[9999] border border-gray-200 country-dropdown"
-                            style={{
-                              maxHeight: '280px',
-                              overflowY: 'auto',
-                              WebkitOverflowScrolling: 'touch'
-                            }}
-                          >
-                            {countries.map((country) => (
-                              <button
-                                key={country.code}
-                                type="button"
-                                onClick={() => handleCountryChange(country)}
-                                className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition-colors text-left ${
-                                  formData.country.code === country.code ? 'bg-gray-100' : ''
-                                }`}
-                              >
-                                <span className="text-xl">{country.flag}</span>
-                                <span className="text-gray-900 text-sm font-medium">{country.name}</span>
-                                <span className="text-gray-500 text-sm ml-auto">{country.dial}</span>
-                              </button>
-                            ))}
-                          </div>
-                        )}
+                        {countryDropdownOpen &&
+                          createPortal(
+                            <div
+                              className="country-dropdown fixed bg-white rounded-lg shadow-2xl border border-gray-200 z-[9999]"
+                              style={{
+                                top: dropdownPosition.top,
+                                left: dropdownPosition.left,
+                                width: "256px",
+                                maxHeight: "280px",
+                                overflowY: "auto",
+                              }}
+                            >
+                              {countries.map((country) => (
+                                <button
+                                  key={country.code}
+                                  type="button"
+                                  onClick={() => handleCountryChange(country)}
+                                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition-colors text-left ${
+                                    formData.country.code === country.code
+                                      ? "bg-gray-100"
+                                      : ""
+                                  }`}
+                                >
+                                  <span className="text-xl">
+                                    {country.flag}
+                                  </span>
+                                  <span className="text-gray-900 text-sm font-medium">
+                                    {country.name}
+                                  </span>
+                                  <span className="text-gray-500 text-sm ml-auto">
+                                    {country.dial}
+                                  </span>
+                                </button>
+                              ))}
+                            </div>,
+                            document.getElementById("dropdown-root")
+                          )}
                       </div>
 
                       {/* Phone Input */}
@@ -438,9 +504,15 @@ export default function Begin() {
                         value={formData.phone}
                         onChange={handlePhoneChange}
                         className={`input-premium flex-1 bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none transition-colors ${
-                          errors.phone ? 'border-red-500' : 'border-[#2d2d2d] focus:border-[#d4af37]'
+                          errors.phone
+                            ? "border-red-500"
+                            : "border-[#2d2d2d] focus:border-[#d4af37]"
                         }`}
-                        placeholder={formData.country.dial === '+1' ? '(555) 123-4567' : 'Phone number'}
+                        placeholder={
+                          formData.country.dial === "+1"
+                            ? "(555) 123-4567"
+                            : "Phone number"
+                        }
                       />
                     </div>
                     {errors.phone && (
@@ -454,23 +526,32 @@ export default function Begin() {
               </div>
 
               {/* VOLUME + CHANNELS */}
-              <div className="animate-fade-section" style={{ animationDelay: '0.3s' }}>
+              <div
+                className="animate-fade-section"
+                style={{ animationDelay: "0.3s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
                   Volume + Channels *
                 </p>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Monthly inbound interactions *</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Monthly inbound interactions *
+                    </label>
                     <select
                       value={formData.volume}
-                      onChange={(e) => updateField('volume', e.target.value)}
+                      onChange={(e) => updateField("volume", e.target.value)}
                       className={`input-premium w-full bg-[#0d0d0d] border rounded-lg px-4 py-3 text-white focus:outline-none transition-colors ${
-                        errors.volume ? 'border-red-500' : 'border-[#2d2d2d] focus:border-[#d4af37]'
+                        errors.volume
+                          ? "border-red-500"
+                          : "border-[#2d2d2d] focus:border-[#d4af37]"
                       }`}
                     >
                       <option value="">Select volume</option>
-                      {volumes.map(vol => (
-                        <option key={vol} value={vol}>{vol}</option>
+                      {volumes.map((vol) => (
+                        <option key={vol} value={vol}>
+                          {vol}
+                        </option>
                       ))}
                     </select>
                     {errors.volume && (
@@ -481,22 +562,24 @@ export default function Begin() {
                     )}
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-3">Channels you use *</label>
+                    <label className="block text-sm text-gray-400 mb-3">
+                      Channels you use *
+                    </label>
                     <div className="flex flex-wrap gap-2">
-                      {channels.map(channel => (
+                      {channels.map((channel) => (
                         <button
                           key={channel}
                           type="button"
                           onClick={() => {
-                            toggleArrayField('channels', channel)
+                            toggleArrayField("channels", channel);
                             if (errors.channels) {
-                              setErrors(prev => ({ ...prev, channels: '' }))
+                              setErrors((prev) => ({ ...prev, channels: "" }));
                             }
                           }}
                           className={`chip-select px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
                             formData.channels.includes(channel)
-                              ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
-                              : 'bg-transparent text-gray-400 border-[#2d2d2d] hover:border-[#d4af37]/50 hover:text-gray-300'
+                              ? "bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20"
+                              : "bg-transparent text-gray-400 border-[#2d2d2d] hover:border-[#d4af37]/50 hover:text-gray-300"
                           }`}
                         >
                           {channel}
@@ -514,25 +597,28 @@ export default function Begin() {
               </div>
 
               {/* PAIN POINTS */}
-              <div className="animate-fade-section" style={{ animationDelay: '0.4s' }}>
+              <div
+                className="animate-fade-section"
+                style={{ animationDelay: "0.4s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
                   What are you trying to fix? *
                 </p>
                 <div className="flex flex-wrap gap-2">
-                  {painPoints.map(point => (
+                  {painPoints.map((point) => (
                     <button
                       key={point}
                       type="button"
                       onClick={() => {
-                        toggleArrayField('painPoints', point)
+                        toggleArrayField("painPoints", point);
                         if (errors.painPoints) {
-                          setErrors(prev => ({ ...prev, painPoints: '' }))
+                          setErrors((prev) => ({ ...prev, painPoints: "" }));
                         }
                       }}
                       className={`chip-select px-4 py-2 rounded-full text-sm border transition-all duration-300 ${
                         formData.painPoints.includes(point)
-                          ? 'bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20'
-                          : 'bg-transparent text-gray-400 border-[#2d2d2d] hover:border-[#d4af37]/50 hover:text-gray-300'
+                          ? "bg-[#d4af37] text-black border-[#d4af37] shadow-lg shadow-[#d4af37]/20"
+                          : "bg-transparent text-gray-400 border-[#2d2d2d] hover:border-[#d4af37]/50 hover:text-gray-300"
                       }`}
                     >
                       {point}
@@ -548,27 +634,39 @@ export default function Begin() {
               </div>
 
               {/* TOOLS */}
-              <div className="animate-fade-section" style={{ animationDelay: '0.5s' }}>
+              <div
+                className="animate-fade-section"
+                style={{ animationDelay: "0.5s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
-                  Current Tools <span className="text-gray-500 normal-case tracking-normal">(Optional)</span>
+                  Current Tools{" "}
+                  <span className="text-gray-500 normal-case tracking-normal">
+                    (Optional)
+                  </span>
                 </p>
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">CRM you use</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      CRM you use
+                    </label>
                     <input
                       type="text"
                       value={formData.crm}
-                      onChange={(e) => updateField('crm', e.target.value)}
+                      onChange={(e) => updateField("crm", e.target.value)}
                       className="input-premium w-full bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-[#d4af37] focus:outline-none"
                       placeholder="e.g. HubSpot, Salesforce, GoHighLevel"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">Scheduling tool</label>
+                    <label className="block text-sm text-gray-400 mb-2">
+                      Scheduling tool
+                    </label>
                     <input
                       type="text"
                       value={formData.schedulingTool}
-                      onChange={(e) => updateField('schedulingTool', e.target.value)}
+                      onChange={(e) =>
+                        updateField("schedulingTool", e.target.value)
+                      }
                       className="input-premium w-full bg-[#0d0d0d] border border-[#2d2d2d] rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:border-[#d4af37] focus:outline-none"
                       placeholder="e.g. Calendly, ServiceTitan"
                     />
@@ -602,7 +700,6 @@ export default function Begin() {
                   </>
                 )}
               </button>
-
             </form>
           )}
 
@@ -619,7 +716,10 @@ export default function Begin() {
               </div>
 
               {/* Calendar */}
-              <div className="animate-fade-section" style={{ animationDelay: '0.2s' }}>
+              <div
+                className="animate-fade-section"
+                style={{ animationDelay: "0.2s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-4">
                   Pick a Time
                 </p>
@@ -631,13 +731,16 @@ export default function Begin() {
                     id="calendly-embed"
                     className="calendly-inline-widget"
                     data-url="https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=d4af37"
-                    style={{ minWidth: '280px', height: '650px' }}
+                    style={{ minWidth: "280px", height: "650px" }}
                   />
                 </div>
               </div>
 
               {/* What happens next */}
-              <div className="border-t border-[#1a1a1a] pt-12 animate-fade-section" style={{ animationDelay: '0.4s' }}>
+              <div
+                className="border-t border-[#1a1a1a] pt-12 animate-fade-section"
+                style={{ animationDelay: "0.4s" }}
+              >
                 <p className="text-[#d4af37] text-xs font-medium tracking-[0.3em] uppercase mb-6">
                   After You Book
                 </p>
@@ -645,13 +748,15 @@ export default function Begin() {
                   {[
                     "We review your answers before the call.",
                     "We map where leads are leaking.",
-                    "You leave with a clear recommendation—even if we're not the right fit."
+                    "You leave with a clear recommendation—even if we're not the right fit.",
                   ].map((item, index) => (
                     <div
                       key={item}
                       className="flex gap-4 p-4 rounded-lg bg-[#0d0d0d]/50 border border-[#1a1a1a]/50 transition-all duration-300 hover:border-[#d4af37]/20"
                     >
-                      <span className="text-[#d4af37] font-bold text-lg">{index + 1}.</span>
+                      <span className="text-[#d4af37] font-bold text-lg">
+                        {index + 1}.
+                      </span>
                       <p className="text-gray-400">{item}</p>
                     </div>
                   ))}
@@ -659,10 +764,8 @@ export default function Begin() {
               </div>
             </div>
           )}
-
         </div>
       </section>
-
     </div>
-  )
+  );
 }
