@@ -7,10 +7,13 @@ import { useEffect, useState, useRef } from 'react'
 export default function Home() {
   const navigate = useNavigate()
   const heroRef = useRef(null)
+  const statRef = useRef(null)
   const [systemRef, systemVisible] = useScrollAnimation(0.1)
   const [calcRef, calcVisible] = useScrollAnimation(0.1)
   const [flowStep, setFlowStep] = useState(0)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
+  const [statValue, setStatValue] = useState(0)
+  const [statVisible, setStatVisible] = useState(false)
 
   // Animated flow sequence
   useEffect(() => {
@@ -20,14 +23,50 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
+  // Animated counter for 78%
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !statVisible) {
+          setStatVisible(true)
+          let current = 0
+          const target = 78
+          const duration = 2000
+          const increment = target / (duration / 16)
+          
+          const timer = setInterval(() => {
+            current += increment
+            if (current >= target) {
+              setStatValue(target)
+              clearInterval(timer)
+            } else {
+              setStatValue(Math.floor(current))
+            }
+          }, 16)
+        }
+      },
+      { threshold: 0.3 }
+    )
+
+    if (statRef.current) {
+      observer.observe(statRef.current)
+    }
+
+    return () => {
+      if (statRef.current) {
+        observer.unobserve(statRef.current)
+      }
+    }
+  }, [statVisible])
+
   // Parallax mouse tracking
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!heroRef.current) return
       const rect = heroRef.current.getBoundingClientRect()
       setMousePos({
-        x: (e.clientX - rect.left - rect.width / 2) / 80,
-        y: (e.clientY - rect.top - rect.height / 2) / 80
+        x: (e.clientX - rect.left - rect.width / 2) / 60,
+        y: (e.clientY - rect.top - rect.height / 2) / 60
       })
     }
     window.addEventListener('mousemove', handleMouseMove)
@@ -59,30 +98,73 @@ export default function Home() {
     <div className="bg-[#030306] overflow-hidden">
 
       {/* ============================================
-          HERO — VISUAL-FIRST, MINIMAL TEXT
+          HERO — CREATIVE VISUAL-FIRST
           ============================================ */}
       <section ref={heroRef} className="min-h-screen flex flex-col justify-center pt-24 pb-32 relative overflow-hidden">
         
-        {/* Animated gradient background */}
+        {/* Multi-layer animated gradient background */}
         <div className="absolute inset-0">
+          {/* Primary gradient orb */}
           <div
-            className="absolute w-[1200px] h-[1200px] -top-[400px] left-1/2 -translate-x-1/2 rounded-full opacity-20 blur-3xl"
+            className="absolute w-[1400px] h-[1400px] -top-[500px] -left-[200px] rounded-full opacity-25 blur-3xl"
             style={{
-              background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, rgba(124,114,255,0.2) 40%, transparent 70%)',
-              transform: `translate(calc(-50% + ${mousePos.x * 3}px), ${mousePos.y * 3}px)`,
-              transition: 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)'
+              background: 'radial-gradient(circle, rgba(0,212,207,0.4) 0%, rgba(124,114,255,0.3) 40%, transparent 70%)',
+              transform: `translate(${mousePos.x * 4}px, ${mousePos.y * 4}px)`,
+              transition: 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)',
+              animation: 'pulse-glow 8s ease-in-out infinite'
+            }}
+          />
+          {/* Secondary gradient orb */}
+          <div
+            className="absolute w-[1000px] h-[1000px] top-[20%] -right-[300px] rounded-full opacity-20 blur-3xl"
+            style={{
+              background: 'radial-gradient(circle, rgba(124,114,255,0.4) 0%, rgba(0,212,207,0.2) 50%, transparent 70%)',
+              transform: `translate(${mousePos.x * -3}px, ${mousePos.y * -3}px)`,
+              transition: 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)',
+              animation: 'pulse-glow 10s ease-in-out infinite 2s'
+            }}
+          />
+          {/* Tertiary accent */}
+          <div
+            className="absolute w-[800px] h-[800px] bottom-[10%] left-[10%] rounded-full opacity-15 blur-3xl"
+            style={{
+              background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)',
+              transform: `translate(${mousePos.x * 2}px, ${mousePos.y * 2}px)`,
+              transition: 'transform 0.8s cubic-bezier(0.22, 1, 0.36, 1)',
+              animation: 'pulse-glow 12s ease-in-out infinite 4s'
             }}
           />
         </div>
 
-        {/* Grid overlay */}
+        {/* Animated grid overlay with subtle movement */}
         <div
-          className="absolute inset-0 opacity-[0.015]"
+          className="absolute inset-0 opacity-[0.02]"
           style={{
             backgroundImage: `linear-gradient(rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-            backgroundSize: '80px 80px'
+            backgroundSize: '80px 80px',
+            transform: `translate(${mousePos.x * 0.5}px, ${mousePos.y * 0.5}px)`,
+            transition: 'transform 0.3s ease-out'
           }}
         />
+
+        {/* Floating particles */}
+        {[...Array(12)].map((_, i) => (
+          <div
+            key={i}
+            className="absolute rounded-full opacity-20 blur-xl"
+            style={{
+              width: `${20 + Math.random() * 40}px`,
+              height: `${20 + Math.random() * 40}px`,
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              background: i % 2 === 0 
+                ? 'radial-gradient(circle, rgba(0,212,207,0.6), transparent)'
+                : 'radial-gradient(circle, rgba(124,114,255,0.6), transparent)',
+              animation: `float ${15 + Math.random() * 10}s ease-in-out infinite`,
+              animationDelay: `${Math.random() * 5}s`
+            }}
+          />
+        ))}
 
         <div className="mx-auto max-w-7xl px-6 relative z-10">
           <div className="grid lg:grid-cols-2 gap-20 items-center">
@@ -117,19 +199,30 @@ export default function Home() {
             <div className="relative">
               <div className="relative p-12 rounded-3xl border border-[#1a2332]/50 bg-[#0a0f1a]/40 backdrop-blur-2xl">
                 
-                {/* Animated flow line */}
-                <div className="absolute top-1/2 left-0 right-0 h-[2px]">
+                {/* Animated flow line with gradient */}
+                <div className="absolute top-1/2 left-0 right-0 h-[3px]">
                   <div className="absolute inset-0 bg-[#1a2332]" />
                   <div
-                    className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00d4cf] via-[#7c72ff] to-[#00d4cf]"
+                    className="absolute inset-y-0 left-0 h-full bg-gradient-to-r from-[#00d4cf] via-[#7c72ff] to-[#00d4cf]"
                     style={{
                       width: `${((flowStep + 1) / 5) * 100}%`,
-                      transition: 'width 0.6s cubic-bezier(0.22, 1, 0.36, 1)'
+                      transition: 'width 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+                      boxShadow: '0 0 20px rgba(0,212,207,0.5)'
+                    }}
+                  />
+                  {/* Moving glow dot */}
+                  <div
+                    className="absolute top-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-[#00d4cf]"
+                    style={{
+                      left: `${((flowStep + 1) / 5) * 100}%`,
+                      transition: 'left 0.6s cubic-bezier(0.22, 1, 0.36, 1)',
+                      boxShadow: '0 0 20px rgba(0,212,207,0.8)',
+                      transform: 'translate(-50%, -50%)'
                     }}
                   />
                 </div>
 
-                {/* Flow nodes */}
+                {/* Flow nodes with enhanced animations */}
                 <div className="relative flex justify-between items-center">
                   {flowSteps.map((step, i) => {
                     const isActive = i <= flowStep
@@ -139,33 +232,47 @@ export default function Home() {
                         key={i}
                         className="relative flex flex-col items-center"
                         style={{
-                          transform: isCurrent ? 'scale(1.1)' : 'scale(1)',
-                          transition: 'transform 0.3s cubic-bezier(0.22, 1, 0.36, 1)'
+                          transform: isCurrent ? 'scale(1.15)' : isActive ? 'scale(1.05)' : 'scale(1)',
+                          transition: 'transform 0.4s cubic-bezier(0.22, 1, 0.36, 1)'
                         }}
                       >
                         <div
-                          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-3 transition-all duration-500"
+                          className="w-16 h-16 rounded-2xl flex items-center justify-center mb-3 transition-all duration-500 relative"
                           style={{
                             background: isActive
-                              ? `linear-gradient(135deg, ${step.color}20, ${step.color}05)`
+                              ? `linear-gradient(135deg, ${step.color}25, ${step.color}10)`
                               : 'rgba(26, 35, 50, 0.5)',
                             border: `2px solid ${isActive ? step.color : '#1a2332'}`,
                             boxShadow: isCurrent
-                              ? `0 0 30px ${step.color}40`
+                              ? `0 0 40px ${step.color}60, inset 0 0 20px ${step.color}20`
+                              : isActive
+                              ? `0 0 20px ${step.color}30`
                               : 'none'
                           }}
                         >
                           <step.icon
                             className="w-7 h-7 transition-all duration-500"
                             style={{
-                              color: isActive ? step.color : '#4b5563'
+                              color: isActive ? step.color : '#4b5563',
+                              filter: isCurrent ? 'drop-shadow(0 0 8px currentColor)' : 'none'
                             }}
                           />
+                          {/* Ripple effect for current step */}
+                          {isCurrent && (
+                            <div
+                              className="absolute inset-0 rounded-2xl border-2"
+                              style={{
+                                borderColor: step.color,
+                                animation: 'ripple 2s ease-out infinite'
+                              }}
+                            />
+                          )}
                         </div>
                         <span
                           className="text-sm font-medium transition-colors duration-500"
                           style={{
-                            color: isActive ? '#ffffff' : '#4b5563'
+                            color: isActive ? '#ffffff' : '#4b5563',
+                            textShadow: isCurrent ? `0 0 10px ${step.color}80` : 'none'
                           }}
                         >
                           {step.label}
@@ -184,7 +291,7 @@ export default function Home() {
                   transition: 'opacity 0.5s'
                 }}
               >
-                <div className="w-2 h-2 rounded-full bg-[#00d4cf] animate-pulse" />
+                <div className="w-2 h-2 rounded-full bg-[#00d4cf] animate-pulse" style={{ boxShadow: '0 0 10px rgba(0,212,207,0.8)' }} />
                 <span>Live system flow</span>
               </div>
             </div>
@@ -194,34 +301,95 @@ export default function Home() {
 
 
       {/* ============================================
-          PROBLEM — VISUAL ASSERTION
+          PROBLEM — ANIMATED STAT
           ============================================ */}
-      <section className="py-40 relative">
+      <section ref={statRef} className="py-40 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/30 to-[#030306]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
 
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-10 blur-3xl"
+            style={{
+              background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)',
+              animation: 'pulse-glow 4s ease-in-out infinite'
+            }}
+          />
+        </div>
+
         <div className="mx-auto max-w-5xl px-6 text-center relative z-10">
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-12 leading-[1.05]">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-white mb-16 leading-[1.05]">
             Response delay is revenue decay.
           </h2>
           
-          {/* Visual stat */}
-          <div className="inline-block">
-            <div className="text-8xl font-bold text-white mb-4">78%</div>
+          {/* Animated stat with counting effect */}
+          <div className="inline-block relative">
+            <div 
+              className="text-9xl sm:text-[12rem] font-bold text-white mb-6 relative"
+              style={{
+                textShadow: '0 0 60px rgba(0,212,207,0.5)',
+                fontVariantNumeric: 'tabular-nums'
+              }}
+            >
+              <span className="inline-block" style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #00d4cf 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text'
+              }}>
+                {statValue}%
+              </span>
+              {/* Glowing ring around number */}
+              <div
+                className="absolute inset-0 rounded-full border-4"
+                style={{
+                  borderColor: '#00d4cf',
+                  opacity: statVisible ? 0.3 : 0,
+                  transform: 'scale(1.2)',
+                  transition: 'opacity 0.5s',
+                  animation: statVisible ? 'pulse-ring 2s ease-in-out infinite' : 'none',
+                  filter: 'blur(2px)'
+                }}
+              />
+            </div>
             <p className="text-xl text-[#6b7280] max-w-2xl mx-auto">
               of customers hire whoever responds first.
             </p>
+            
+            {/* Animated progress bar */}
+            <div className="mt-8 w-full max-w-md mx-auto h-1 bg-[#1a2332] rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-[#00d4cf] to-[#7c72ff] rounded-full"
+                style={{
+                  width: statVisible ? '78%' : '0%',
+                  transition: 'width 2s cubic-bezier(0.22, 1, 0.36, 1)',
+                  boxShadow: '0 0 20px rgba(0,212,207,0.6)'
+                }}
+              />
+            </div>
           </div>
         </div>
       </section>
 
 
       {/* ============================================
-          SYSTEM — ANIMATED FLOW VISUALIZATION
+          SYSTEM — ENHANCED FLOW VISUALIZATION
           ============================================ */}
       <section id="system" className="py-40 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/50 to-[#030306]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
+
+        {/* Creative background pattern */}
+        <div className="absolute inset-0 overflow-hidden">
+          <div
+            className="absolute top-0 left-1/4 w-[800px] h-[800px] rounded-full opacity-5 blur-3xl"
+            style={{
+              background: 'radial-gradient(circle, rgba(124,114,255,0.4), transparent)',
+              animation: 'float 20s ease-in-out infinite'
+            }}
+          />
+        </div>
 
         <div
           ref={systemRef}
@@ -238,7 +406,7 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Large flow visualization */}
+          {/* Large flow visualization with enhanced animations */}
           <div className="relative">
             <div className="grid grid-cols-5 gap-8">
               {flowSteps.map((step, i) => (
@@ -251,22 +419,38 @@ export default function Home() {
                     transition: `all 0.8s cubic-bezier(0.22, 1, 0.36, 1) ${i * 0.15}s`
                   }}
                 >
-                  {/* Connecting arrow */}
+                  {/* Enhanced connecting arrow with glow */}
                   {i < flowSteps.length - 1 && (
-                    <div className="hidden md:block absolute top-24 left-full w-8 h-[2px] bg-[#1a2332] z-0">
+                    <div className="hidden md:block absolute top-24 left-full w-8 h-[3px] bg-[#1a2332] z-0">
                       <div
-                        className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00d4cf] to-[#7c72ff]"
+                        className="absolute inset-y-0 left-0 h-full bg-gradient-to-r from-[#00d4cf] to-[#7c72ff]"
                         style={{
                           width: systemVisible ? '100%' : '0%',
-                          transition: `width 1s cubic-bezier(0.22, 1, 0.36, 1) ${0.5 + i * 0.15}s`
+                          transition: `width 1s cubic-bezier(0.22, 1, 0.36, 1) ${0.5 + i * 0.15}s`,
+                          boxShadow: '0 0 10px rgba(0,212,207,0.5)'
                         }}
                       />
                     </div>
                   )}
 
-                  <div className="relative p-10 rounded-3xl border border-[#1a2332] bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-500 group-hover:border-[#2a3441] group-hover:bg-[#0d1320] group-hover:scale-105">
-                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 bg-[#00d4cf]/10 border border-[#00d4cf]/20 group-hover:scale-110 transition-transform duration-300">
-                      <step.icon className="w-10 h-10 text-[#00d4cf]" />
+                  <div className="relative p-10 rounded-3xl border border-[#1a2332] bg-[#0a0f1a]/60 backdrop-blur-xl transition-all duration-500 group-hover:border-[#2a3441] group-hover:bg-[#0d1320] group-hover:scale-105 group-hover:shadow-[0_20px_60px_-15px_rgba(0,212,207,0.2)]">
+                    {/* Glow effect on hover */}
+                    <div
+                      className="absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500"
+                      style={{
+                        background: `radial-gradient(circle at 50% 0%, ${step.color}20 0%, transparent 70%)`
+                      }}
+                    />
+                    
+                    <div className="w-20 h-20 rounded-2xl flex items-center justify-center mb-6 bg-[#00d4cf]/10 border border-[#00d4cf]/20 group-hover:scale-110 group-hover:bg-[#00d4cf]/20 transition-all duration-300 relative">
+                      <step.icon className="w-10 h-10 text-[#00d4cf] group-hover:drop-shadow-[0_0_15px_currentColor]" />
+                      {/* Rotating ring on hover */}
+                      <div
+                        className="absolute inset-0 rounded-2xl border-2 border-[#00d4cf] opacity-0 group-hover:opacity-30 transition-opacity duration-300"
+                        style={{
+                          animation: 'spin 3s linear infinite'
+                        }}
+                      />
                     </div>
                     <p className="text-xl font-semibold text-white">{step.label}</p>
                   </div>
@@ -287,7 +471,8 @@ export default function Home() {
 
         <div className="absolute top-1/2 right-[15%] -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{
-            background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)'
+            background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)',
+            animation: 'pulse-glow 6s ease-in-out infinite'
           }}
         />
 
@@ -308,7 +493,7 @@ export default function Home() {
             </div>
 
             <div className="relative">
-              <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-[#00d4cf]/10 to-[#7c72ff]/10 blur-2xl opacity-50" />
+              <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-[#00d4cf]/10 to-[#7c72ff]/10 blur-2xl opacity-50 animate-pulse-glow" />
               <div className="relative">
                 <LossCalculator onComplete={handleCalculatorComplete} />
               </div>
@@ -341,7 +526,7 @@ export default function Home() {
             ].map((item, i) => (
               <div
                 key={item.title}
-                className="p-10 rounded-3xl border border-[#1a2332] bg-[#0a0f1a]/60 backdrop-blur-sm transition-all duration-500 hover:border-[#2a3441] hover:bg-[#0d1320] hover:scale-[1.02]"
+                className="p-10 rounded-3xl border border-[#1a2332] bg-[#0a0f1a]/60 backdrop-blur-sm transition-all duration-500 hover:border-[#2a3441] hover:bg-[#0d1320] hover:scale-[1.02] hover:shadow-[0_20px_60px_-15px_rgba(0,212,207,0.1)]"
                 style={{
                   opacity: calcVisible ? 1 : 0,
                   transform: calcVisible ? 'translateY(0)' : 'translateY(20px)',
@@ -364,7 +549,8 @@ export default function Home() {
         <div className="absolute inset-0">
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] rounded-full opacity-10 blur-3xl"
             style={{
-              background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)'
+              background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)',
+              animation: 'pulse-glow 8s ease-in-out infinite'
             }}
           />
         </div>
@@ -425,7 +611,8 @@ export default function Home() {
 
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] rounded-full opacity-15 blur-3xl pointer-events-none"
           style={{
-            background: 'radial-gradient(ellipse, rgba(0,212,207,0.2) 0%, transparent 60%)'
+            background: 'radial-gradient(ellipse, rgba(0,212,207,0.2) 0%, transparent 60%)',
+            animation: 'pulse-glow 6s ease-in-out infinite'
           }}
         />
 
