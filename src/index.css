@@ -6,7 +6,7 @@
    ================================ */
 
 :root {
-  --color-bg: #050509;
+  --color-bg: #030306;
   --color-bg-elevated: #0a0f1a;
   --color-border: #1a2332;
   --color-border-hover: #3d4a59;
@@ -15,6 +15,7 @@
   --color-text-muted: #6b7280;
   --color-text-dim: #4b5563;
   --color-accent: #00d4cf;
+  --color-accent-secondary: #7c72ff;
   --color-accent-hover: #00e5df;
   --color-danger: #ef4444;
 }
@@ -25,7 +26,7 @@
 
 html {
   scroll-behavior: smooth;
-  background: var(--color-bg);
+  background: #030306;
 }
 
 body {

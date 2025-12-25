@@ -20,13 +20,13 @@ export default function MainLayout() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-[#050509]">
+    <div className="min-h-screen bg-[#030306]">
       <ScrollToTop />
 
       {/* Navigation - Minimal per doctrine */}
-      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-300 ${
+      <header className={`fixed inset-x-0 top-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-[#050509]/95 backdrop-blur-md border-b border-[#1a2332]'
+          ? 'bg-[#030306]/80 backdrop-blur-xl border-b border-[#1a2332]/50'
           : 'bg-transparent'
       }`}>
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
@@ -66,7 +66,7 @@ export default function MainLayout() {
         <div className={`md:hidden transition-all duration-300 overflow-hidden ${
           mobileMenuOpen ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
         }`}>
-          <div className="px-6 pb-6 pt-2 bg-[#050509]/95 backdrop-blur-md border-t border-[#1a2332]">
+          <div className="px-6 pb-6 pt-2 bg-[#030306]/95 backdrop-blur-xl border-t border-[#1a2332]/50">
             <Link
               to="/audit"
               onClick={() => setMobileMenuOpen(false)}
@@ -84,7 +84,7 @@ export default function MainLayout() {
       </main>
 
       {/* Footer - Minimal */}
-      <footer className="bg-[#050509] border-t border-[#1a2332]/50">
+      <footer className="bg-[#030306] border-t border-[#1a2332]/30">
         <div className="mx-auto max-w-6xl px-6 py-16">
           <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
             <div className="flex items-center gap-4">
