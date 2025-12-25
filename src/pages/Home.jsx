@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowDown } from 'lucide-react'
+import { ArrowRight, Phone, MessageSquare, Mail, Check } from 'lucide-react'
 import LossCalculator from '../components/LossCalculator'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { useEffect, useState, useRef } from 'react'
@@ -13,22 +13,27 @@ export default function Home() {
   const [statVisible, setStatVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [activeLead, setActiveLead] = useState(0)
+  const [isLoaded, setIsLoaded] = useState(false)
 
   // Simulated live leads
   const leads = [
-    { id: 1, source: 'Phone', time: '0:12', status: 'Responded', value: '$2,500' },
-    { id: 2, source: 'Form', time: '0:08', status: 'Responded', value: '$1,800' },
-    { id: 3, source: 'SMS', time: '0:15', status: 'Responded', value: '$3,200' },
-    { id: 4, source: 'Phone', time: '0:05', status: 'Responded', value: '$2,100' },
+    { id: 1, icon: Phone, source: 'Inbound Call', time: '0:08', location: 'Phoenix, AZ' },
+    { id: 2, icon: MessageSquare, source: 'Web Form', time: '0:12', location: 'Austin, TX' },
+    { id: 3, icon: Mail, source: 'SMS', time: '0:05', location: 'Denver, CO' },
   ]
+
+  // Initial load animation
+  useEffect(() => {
+    setIsLoaded(true)
+  }, [])
 
   // Cycle through leads
   useEffect(() => {
     const interval = setInterval(() => {
-      setActiveLead((prev) => (prev + 1) % 4)
-    }, 3000)
+      setActiveLead((prev) => (prev + 1) % leads.length)
+    }, 2500)
     return () => clearInterval(interval)
-  }, [])
+  }, [leads.length])
 
   // Animated counter for 78%
   useEffect(() => {
@@ -40,7 +45,7 @@ export default function Home() {
           const target = 78
           const duration = 2000
           const increment = target / (duration / 16)
-          
+
           const timer = setInterval(() => {
             current += increment
             if (current >= target) {
@@ -52,19 +57,12 @@ export default function Home() {
           }, 16)
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     )
 
     const currentRef = statRef.current
-    if (currentRef) {
-      observer.observe(currentRef)
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
-    }
+    if (currentRef) observer.observe(currentRef)
+    return () => { if (currentRef) observer.unobserve(currentRef) }
   }, [statVisible])
 
   // Parallax mouse tracking
@@ -73,8 +71,8 @@ export default function Home() {
       if (!heroRef.current) return
       const rect = heroRef.current.getBoundingClientRect()
       setMousePos({
-        x: (e.clientX - rect.left - rect.width / 2) / 120,
-        y: (e.clientY - rect.top - rect.height / 2) / 120
+        x: (e.clientX - rect.left - rect.width / 2) / 80,
+        y: (e.clientY - rect.top - rect.height / 2) / 80
       })
     }
     window.addEventListener('mousemove', handleMouseMove)
@@ -91,97 +89,164 @@ export default function Home() {
   }
 
   return (
-    <div className="bg-[#030306] overflow-hidden">
+    <div className="bg-[#030306]">
 
       {/* ============================================
-          HERO — PRODUCT IN ACTION
+          HERO — PRODUCT VISUALIZATION
           ============================================ */}
-      <section ref={heroRef} className="min-h-screen flex items-center pt-32 pb-40 relative overflow-hidden">
-        
+      <section ref={heroRef} className="min-h-screen flex items-center pt-20 pb-32 relative overflow-hidden">
+
+        {/* Gradient mesh background */}
         <div className="absolute inset-0">
+          {/* Primary glow - top center */}
           <div
-            className="absolute w-[1800px] h-[1800px] -top-[700px] left-1/2 -translate-x-1/2 rounded-full opacity-12 blur-3xl"
+            className="absolute w-[1200px] h-[1200px] -top-[400px] left-1/2 -translate-x-1/2 rounded-full"
             style={{
-              background: 'radial-gradient(circle, rgba(0,212,207,0.4) 0%, transparent 70%)',
-              transform: `translate(calc(-50% + ${mousePos.x * 6}px), ${mousePos.y * 6}px)`,
-              transition: 'transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)'
+              background: 'radial-gradient(circle, rgba(0,212,207,0.15) 0%, rgba(0,212,207,0.05) 40%, transparent 70%)',
+              transform: `translate(calc(-50% + ${mousePos.x * 3}px), ${mousePos.y * 3}px)`,
+              transition: 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)'
+            }}
+          />
+          {/* Secondary glow - right */}
+          <div
+            className="absolute w-[800px] h-[800px] top-[20%] -right-[200px] rounded-full"
+            style={{
+              background: 'radial-gradient(circle, rgba(124,114,255,0.1) 0%, transparent 60%)',
+              transform: `translate(${mousePos.x * -2}px, ${mousePos.y * -2}px)`,
+              transition: 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)'
+            }}
+          />
+          {/* Grid overlay */}
+          <div
+            className="absolute inset-0 opacity-[0.02]"
+            style={{
+              backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+              backgroundSize: '80px 80px'
             }}
           />
         </div>
 
         <div className="mx-auto max-w-7xl px-6 relative z-10 w-full">
-          <div className="grid lg:grid-cols-5 gap-16 items-center">
-            
-            {/* Left: Text */}
-            <div className="lg:col-span-2">
-              <h1 className="text-7xl sm:text-8xl lg:text-9xl font-bold text-white leading-[0.9] tracking-tight mb-16">
-                Response speed is revenue infrastructure.
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+
+            {/* Left: Copy */}
+            <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              {/* Eyebrow */}
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8">
+                <div className="w-1.5 h-1.5 rounded-full bg-[#00d4cf]" />
+                <span className="text-xs text-[#9ca3af] font-medium">For home service businesses</span>
+              </div>
+
+              {/* Headline */}
+              <h1 className="text-[3.5rem] sm:text-7xl lg:text-8xl font-semibold text-white leading-[0.95] tracking-[-0.03em] mb-8">
+                Never miss
+                <br />
+                <span className="text-[#6b7280]">another lead.</span>
               </h1>
-              
+
+              {/* Subhead - one line */}
+              <p className="text-xl text-[#6b7280] mb-12 max-w-md">
+                Instant response. Automatic qualification. Booked appointments.
+              </p>
+
+              {/* CTA */}
               <button
                 onClick={scrollToCalculator}
-                className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)]"
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#030306] font-semibold rounded-full transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
               >
-                <span>Run the Lead Leak Check</span>
-                <ArrowDown className="w-5 h-5 transition-transform group-hover:translate-y-0.5" />
+                Calculate your lead loss
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
             </div>
 
-            {/* Right: Dashboard */}
-            <div className="lg:col-span-3 relative">
-              <div className="relative rounded-3xl border border-[#1a2332]/50 bg-[#0a0f1a]/60 backdrop-blur-2xl overflow-hidden">
-                
-                <div className="px-8 py-6 border-b border-[#1a2332] flex items-center justify-between">
-                  <div>
-                    <div className="text-sm text-[#6b7280] mb-1">Today</div>
-                    <div className="text-2xl font-bold text-white">$9,600</div>
-                    <div className="text-xs text-[#00d4cf] mt-1">+4 leads responded</div>
+            {/* Right: Live Product Demo */}
+            <div
+              className={`relative transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{
+                transform: `perspective(1000px) rotateY(${mousePos.x * -0.5}deg) rotateX(${mousePos.y * 0.5}deg)`,
+                transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
+              }}
+            >
+              {/* Glow behind card */}
+              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#00d4cf]/20 via-transparent to-[#7c72ff]/20 blur-2xl opacity-50" />
+
+              {/* Dashboard card */}
+              <div className="relative rounded-2xl border border-white/10 bg-[#0a0f1a]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
+
+                {/* Header */}
+                <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <div className="flex gap-1.5">
+                      <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
+                      <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
+                      <div className="w-3 h-3 rounded-full bg-[#28c840]" />
+                    </div>
+                    <span className="text-xs text-[#6b7280] font-medium">Live Feed</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-[#00d4cf] animate-pulse" />
-                    <span className="text-xs text-[#6b7280]">Live</span>
+                    <span className="text-xs text-[#6b7280]">Active</span>
                   </div>
                 </div>
 
-                <div className="p-8 space-y-4">
-                  {leads.map((lead, i) => (
-                    <div
-                      key={lead.id}
-                      className={`p-6 rounded-2xl border transition-all duration-500 ${
-                        i === activeLead
-                          ? 'border-[#00d4cf]/50 bg-[#00d4cf]/5 scale-[1.02]'
-                          : 'border-[#1a2332] bg-[#030306]/50'
-                      }`}
-                      style={{
-                        opacity: i === activeLead ? 1 : 0.6,
-                        transform: i === activeLead ? 'translateX(0)' : 'translateX(-10px)'
-                      }}
-                    >
-                      <div className="flex items-center justify-between mb-3">
-                        <div className="flex items-center gap-3">
-                          <div className={`w-3 h-3 rounded-full ${
-                            i === activeLead ? 'bg-[#00d4cf] animate-pulse' : 'bg-[#4b5563]'
-                          }`} />
-                          <span className="text-sm font-medium text-white">{lead.source}</span>
+                {/* Leads */}
+                <div className="p-4 space-y-3">
+                  {leads.map((lead, i) => {
+                    const Icon = lead.icon
+                    const isActive = i === activeLead
+                    return (
+                      <div
+                        key={lead.id}
+                        className={`relative p-4 rounded-xl border transition-all duration-500 ${
+                          isActive
+                            ? 'border-[#00d4cf]/30 bg-[#00d4cf]/5'
+                            : 'border-white/5 bg-white/[0.02]'
+                        }`}
+                        style={{
+                          opacity: isActive ? 1 : 0.5,
+                          transform: isActive ? 'scale(1)' : 'scale(0.98)'
+                        }}
+                      >
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-3">
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${
+                              isActive ? 'bg-[#00d4cf]/20' : 'bg-white/5'
+                            }`}>
+                              <Icon className={`w-5 h-5 transition-colors duration-300 ${isActive ? 'text-[#00d4cf]' : 'text-[#6b7280]'}`} />
+                            </div>
+                            <div>
+                              <div className="text-sm font-medium text-white">{lead.source}</div>
+                              <div className="text-xs text-[#6b7280]">{lead.location}</div>
+                            </div>
+                          </div>
+                          <div className="text-right">
+                            <div className={`text-xs font-mono transition-colors duration-300 ${isActive ? 'text-[#00d4cf]' : 'text-[#6b7280]'}`}>
+                              {lead.time}
+                            </div>
+                            {isActive && (
+                              <div className="flex items-center gap-1 mt-1">
+                                <Check className="w-3 h-3 text-[#00d4cf]" />
+                                <span className="text-xs text-[#00d4cf]">Responded</span>
+                              </div>
+                            )}
+                          </div>
                         </div>
-                        <span className="text-xs text-[#6b7280] font-mono">{lead.time}</span>
                       </div>
-                      <div className="flex items-center justify-between">
-                        <span className={`text-sm ${
-                          i === activeLead ? 'text-[#00d4cf]' : 'text-[#6b7280]'
-                        }`}>
-                          {lead.status}
-                        </span>
-                        <span className="text-lg font-bold text-white">{lead.value}</span>
-                      </div>
-                    </div>
-                  ))}
+                    )
+                  })}
                 </div>
 
-                <div className="px-8 py-6 border-t border-[#1a2332] bg-[#030306]/50">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-[#6b7280]">Response time</span>
-                    <span className="text-[#00d4cf] font-mono font-bold">&lt;60s</span>
+                {/* Footer stats */}
+                <div className="px-6 py-4 border-t border-white/5 bg-black/20">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <div className="text-2xl font-semibold text-white">$12,400</div>
+                      <div className="text-xs text-[#6b7280]">Revenue captured today</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-semibold text-[#00d4cf]">&lt;60s</div>
+                      <div className="text-xs text-[#6b7280]">Avg response</div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -192,40 +257,115 @@ export default function Home() {
 
 
       {/* ============================================
-          STAT — ANIMATED NUMBER
+          SOCIAL PROOF STRIP
           ============================================ */}
-      <section ref={statRef} id="stat-section" className="py-60 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/20 to-[#030306]" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
+      <section className="py-16 border-y border-white/5">
+        <div className="mx-auto max-w-5xl px-6">
+          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 text-[#4b5563]">
+            <span className="text-sm">Built for</span>
+            <span className="text-white font-medium">HVAC</span>
+            <span className="text-white font-medium">Plumbing</span>
+            <span className="text-white font-medium">Electrical</span>
+            <span className="text-white font-medium">Roofing</span>
+            <span className="text-white font-medium">Landscaping</span>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ============================================
+          STAT — THE HOOK
+          ============================================ */}
+      <section ref={statRef} className="py-40 sm:py-56 relative">
+        {/* Background */}
+        <div className="absolute inset-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0f1a]/30 to-transparent" />
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-30"
+            style={{
+              background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)',
+              filter: 'blur(80px)'
+            }}
+          />
+        </div>
 
         <div className="mx-auto max-w-5xl px-6 text-center relative z-10">
-          <div 
-            className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-bold text-white mb-8 leading-none"
+          {/* Giant number */}
+          <div
+            className="text-[8rem] sm:text-[12rem] lg:text-[16rem] font-bold leading-none mb-6"
             style={{
               fontVariantNumeric: 'tabular-nums',
-              letterSpacing: '-0.05em',
-              textShadow: statVisible ? '0 0 100px rgba(0,212,207,0.5)' : 'none',
-              transition: 'text-shadow 0.5s'
+              letterSpacing: '-0.04em',
             }}
           >
-            <span 
+            <span
               style={{
-                background: statVisible 
-                  ? 'linear-gradient(135deg, #ffffff 0%, #00d4cf 50%, #7c72ff 100%)'
+                background: statVisible
+                  ? 'linear-gradient(135deg, #ffffff 0%, #00d4cf 100%)'
                   : '#ffffff',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                transition: 'background 2s cubic-bezier(0.22, 1, 0.36, 1)',
-                display: 'inline-block'
+                transition: 'all 1.5s cubic-bezier(0.22, 1, 0.36, 1)',
+                textShadow: statVisible ? '0 0 120px rgba(0,212,207,0.5)' : 'none',
               }}
             >
               {statValue}%
             </span>
           </div>
-          
-          <div className="text-2xl text-[#6b7280] max-w-xl mx-auto">
+
+          <p className="text-xl sm:text-2xl text-[#6b7280] max-w-lg mx-auto">
             of customers hire whoever responds first.
+          </p>
+        </div>
+      </section>
+
+
+      {/* ============================================
+          HOW IT WORKS — 3 STEPS
+          ============================================ */}
+      <section className="py-32 relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        <div className="mx-auto max-w-6xl px-6">
+          <div className="text-center mb-20">
+            <h2 className="text-4xl sm:text-5xl font-semibold text-white mb-4">
+              How it works
+            </h2>
+            <p className="text-lg text-[#6b7280]">
+              Lead to booked appointment. Automatically.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                num: '01',
+                title: 'Lead comes in',
+                desc: 'Phone, form, or text. Any channel.',
+              },
+              {
+                num: '02',
+                title: 'Instant response',
+                desc: 'Under 60 seconds. Every time.',
+              },
+              {
+                num: '03',
+                title: 'Appointment booked',
+                desc: 'Qualified and scheduled automatically.',
+              },
+            ].map((step, i) => (
+              <div
+                key={step.num}
+                className="group relative p-8 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]"
+              >
+                <div className="text-5xl font-bold text-[#00d4cf]/20 mb-6 transition-colors group-hover:text-[#00d4cf]/40">
+                  {step.num}
+                </div>
+                <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
+                <p className="text-[#6b7280]">{step.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -234,25 +374,36 @@ export default function Home() {
       {/* ============================================
           CALCULATOR
           ============================================ */}
-      <section id="calculator" className="py-60 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/30 to-[#030306]" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
+      <section id="calculator" className="py-32 sm:py-40 relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Background glow */}
+        <div className="absolute top-1/2 right-[30%] -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
+        />
 
         <div
           ref={calcRef}
           className={`mx-auto max-w-5xl px-6 relative z-10 transition-all duration-1000 ${
-            calcVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-16'
+            calcVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-12'
           }`}
         >
-          <div className="grid lg:grid-cols-2 gap-20 items-start">
+          <div className="grid lg:grid-cols-2 gap-16 items-start">
+            {/* Left: Headline */}
             <div className="lg:sticky lg:top-32">
-              <div className="text-6xl sm:text-7xl font-bold text-white mb-12 leading-[1.05]">
-                How much are slow responses costing you?
-              </div>
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] mb-6">
+                Calculate your
+                <br />
+                <span className="text-[#6b7280]">lead loss.</span>
+              </h2>
+              <p className="text-lg text-[#6b7280] max-w-sm">
+                See how much slow response times are costing your business every month.
+              </p>
             </div>
 
+            {/* Right: Calculator */}
             <div className="relative">
-              <div className="absolute -inset-6 rounded-3xl bg-gradient-to-r from-[#00d4cf]/10 to-[#7c72ff]/10 blur-2xl opacity-50" />
+              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#00d4cf]/10 to-[#7c72ff]/10 blur-xl opacity-40" />
               <div className="relative">
                 <LossCalculator onComplete={handleCalculatorComplete} />
               </div>
@@ -265,20 +416,28 @@ export default function Home() {
       {/* ============================================
           FINAL CTA
           ============================================ */}
-      <section className="py-60 relative">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
+      <section className="py-32 sm:py-40 relative">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <div className="mx-auto max-w-4xl px-6 text-center relative z-10">
-          <div className="text-7xl sm:text-8xl font-bold text-white mb-16 leading-[0.9]">
+        {/* Central glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-30 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)' }}
+        />
+
+        <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
+          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-white mb-6 leading-[0.95]">
             Stop losing leads.
-          </div>
-          
+          </h2>
+          <p className="text-xl text-[#6b7280] mb-12">
+            Talk to us about fixing your response time.
+          </p>
+
           <button
             onClick={scrollToCalculator}
-            className="group relative inline-flex items-center justify-center gap-3 px-12 py-6 bg-white text-[#030306] font-semibold rounded-full text-xl transition-all duration-300 hover:scale-105 hover:shadow-[0_0_80px_rgba(0,212,207,0.6)]"
+            className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)] hover:scale-[1.02]"
           >
-            <span>Run the Lead Leak Check</span>
-            <ArrowDown className="w-6 h-6 transition-transform group-hover:translate-y-0.5" />
+            Get started
+            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </section>
