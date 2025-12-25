@@ -280,7 +280,7 @@ export default function Audit() {
                 <span className="text-red-400 text-sm font-medium">Your estimated leak</span>
               </div>
               <p className="text-2xl font-bold text-white">
-                {formatCurrency(calculatorResults.lostRevenuePerMonth)}<span className="text-[#6b7280] text-lg font-normal">/month</span>
+                {formatCurrency(calculatorResults.monthlyLoss)}<span className="text-[#6b7280] text-lg font-normal">/month</span>
               </p>
             </div>
           )}
@@ -372,11 +372,11 @@ export default function Audit() {
                           ref={countryButtonRef}
                           type="button"
                           onClick={openDropdown}
-                          className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-3 py-3.5 text-white hover:border-[#3d4a59] transition-colors min-w-[130px]"
+                          className="flex items-center justify-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-3 py-3.5 text-white hover:border-[#3d4a59] transition-colors min-w-[130px]"
                         >
-                          <span className="text-lg">{formData.country.flag}</span>
+                          <span className="text-lg leading-none">{formData.country.flag}</span>
                           <span className="text-[#9ca3af] text-sm">{formData.country.dial}</span>
-                          <ChevronDown className={`w-4 h-4 text-[#6b7280] ml-auto transition-transform ${countryDropdownOpen ? "rotate-180" : ""}`} />
+                          <ChevronDown className={`w-4 h-4 text-[#6b7280] transition-transform ${countryDropdownOpen ? "rotate-180" : ""}`} />
                         </button>
 
                         {countryDropdownOpen && createPortal(
@@ -545,7 +545,7 @@ export default function Audit() {
                   </>
                 ) : (
                   <>
-                    Schedule My Audit
+                    Schedule My Appointment
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}

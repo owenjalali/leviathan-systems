@@ -217,24 +217,15 @@ export default function LossCalculator({ onComplete }) {
               </div>
             </div>
 
-            <p className="text-sm text-[#6b7280] mb-4">
+            <p className="text-sm text-[#6b7280] mb-6">
               That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> that likely went to a competitor who responded faster.
             </p>
-
-            <div className="p-4 bg-[#030306]/50 rounded-xl border border-[#1a2332] mb-6">
-              <p className="text-sm text-[#9ca3af] mb-2">
-                Based on industry response data. Conservative estimates.
-              </p>
-              <p className="text-sm text-white font-medium">
-                Even if this model is wrong by 50%, the loss is still material.
-              </p>
-            </div>
 
             <button
               onClick={handleSubmit}
               className="w-full py-4 px-6 bg-white text-[#030306] font-semibold rounded-xl transition-all duration-300 hover:bg-[#00d4cf]"
             >
-              Run the Lead Leak Check
+              Talk to us about fixing this
             </button>
           </div>
         )}

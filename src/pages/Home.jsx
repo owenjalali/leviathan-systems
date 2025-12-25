@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Phone, MessageSquare, Mail, Check } from 'lucide-react'
+import { ArrowRight, Phone, MessageSquare, Mail, Check, Zap, Calendar } from 'lucide-react'
 import LossCalculator from '../components/LossCalculator'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { useEffect, useState, useRef } from 'react'
@@ -9,11 +9,13 @@ export default function Home() {
   const heroRef = useRef(null)
   const statRef = useRef(null)
   const [calcRef, calcVisible] = useScrollAnimation(0.1)
+  const [howRef, howVisible] = useScrollAnimation(0.15)
   const [statValue, setStatValue] = useState(0)
   const [statVisible, setStatVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
   const [activeLead, setActiveLead] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
+  const [activeStep, setActiveStep] = useState(0)
 
   // Simulated live leads
   const leads = [
@@ -34,6 +36,15 @@ export default function Home() {
     }, 2500)
     return () => clearInterval(interval)
   }, [leads.length])
+
+  // Cycle through steps when visible
+  useEffect(() => {
+    if (!howVisible) return
+    const interval = setInterval(() => {
+      setActiveStep((prev) => (prev + 1) % 3)
+    }, 2000)
+    return () => clearInterval(interval)
+  }, [howVisible])
 
   // Animated counter for 78%
   useEffect(() => {
@@ -98,7 +109,6 @@ export default function Home() {
 
         {/* Gradient mesh background */}
         <div className="absolute inset-0">
-          {/* Primary glow - top center */}
           <div
             className="absolute w-[1200px] h-[1200px] -top-[400px] left-1/2 -translate-x-1/2 rounded-full"
             style={{
@@ -107,7 +117,6 @@ export default function Home() {
               transition: 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)'
             }}
           />
-          {/* Secondary glow - right */}
           <div
             className="absolute w-[800px] h-[800px] top-[20%] -right-[200px] rounded-full"
             style={{
@@ -116,7 +125,6 @@ export default function Home() {
               transition: 'transform 1s cubic-bezier(0.22, 1, 0.36, 1)'
             }}
           />
-          {/* Grid overlay */}
           <div
             className="absolute inset-0 opacity-[0.02]"
             style={{
@@ -131,25 +139,16 @@ export default function Home() {
 
             {/* Left: Copy */}
             <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              {/* Eyebrow */}
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/5 border border-white/10 mb-8">
-                <div className="w-1.5 h-1.5 rounded-full bg-[#00d4cf]" />
-                <span className="text-xs text-[#9ca3af] font-medium">For home service businesses</span>
-              </div>
-
-              {/* Headline */}
-              <h1 className="text-[3.5rem] sm:text-7xl lg:text-8xl font-semibold text-white leading-[0.95] tracking-[-0.03em] mb-8">
-                Never miss
+              <h1 className="text-[2.75rem] sm:text-6xl lg:text-7xl font-semibold text-white leading-[1] tracking-[-0.03em] mb-8">
+                We eliminate revenue loss
                 <br />
-                <span className="text-[#6b7280]">another lead.</span>
+                <span className="text-[#6b7280]">caused by human delay.</span>
               </h1>
 
-              {/* Subhead - one line */}
               <p className="text-xl text-[#6b7280] mb-12 max-w-md">
                 Instant response. Automatic qualification. Booked appointments.
               </p>
 
-              {/* CTA */}
               <button
                 onClick={scrollToCalculator}
                 className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#030306] font-semibold rounded-full transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
@@ -167,13 +166,9 @@ export default function Home() {
                 transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
               }}
             >
-              {/* Glow behind card */}
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#00d4cf]/20 via-transparent to-[#7c72ff]/20 blur-2xl opacity-50" />
 
-              {/* Dashboard card */}
               <div className="relative rounded-2xl border border-white/10 bg-[#0a0f1a]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
-
-                {/* Header */}
                 <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
                   <div className="flex items-center gap-3">
                     <div className="flex gap-1.5">
@@ -189,7 +184,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Leads */}
                 <div className="p-4 space-y-3">
                   {leads.map((lead, i) => {
                     const Icon = lead.icon
@@ -198,20 +192,13 @@ export default function Home() {
                       <div
                         key={lead.id}
                         className={`relative p-4 rounded-xl border transition-all duration-500 ${
-                          isActive
-                            ? 'border-[#00d4cf]/30 bg-[#00d4cf]/5'
-                            : 'border-white/5 bg-white/[0.02]'
+                          isActive ? 'border-[#00d4cf]/30 bg-[#00d4cf]/5' : 'border-white/5 bg-white/[0.02]'
                         }`}
-                        style={{
-                          opacity: isActive ? 1 : 0.5,
-                          transform: isActive ? 'scale(1)' : 'scale(0.98)'
-                        }}
+                        style={{ opacity: isActive ? 1 : 0.5, transform: isActive ? 'scale(1)' : 'scale(0.98)' }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${
-                              isActive ? 'bg-[#00d4cf]/20' : 'bg-white/5'
-                            }`}>
+                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${isActive ? 'bg-[#00d4cf]/20' : 'bg-white/5'}`}>
                               <Icon className={`w-5 h-5 transition-colors duration-300 ${isActive ? 'text-[#00d4cf]' : 'text-[#6b7280]'}`} />
                             </div>
                             <div>
@@ -236,7 +223,6 @@ export default function Home() {
                   })}
                 </div>
 
-                {/* Footer stats */}
                 <div className="px-6 py-4 border-t border-white/5 bg-black/20">
                   <div className="flex items-center justify-between">
                     <div>
@@ -256,65 +242,71 @@ export default function Home() {
       </section>
 
 
-      {/* ============================================
-          SOCIAL PROOF STRIP
-          ============================================ */}
-      <section className="py-16 border-y border-white/5">
-        <div className="mx-auto max-w-5xl px-6">
-          <div className="flex flex-wrap items-center justify-center gap-x-12 gap-y-6 text-[#4b5563]">
-            <span className="text-sm">Built for</span>
-            <span className="text-white font-medium">HVAC</span>
-            <span className="text-white font-medium">Plumbing</span>
-            <span className="text-white font-medium">Electrical</span>
-            <span className="text-white font-medium">Roofing</span>
-            <span className="text-white font-medium">Landscaping</span>
-          </div>
-        </div>
-      </section>
 
 
       {/* ============================================
-          STAT — THE HOOK
+          STAT — THE HOOK (FIXED)
           ============================================ */}
-      <section ref={statRef} className="py-40 sm:py-56 relative">
-        {/* Background */}
-        <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-[#0a0f1a]/30 to-transparent" />
+      <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
+        {/* Animated rings */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-30"
-            style={{
-              background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)',
-              filter: 'blur(80px)'
-            }}
+            className={`absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full border transition-all duration-1000 ${
+              statVisible ? 'border-[#00d4cf]/20 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
+            }`}
+            style={{ transitionDelay: '0.2s' }}
+          />
+          <div
+            className={`absolute w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] rounded-full border transition-all duration-1000 ${
+              statVisible ? 'border-[#00d4cf]/10 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
+            }`}
+            style={{ transitionDelay: '0.4s' }}
+          />
+          <div
+            className={`absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] rounded-full border transition-all duration-1000 ${
+              statVisible ? 'border-[#00d4cf]/5 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
+            }`}
+            style={{ transitionDelay: '0.6s' }}
           />
         </div>
+
+        {/* Center glow */}
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full transition-opacity duration-1000 ${
+            statVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, rgba(0,212,207,0.1) 40%, transparent 70%)',
+          }}
+        />
 
         <div className="mx-auto max-w-5xl px-6 text-center relative z-10">
           {/* Giant number */}
           <div
-            className="text-[8rem] sm:text-[12rem] lg:text-[16rem] font-bold leading-none mb-6"
+            className={`text-[8rem] sm:text-[12rem] lg:text-[18rem] font-bold leading-none mb-6 transition-all duration-1000 ${
+              statVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+            }`}
             style={{
               fontVariantNumeric: 'tabular-nums',
               letterSpacing: '-0.04em',
             }}
           >
             <span
+              className="relative inline-block"
               style={{
-                background: statVisible
-                  ? 'linear-gradient(135deg, #ffffff 0%, #00d4cf 100%)'
-                  : '#ffffff',
+                background: 'linear-gradient(135deg, #ffffff 0%, #00d4cf 100%)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
                 backgroundClip: 'text',
-                transition: 'all 1.5s cubic-bezier(0.22, 1, 0.36, 1)',
-                textShadow: statVisible ? '0 0 120px rgba(0,212,207,0.5)' : 'none',
               }}
             >
               {statValue}%
             </span>
           </div>
 
-          <p className="text-xl sm:text-2xl text-[#6b7280] max-w-lg mx-auto">
+          <p className={`text-xl sm:text-2xl text-[#9ca3af] max-w-lg mx-auto transition-all duration-700 ${
+            statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ transitionDelay: '0.5s' }}>
             of customers hire whoever responds first.
           </p>
         </div>
@@ -322,14 +314,19 @@ export default function Home() {
 
 
       {/* ============================================
-          HOW IT WORKS — 3 STEPS
+          HOW IT WORKS — VISUAL FLOW
           ============================================ */}
-      <section className="py-32 relative">
+      <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <div className="mx-auto max-w-6xl px-6">
-          <div className="text-center mb-20">
-            <h2 className="text-4xl sm:text-5xl font-semibold text-white mb-4">
+        {/* Background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
+        />
+
+        <div className="mx-auto max-w-6xl px-6 relative z-10">
+          <div className={`text-center mb-20 transition-all duration-700 ${howVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4">
               How it works
             </h2>
             <p className="text-lg text-[#6b7280]">
@@ -337,35 +334,118 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                num: '01',
-                title: 'Lead comes in',
-                desc: 'Phone, form, or text. Any channel.',
-              },
-              {
-                num: '02',
-                title: 'Instant response',
-                desc: 'Under 60 seconds. Every time.',
-              },
-              {
-                num: '03',
-                title: 'Appointment booked',
-                desc: 'Qualified and scheduled automatically.',
-              },
-            ].map((step, i) => (
+          {/* Visual flow */}
+          <div className="relative">
+            {/* Connecting line - desktop */}
+            <div className="hidden lg:block absolute top-1/2 left-[16%] right-[16%] h-[2px] -translate-y-1/2">
+              <div className="absolute inset-0 bg-white/5" />
               <div
-                key={step.num}
-                className="group relative p-8 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-300 hover:border-white/10 hover:bg-white/[0.04]"
-              >
-                <div className="text-5xl font-bold text-[#00d4cf]/20 mb-6 transition-colors group-hover:text-[#00d4cf]/40">
-                  {step.num}
-                </div>
-                <h3 className="text-xl font-semibold text-white mb-2">{step.title}</h3>
-                <p className="text-[#6b7280]">{step.desc}</p>
-              </div>
-            ))}
+                className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00d4cf] to-[#7c72ff] transition-all duration-1000"
+                style={{ width: howVisible ? '100%' : '0%', transitionDelay: '0.3s' }}
+              />
+            </div>
+
+            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+              {[
+                {
+                  icon: Phone,
+                  num: '01',
+                  title: 'Lead comes in',
+                  desc: 'Phone call, web form, or text message. Any channel, any time.',
+                  color: '#00d4cf'
+                },
+                {
+                  icon: Zap,
+                  num: '02',
+                  title: 'Instant response',
+                  desc: 'Under 60 seconds. Automated. Before they call your competitor.',
+                  color: '#7c72ff'
+                },
+                {
+                  icon: Calendar,
+                  num: '03',
+                  title: 'Appointment booked',
+                  desc: 'Qualified, scheduled, and synced to your calendar automatically.',
+                  color: '#00d4cf'
+                },
+              ].map((step, i) => {
+                const Icon = step.icon
+                const isActive = i === activeStep
+                return (
+                  <div
+                    key={step.num}
+                    className={`relative transition-all duration-700 ${howVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                    style={{ transitionDelay: `${0.2 + i * 0.15}s` }}
+                  >
+                    {/* Card */}
+                    <div className={`relative p-8 rounded-3xl border transition-all duration-500 ${
+                      isActive
+                        ? 'border-white/20 bg-white/[0.04] scale-[1.02]'
+                        : 'border-white/5 bg-white/[0.02]'
+                    }`}>
+                      {/* Glow effect when active */}
+                      {isActive && (
+                        <div
+                          className="absolute -inset-px rounded-3xl opacity-50 blur-xl transition-opacity duration-500"
+                          style={{ background: `radial-gradient(circle at 50% 0%, ${step.color}30 0%, transparent 70%)` }}
+                        />
+                      )}
+
+                      {/* Icon with ring */}
+                      <div className="relative mb-8">
+                        <div
+                          className={`w-16 h-16 rounded-2xl flex items-center justify-center transition-all duration-500 ${
+                            isActive ? 'scale-110' : 'scale-100'
+                          }`}
+                          style={{
+                            background: `linear-gradient(135deg, ${step.color}20 0%, ${step.color}05 100%)`,
+                            border: `1px solid ${step.color}30`
+                          }}
+                        >
+                          <Icon className="w-7 h-7" style={{ color: step.color }} />
+                        </div>
+                        {/* Pulse ring */}
+                        {isActive && (
+                          <div
+                            className="absolute inset-0 rounded-2xl animate-ping"
+                            style={{
+                              background: `${step.color}10`,
+                              animationDuration: '2s'
+                            }}
+                          />
+                        )}
+                        {/* Step number badge */}
+                        <div
+                          className="absolute -top-2 -right-2 w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold"
+                          style={{
+                            background: isActive ? step.color : '#1a2332',
+                            color: isActive ? '#030306' : '#6b7280'
+                          }}
+                        >
+                          {step.num}
+                        </div>
+                      </div>
+
+                      <h3 className="text-xl font-semibold text-white mb-3">{step.title}</h3>
+                      <p className="text-[#6b7280] leading-relaxed">{step.desc}</p>
+
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+
+            {/* Progress dots - mobile */}
+            <div className="flex lg:hidden justify-center gap-2 mt-8">
+              {[0, 1, 2].map((i) => (
+                <div
+                  key={i}
+                  className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                    i === activeStep ? 'bg-[#00d4cf] w-6' : 'bg-white/20'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
       </section>
@@ -377,7 +457,6 @@ export default function Home() {
       <section id="calculator" className="py-32 sm:py-40 relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background glow */}
         <div className="absolute top-1/2 right-[30%] -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
         />
@@ -389,7 +468,6 @@ export default function Home() {
           }`}
         >
           <div className="grid lg:grid-cols-2 gap-16 items-start">
-            {/* Left: Headline */}
             <div className="lg:sticky lg:top-32">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] mb-6">
                 Calculate your
@@ -401,7 +479,6 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Right: Calculator */}
             <div className="relative">
               <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#00d4cf]/10 to-[#7c72ff]/10 blur-xl opacity-40" />
               <div className="relative">
@@ -419,17 +496,18 @@ export default function Home() {
       <section className="py-32 sm:py-40 relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Central glow */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-30 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)' }}
         />
 
         <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
-          <h2 className="text-5xl sm:text-6xl lg:text-7xl font-semibold text-white mb-6 leading-[0.95]">
-            Stop losing leads.
+          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6 leading-[1.1]">
+            Time is money.
+            <br />
+            <span className="text-[#6b7280]">So why waste both?</span>
           </h2>
           <p className="text-xl text-[#6b7280] mb-12">
-            Talk to us about fixing your response time.
+            Talk to us about optimizing your time.
           </p>
 
           <button
