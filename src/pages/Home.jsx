@@ -7,6 +7,7 @@ import { useEffect, useState, useRef } from 'react'
 export default function Home() {
   const navigate = useNavigate()
   const heroRef = useRef(null)
+  const statRef = useRef(null)
   const [calcRef, calcVisible] = useScrollAnimation(0.1)
   const [statValue, setStatValue] = useState(0)
   const [statVisible, setStatVisible] = useState(false)
@@ -54,14 +55,14 @@ export default function Home() {
       { threshold: 0.2 }
     )
 
-    const statElement = document.getElementById('stat-section')
-    if (statElement) {
-      observer.observe(statElement)
+    const currentRef = statRef.current
+    if (currentRef) {
+      observer.observe(currentRef)
     }
 
     return () => {
-      if (statElement) {
-        observer.unobserve(statElement)
+      if (currentRef) {
+        observer.unobserve(currentRef)
       }
     }
   }, [statVisible])
@@ -93,11 +94,10 @@ export default function Home() {
     <div className="bg-[#030306] overflow-hidden">
 
       {/* ============================================
-          HERO — PRODUCT IN ACTION (70% VISUAL)
+          HERO — PRODUCT IN ACTION
           ============================================ */}
       <section ref={heroRef} className="min-h-screen flex items-center pt-32 pb-40 relative overflow-hidden">
         
-        {/* Single gradient orb */}
         <div className="absolute inset-0">
           <div
             className="absolute w-[1800px] h-[1800px] -top-[700px] left-1/2 -translate-x-1/2 rounded-full opacity-12 blur-3xl"
@@ -112,7 +112,7 @@ export default function Home() {
         <div className="mx-auto max-w-7xl px-6 relative z-10 w-full">
           <div className="grid lg:grid-cols-5 gap-16 items-center">
             
-            {/* Left: Minimal text (30%) */}
+            {/* Left: Text */}
             <div className="lg:col-span-2">
               <h1 className="text-7xl sm:text-8xl lg:text-9xl font-bold text-white leading-[0.9] tracking-tight mb-16">
                 Response speed is revenue infrastructure.
@@ -127,11 +127,10 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Right: System Dashboard (70% VISUAL) */}
+            {/* Right: Dashboard */}
             <div className="lg:col-span-3 relative">
               <div className="relative rounded-3xl border border-[#1a2332]/50 bg-[#0a0f1a]/60 backdrop-blur-2xl overflow-hidden">
                 
-                {/* Dashboard header */}
                 <div className="px-8 py-6 border-b border-[#1a2332] flex items-center justify-between">
                   <div>
                     <div className="text-sm text-[#6b7280] mb-1">Today</div>
@@ -144,7 +143,6 @@ export default function Home() {
                   </div>
                 </div>
 
-                {/* Live leads feed */}
                 <div className="p-8 space-y-4">
                   {leads.map((lead, i) => (
                     <div
@@ -180,7 +178,6 @@ export default function Home() {
                   ))}
                 </div>
 
-                {/* System status */}
                 <div className="px-8 py-6 border-t border-[#1a2332] bg-[#030306]/50">
                   <div className="flex items-center justify-between text-sm">
                     <span className="text-[#6b7280]">Response time</span>
@@ -195,49 +192,47 @@ export default function Home() {
 
 
       {/* ============================================
-          STAT — MASSIVE VISUAL ANCHOR
+          STAT — ANIMATED NUMBER
           ============================================ */}
-      <section id="stat-section" className="py-80 relative">
+      <section ref={statRef} id="stat-section" className="py-60 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/20 to-[#030306]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
 
-        <div className="mx-auto max-w-6xl px-6 text-center relative z-10">
-          <div className="inline-block relative">
-            <div 
-              className="text-[24rem] font-bold text-white mb-12 relative leading-none"
+        <div className="mx-auto max-w-5xl px-6 text-center relative z-10">
+          <div 
+            className="text-[12rem] sm:text-[16rem] lg:text-[20rem] font-bold text-white mb-8 leading-none"
+            style={{
+              fontVariantNumeric: 'tabular-nums',
+              letterSpacing: '-0.05em',
+              textShadow: statVisible ? '0 0 100px rgba(0,212,207,0.5)' : 'none',
+              transition: 'text-shadow 0.5s'
+            }}
+          >
+            <span 
               style={{
-                fontVariantNumeric: 'tabular-nums',
-                textShadow: statVisible ? '0 0 120px rgba(0,212,207,0.6)' : 'none',
-                transition: 'text-shadow 0.5s',
-                letterSpacing: '-0.05em'
+                background: statVisible 
+                  ? 'linear-gradient(135deg, #ffffff 0%, #00d4cf 50%, #7c72ff 100%)'
+                  : '#ffffff',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+                transition: 'background 2s cubic-bezier(0.22, 1, 0.36, 1)',
+                display: 'inline-block'
               }}
             >
-              <span 
-                className="inline-block"
-                style={{
-                  background: statVisible 
-                    ? 'linear-gradient(135deg, #ffffff 0%, #00d4cf 50%, #7c72ff 100%)'
-                    : '#ffffff',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                  backgroundClip: 'text',
-                  transition: 'background 2s cubic-bezier(0.22, 1, 0.36, 1)'
-                }}
-              >
-                {statValue}%
-              </span>
-            </div>
-            
-            <div className="text-2xl text-[#6b7280] max-w-xl mx-auto">
-              of customers hire whoever responds first.
-            </div>
+              {statValue}%
+            </span>
+          </div>
+          
+          <div className="text-2xl text-[#6b7280] max-w-xl mx-auto">
+            of customers hire whoever responds first.
           </div>
         </div>
       </section>
 
 
       {/* ============================================
-          CALCULATOR — MINIMAL CONTEXT
+          CALCULATOR
           ============================================ */}
       <section id="calculator" className="py-60 relative">
         <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/30 to-[#030306]" />
@@ -268,7 +263,7 @@ export default function Home() {
 
 
       {/* ============================================
-          FINAL CTA — DECLARATIVE
+          FINAL CTA
           ============================================ */}
       <section className="py-60 relative">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
