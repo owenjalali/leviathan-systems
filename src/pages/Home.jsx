@@ -74,19 +74,27 @@ export default function Home() {
         {/* Content */}
         <div className="mx-auto max-w-5xl px-6 relative z-10">
           {/* Primary headline — outcome-focused */}
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-[1.05] tracking-tight mb-6 animate-fade-in-up">
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white leading-[1.05] tracking-tight mb-8 animate-fade-in-up">
             Response speed is revenue infrastructure.
           </h1>
 
-          {/* Grounding subheadline — literal explanation */}
-          <p className="text-xl sm:text-2xl text-[#9ca3af] leading-relaxed max-w-3xl mb-4 animate-fade-in-up animation-delay-100">
-            Automation systems that capture, qualify, and book inbound leads for service businesses—automatically.
-          </p>
-          <p className="text-lg sm:text-xl text-[#6b7280] leading-relaxed max-w-3xl mb-12 animate-fade-in-up animation-delay-200">
-            When someone calls or submits a form, the system responds in under 60 seconds. Before they call your competitor.
-          </p>
+          {/* Grounding layer — explicit explanation */}
+          <div className="mb-12 space-y-4 animate-fade-in-up animation-delay-100">
+            <p className="text-xl sm:text-2xl text-[#9ca3af] leading-relaxed max-w-3xl">
+              <strong className="text-white">What it is:</strong> Automation infrastructure that captures, qualifies, and books inbound leads for service businesses—automatically.
+            </p>
+            <p className="text-lg sm:text-xl text-[#6b7280] leading-relaxed max-w-3xl">
+              <strong className="text-[#9ca3af]">Who it's for:</strong> Home service businesses (HVAC, plumbing, electrical, roofing, landscaping, cleaning) where response speed determines who gets the job.
+            </p>
+            <p className="text-lg sm:text-xl text-[#6b7280] leading-relaxed max-w-3xl">
+              <strong className="text-[#9ca3af]">What it does:</strong> When someone calls or submits a form, the system responds in under 60 seconds. Before they call your competitor.
+            </p>
+            <p className="text-lg sm:text-xl text-[#6b7280] leading-relaxed max-w-3xl">
+              <strong className="text-[#9ca3af]">Why it matters:</strong> 78% of customers hire whoever responds first. Speed directly impacts revenue.
+            </p>
+          </div>
 
-          {/* CTAs — Only two */}
+          {/* CTAs — Two intentional paths */}
           <div className="flex flex-col sm:flex-row gap-4 animate-fade-in-up animation-delay-300">
             <button
               onClick={scrollToCalculator}
@@ -98,10 +106,10 @@ export default function Home() {
             </button>
             <button
               onClick={scrollToSystem}
-              className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-[#2a3441] text-white font-medium rounded-full transition-all duration-300 hover:border-[#00d4cf]/50 hover:bg-[#00d4cf]/5 backdrop-blur-sm"
+              className="group relative inline-flex items-center justify-center gap-3 px-8 py-4 border-2 border-[#2a3441] text-white font-semibold rounded-full transition-all duration-300 hover:border-[#00d4cf]/50 hover:bg-[#00d4cf]/5 backdrop-blur-sm hover:scale-105"
             >
-              See How the System Works
-              <ChevronRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+              <span className="relative z-10">See How the System Works</span>
+              <ChevronRight className="w-4 h-4 relative z-10 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
         </div>
@@ -253,7 +261,7 @@ export default function Home() {
 
 
       {/* ============================================
-          PROOF — LOGIC, METRICS, REASONING
+          TRUST & PROOF — TARGET MARKET + CREDIBILITY
           ============================================ */}
       <section className="py-32 sm:py-40 relative">
         <div className="absolute inset-0">
@@ -272,21 +280,24 @@ export default function Home() {
           }`}
         >
           <div className="grid lg:grid-cols-2 gap-16 items-center">
-            {/* Left — Logic */}
+            {/* Left — Target Market Definition */}
             <div>
-              <p className="text-[#00d4cf] text-sm font-medium tracking-wide uppercase mb-6">The Logic</p>
+              <p className="text-[#00d4cf] text-sm font-medium tracking-wide uppercase mb-6">Built For</p>
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-[1.1] mb-8">
-                Built for service businesses.
+                Home service businesses.
               </h2>
               <p className="text-xl text-[#9ca3af] mb-6 leading-relaxed">
                 HVAC, plumbing, electrical, roofing, landscaping, cleaning. Any business where response speed determines who gets the job.
               </p>
-              <p className="text-lg text-[#6b7280] leading-relaxed mb-6">
-                We build custom infrastructure. You own it. Not a SaaS fee. Not a subscription. Working systems that capture, respond, and book—automatically.
-              </p>
-              <p className="text-lg text-[#6b7280] leading-relaxed">
-                Operators, not salespeople. We've built automation systems for years. No pitch decks. Just working infrastructure.
-              </p>
+              <div className="p-6 rounded-2xl border border-[#1a2332] bg-[#0a0f1a]/60 backdrop-blur-sm mb-6">
+                <p className="text-sm text-white font-semibold mb-3">How we work</p>
+                <p className="text-sm text-[#9ca3af] leading-relaxed mb-3">
+                  We build custom infrastructure. You own it. Not a SaaS fee. Not a subscription. Working systems that capture, respond, and book—automatically.
+                </p>
+                <p className="text-sm text-[#6b7280] leading-relaxed">
+                  Operators, not salespeople. We've built automation systems for years. No pitch decks. Just working infrastructure.
+                </p>
+              </div>
             </div>
 
             {/* Right — Assumptions */}
@@ -339,7 +350,10 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 lg:gap-20 items-start">
             {/* Left — Context */}
             <div className="lg:sticky lg:top-32">
-              <p className="text-[#00d4cf] text-sm font-medium tracking-wide uppercase mb-6">Lead Leak Check</p>
+              <p className="text-[#00d4cf] text-sm font-medium tracking-wide uppercase mb-2">Lead Leak Check</p>
+              <p className="text-sm text-[#6b7280] mb-6 italic">
+                See how many leads you lose when no one responds fast enough
+              </p>
               <h2 className="text-4xl sm:text-5xl font-bold text-white mb-6 leading-[1.1]">
                 How much are slow responses costing you?
               </h2>
@@ -480,10 +494,10 @@ export default function Home() {
             </button>
             <button
               onClick={scrollToSystem}
-              className="group inline-flex items-center justify-center gap-3 px-10 py-5 border border-[#2a3441] text-white font-medium rounded-full text-lg transition-all duration-300 hover:border-[#00d4cf]/50 hover:bg-[#00d4cf]/5"
+              className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 border-2 border-[#2a3441] text-white font-semibold rounded-full text-lg transition-all duration-300 hover:border-[#00d4cf]/50 hover:bg-[#00d4cf]/5 hover:scale-105"
             >
-              See How the System Works
-              <ChevronRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              <span className="relative z-10">See How the System Works</span>
+              <ChevronRight className="w-5 h-5 relative z-10 transition-transform group-hover:translate-x-1" />
             </button>
           </div>
 
