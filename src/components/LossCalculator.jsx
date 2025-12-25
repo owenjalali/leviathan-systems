@@ -211,15 +211,22 @@ export default function LossCalculator({ onComplete }) {
               </div>
             </div>
 
-            <p className="text-sm text-[#6b7280] mb-6">
+            <p className="text-sm text-[#6b7280] mb-4">
               That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> that likely went to a competitor who responded faster.
             </p>
+
+            <div className="p-4 bg-[#030306]/50 rounded-xl border border-[#1a2332] mb-6">
+              <p className="text-xs text-[#6b7280] mb-2">Cost of inaction</p>
+              <p className="text-sm text-[#9ca3af]">
+                Every week you delay, this loss compounds. Even if our model is off by 50%, the monthly loss is still significant.
+              </p>
+            </div>
 
             <button
               onClick={handleSubmit}
               className="w-full py-4 px-6 bg-white text-[#030306] font-semibold rounded-xl transition-all duration-300 hover:bg-[#00d4cf]"
             >
-              Talk to us about fixing this
+              Run the Lead Leak Check
             </button>
           </div>
         )}
