@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowDown, ArrowRight } from 'lucide-react'
+import { ArrowDown } from 'lucide-react'
 import LossCalculator from '../components/LossCalculator'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { useEffect, useState, useRef } from 'react'
@@ -7,13 +7,27 @@ import { useEffect, useState, useRef } from 'react'
 export default function Home() {
   const navigate = useNavigate()
   const heroRef = useRef(null)
-  const signatureRef = useRef(null)
-  const [signatureVisible, setSignatureVisible] = useState(false)
   const [calcRef, calcVisible] = useScrollAnimation(0.1)
   const [statValue, setStatValue] = useState(0)
   const [statVisible, setStatVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [timeDecay, setTimeDecay] = useState(0)
+  const [activeLead, setActiveLead] = useState(0)
+
+  // Simulated live leads
+  const leads = [
+    { id: 1, source: 'Phone', time: '0:12', status: 'Responded', value: '$2,500' },
+    { id: 2, source: 'Form', time: '0:08', status: 'Responded', value: '$1,800' },
+    { id: 3, source: 'SMS', time: '0:15', status: 'Responded', value: '$3,200' },
+    { id: 4, source: 'Phone', time: '0:05', status: 'Responded', value: '$2,100' },
+  ]
+
+  // Cycle through leads
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setActiveLead((prev) => (prev + 1) % 4)
+    }, 3000)
+    return () => clearInterval(interval)
+  }, [])
 
   // Animated counter for 78%
   useEffect(() => {
@@ -23,7 +37,7 @@ export default function Home() {
           setStatVisible(true)
           let current = 0
           const target = 78
-          const duration = 1800
+          const duration = 2000
           const increment = target / (duration / 16)
           
           const timer = setInterval(() => {
@@ -52,55 +66,14 @@ export default function Home() {
     }
   }, [statVisible])
 
-  // Signature section visibility
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setSignatureVisible(true)
-        }
-      },
-      { threshold: 0.3 }
-    )
-
-    const currentRef = signatureRef.current
-    if (currentRef) {
-      observer.observe(currentRef)
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
-    }
-  }, [])
-
-  // Time decay visualization
-  useEffect(() => {
-    if (signatureVisible) {
-      let progress = 0
-      const duration = 3000
-      const interval = setInterval(() => {
-        progress += 2
-        if (progress >= 100) {
-          setTimeDecay(100)
-          clearInterval(interval)
-        } else {
-          setTimeDecay(progress)
-        }
-      }, duration / 50)
-      return () => clearInterval(interval)
-    }
-  }, [signatureVisible])
-
   // Parallax mouse tracking
   useEffect(() => {
     const handleMouseMove = (e) => {
       if (!heroRef.current) return
       const rect = heroRef.current.getBoundingClientRect()
       setMousePos({
-        x: (e.clientX - rect.left - rect.width / 2) / 100,
-        y: (e.clientY - rect.top - rect.height / 2) / 100
+        x: (e.clientX - rect.left - rect.width / 2) / 120,
+        y: (e.clientY - rect.top - rect.height / 2) / 120
       })
     }
     window.addEventListener('mousemove', handleMouseMove)
@@ -120,29 +93,31 @@ export default function Home() {
     <div className="bg-[#030306] overflow-hidden">
 
       {/* ============================================
-          HERO — MINIMAL, VISUAL-FIRST
+          HERO — PRODUCT IN ACTION (70% VISUAL)
           ============================================ */}
-      <section ref={heroRef} className="min-h-screen flex flex-col justify-center pt-32 pb-40 relative overflow-hidden">
+      <section ref={heroRef} className="min-h-screen flex items-center pt-32 pb-40 relative overflow-hidden">
         
         {/* Single gradient orb */}
         <div className="absolute inset-0">
           <div
-            className="absolute w-[1600px] h-[1600px] -top-[600px] left-1/2 -translate-x-1/2 rounded-full opacity-15 blur-3xl"
+            className="absolute w-[1800px] h-[1800px] -top-[700px] left-1/2 -translate-x-1/2 rounded-full opacity-12 blur-3xl"
             style={{
               background: 'radial-gradient(circle, rgba(0,212,207,0.4) 0%, transparent 70%)',
-              transform: `translate(calc(-50% + ${mousePos.x * 5}px), ${mousePos.y * 5}px)`,
-              transition: 'transform 1.2s cubic-bezier(0.22, 1, 0.36, 1)'
+              transform: `translate(calc(-50% + ${mousePos.x * 6}px), ${mousePos.y * 6}px)`,
+              transition: 'transform 1.5s cubic-bezier(0.22, 1, 0.36, 1)'
             }}
           />
         </div>
 
-        <div className="mx-auto max-w-6xl px-6 relative z-10">
-          <div className="max-w-4xl">
-            <h1 className="text-7xl sm:text-8xl lg:text-9xl font-bold text-white leading-[0.9] tracking-tight mb-12 animate-fade-in-up">
-              Response speed is revenue infrastructure.
-            </h1>
+        <div className="mx-auto max-w-7xl px-6 relative z-10 w-full">
+          <div className="grid lg:grid-cols-5 gap-16 items-center">
             
-            <div className="flex flex-col sm:flex-row gap-4 mb-20 animate-fade-in-up animation-delay-200">
+            {/* Left: Minimal text (30%) */}
+            <div className="lg:col-span-2">
+              <h1 className="text-7xl sm:text-8xl lg:text-9xl font-bold text-white leading-[0.9] tracking-tight mb-16">
+                Response speed is revenue infrastructure.
+              </h1>
+              
               <button
                 onClick={scrollToCalculator}
                 className="group relative inline-flex items-center justify-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:scale-105 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)]"
@@ -151,99 +126,66 @@ export default function Home() {
                 <ArrowDown className="w-5 h-5 transition-transform group-hover:translate-y-0.5" />
               </button>
             </div>
-          </div>
-        </div>
-      </section>
 
-
-      {/* ============================================
-          SIGNATURE MOMENT — TIME DECAY VISUALIZATION
-          ============================================ */}
-      <section ref={signatureRef} className="min-h-screen flex items-center justify-center py-40 relative overflow-hidden">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/20 to-[#030306]" />
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
-
-        <div className="mx-auto max-w-7xl px-6 relative z-10 w-full">
-          <div className="grid lg:grid-cols-2 gap-32 items-center">
-            
-            {/* Left: Minimal text */}
-            <div>
-              <div className="text-8xl sm:text-9xl font-bold text-white leading-[0.85] tracking-tight mb-16">
-                Response delay is revenue decay.
-              </div>
-            </div>
-
-            {/* Right: Time decay visualization */}
-            <div className="relative">
-              {/* Time axis */}
-              <div className="relative h-96">
-                {/* Vertical timeline */}
-                <div className="absolute left-0 top-0 bottom-0 w-[2px] bg-[#1a2332]" />
+            {/* Right: System Dashboard (70% VISUAL) */}
+            <div className="lg:col-span-3 relative">
+              <div className="relative rounded-3xl border border-[#1a2332]/50 bg-[#0a0f1a]/60 backdrop-blur-2xl overflow-hidden">
                 
-                {/* Decay curve */}
-                <svg className="absolute inset-0 w-full h-full" viewBox="0 0 400 400" preserveAspectRatio="none">
-                  <defs>
-                    <linearGradient id="decayGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                      <stop offset="0%" stopColor="#00d4cf" stopOpacity="1" />
-                      <stop offset="100%" stopColor="#7c72ff" stopOpacity="0.3" />
-                    </linearGradient>
-                  </defs>
-                  
-                  {/* Animated decay path */}
-                  <path
-                    d={`M 0 0 Q 100 ${100 + timeDecay * 2} 200 ${150 + timeDecay * 1.5} T 400 ${200 + timeDecay}`}
-                    fill="none"
-                    stroke="url(#decayGradient)"
-                    strokeWidth="3"
-                    strokeLinecap="round"
-                    style={{
-                      opacity: signatureVisible ? 1 : 0,
-                      transition: 'opacity 1s',
-                      filter: 'drop-shadow(0 0 20px rgba(0,212,207,0.5))'
-                    }}
-                  />
-                  
-                  {/* Time markers */}
-                  {[0, 1, 2, 3, 4].map((hour, i) => (
-                    <g key={i}>
-                      <line
-                        x1={i * 100}
-                        y1={0}
-                        x2={i * 100}
-                        y2={400}
-                        stroke="#1a2332"
-                        strokeWidth="1"
-                        opacity="0.3"
-                      />
-                      <text
-                        x={i * 100}
-                        y={390}
-                        fill="#6b7280"
-                        fontSize="12"
-                        textAnchor="middle"
-                      >
-                        {hour}h
-                      </text>
-                    </g>
-                  ))}
-                </svg>
+                {/* Dashboard header */}
+                <div className="px-8 py-6 border-b border-[#1a2332] flex items-center justify-between">
+                  <div>
+                    <div className="text-sm text-[#6b7280] mb-1">Today</div>
+                    <div className="text-2xl font-bold text-white">$9,600</div>
+                    <div className="text-xs text-[#00d4cf] mt-1">+4 leads responded</div>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-2 h-2 rounded-full bg-[#00d4cf] animate-pulse" />
+                    <span className="text-xs text-[#6b7280]">Live</span>
+                  </div>
+                </div>
 
-                {/* Decay percentage indicators */}
-                <div className="absolute right-0 top-0 bottom-0 flex flex-col justify-between py-8">
-                  {[0, 10, 25, 40, 60].map((percent, i) => (
+                {/* Live leads feed */}
+                <div className="p-8 space-y-4">
+                  {leads.map((lead, i) => (
                     <div
-                      key={i}
-                      className="text-right"
+                      key={lead.id}
+                      className={`p-6 rounded-2xl border transition-all duration-500 ${
+                        i === activeLead
+                          ? 'border-[#00d4cf]/50 bg-[#00d4cf]/5 scale-[1.02]'
+                          : 'border-[#1a2332] bg-[#030306]/50'
+                      }`}
                       style={{
-                        opacity: signatureVisible && timeDecay > i * 15 ? 1 : 0.3,
-                        transform: signatureVisible && timeDecay > i * 15 ? 'translateX(0)' : 'translateX(20px)',
-                        transition: `all 0.5s ${i * 0.1}s`
+                        opacity: i === activeLead ? 1 : 0.6,
+                        transform: i === activeLead ? 'translateX(0)' : 'translateX(-10px)'
                       }}
                     >
-                      <span className="text-2xl font-bold text-white">{percent}%</span>
-                      <span className="text-sm text-[#6b7280] ml-2">lost</span>
+                      <div className="flex items-center justify-between mb-3">
+                        <div className="flex items-center gap-3">
+                          <div className={`w-3 h-3 rounded-full ${
+                            i === activeLead ? 'bg-[#00d4cf] animate-pulse' : 'bg-[#4b5563]'
+                          }`} />
+                          <span className="text-sm font-medium text-white">{lead.source}</span>
+                        </div>
+                        <span className="text-xs text-[#6b7280] font-mono">{lead.time}</span>
+                      </div>
+                      <div className="flex items-center justify-between">
+                        <span className={`text-sm ${
+                          i === activeLead ? 'text-[#00d4cf]' : 'text-[#6b7280]'
+                        }`}>
+                          {lead.status}
+                        </span>
+                        <span className="text-lg font-bold text-white">{lead.value}</span>
+                      </div>
                     </div>
                   ))}
+                </div>
+
+                {/* System status */}
+                <div className="px-8 py-6 border-t border-[#1a2332] bg-[#030306]/50">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-[#6b7280]">Response time</span>
+                    <span className="text-[#00d4cf] font-mono font-bold">&lt;60s</span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -253,21 +195,21 @@ export default function Home() {
 
 
       {/* ============================================
-          STAT — ANIMATED, VISUAL
+          STAT — MASSIVE VISUAL ANCHOR
           ============================================ */}
-      <section id="stat-section" className="py-60 relative">
-        <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/30 to-[#030306]" />
+      <section id="stat-section" className="py-80 relative">
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030306] via-[#0a0f1a]/20 to-[#030306]" />
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-[#1a2332] to-transparent" />
 
         <div className="mx-auto max-w-6xl px-6 text-center relative z-10">
           <div className="inline-block relative">
-            {/* Large animated number */}
             <div 
-              className="text-[20rem] sm:text-[24rem] font-bold text-white mb-8 relative leading-none"
+              className="text-[24rem] font-bold text-white mb-12 relative leading-none"
               style={{
                 fontVariantNumeric: 'tabular-nums',
-                textShadow: statVisible ? '0 0 100px rgba(0,212,207,0.6)' : 'none',
-                transition: 'text-shadow 0.5s'
+                textShadow: statVisible ? '0 0 120px rgba(0,212,207,0.6)' : 'none',
+                transition: 'text-shadow 0.5s',
+                letterSpacing: '-0.05em'
               }}
             >
               <span 
@@ -275,7 +217,7 @@ export default function Home() {
                 style={{
                   background: statVisible 
                     ? 'linear-gradient(135deg, #ffffff 0%, #00d4cf 50%, #7c72ff 100%)'
-                    : 'linear-gradient(135deg, #ffffff 0%, #ffffff 100%)',
+                    : '#ffffff',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
                   backgroundClip: 'text',
@@ -284,22 +226,9 @@ export default function Home() {
               >
                 {statValue}%
               </span>
-              
-              {/* Expanding rings */}
-              {statVisible && [0, 1, 2].map((i) => (
-                <div
-                  key={i}
-                  className="absolute inset-0 rounded-full border-4 border-[#00d4cf]"
-                  style={{
-                    opacity: 0.2 - (i * 0.1),
-                    transform: `scale(${1.1 + i * 0.15})`,
-                    animation: `pulse-ring 3s ease-out infinite ${i * 0.5}s`
-                  }}
-                />
-              ))}
             </div>
             
-            <div className="text-3xl text-[#6b7280] max-w-2xl mx-auto">
+            <div className="text-2xl text-[#6b7280] max-w-xl mx-auto">
               of customers hire whoever responds first.
             </div>
           </div>
