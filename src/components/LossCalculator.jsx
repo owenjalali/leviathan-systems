@@ -80,27 +80,59 @@ export default function LossCalculator({ onComplete }) {
     }
   }
 
+  // Count filled inputs for progress
+  const filledCount = [leadsPerWeek, avgJobValue, latency, closeRate].filter(Boolean).length
+
   return (
     <div id="calculator" className="w-full max-w-xl">
-      <div className="bg-[#0a0f1a] border border-[#1a2332] rounded-xl overflow-hidden">
+      <div className="relative bg-[#0a0f1a] border border-[#1a2332] rounded-2xl overflow-hidden shadow-2xl shadow-black/30">
 
-        {/* Header - minimal */}
-        <div className="px-6 py-4 border-b border-[#1a2332]">
-          <div className="flex items-center gap-3">
-            <div className="w-8 h-8 rounded-lg bg-[#1a2332] flex items-center justify-center">
-              <Activity className="w-4 h-4 text-[#6b7280]" />
+        {/* Grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px),
+                             linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
+            backgroundSize: '30px 30px'
+          }}
+        />
+
+        {/* Header */}
+        <div className="relative px-6 py-5 border-b border-[#1a2332]">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-9 h-9 rounded-xl bg-[#1a2332] flex items-center justify-center">
+                <Activity className="w-4 h-4 text-[#00d4cf]" />
+              </div>
+              <div>
+                <p className="text-sm text-white font-medium">
+                  Latency Calculator
+                </p>
+                <p className="text-xs text-[#4b5563]">
+                  Response delay cost
+                </p>
+              </div>
             </div>
-            <p className="text-sm text-[#6b7280] font-mono uppercase tracking-wider">
-              Latency Calculator
-            </p>
+
+            {/* Progress indicator */}
+            <div className="flex items-center gap-1">
+              {[0, 1, 2, 3].map((i) => (
+                <div
+                  key={i}
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
+                    i < filledCount ? 'bg-[#00d4cf]' : 'bg-[#1a2332]'
+                  }`}
+                />
+              ))}
+            </div>
           </div>
         </div>
 
         {/* Inputs */}
-        <div className="p-6 space-y-5">
+        <div className="relative p-6 space-y-5">
 
-          <div>
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2">
+          <div className="group">
+            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
               <Users className="w-4 h-4" />
               Weekly inbound volume
             </label>
@@ -114,14 +146,14 @@ export default function LossCalculator({ onComplete }) {
                 setErrors(prev => ({ ...prev, leadsPerWeek: false }))
               }}
               placeholder="25"
-              className={`w-full px-4 py-3 bg-[#050509] border rounded-lg text-white placeholder-[#2a3441] focus:outline-none focus:border-[#3d4a59] transition-colors ${
+              className={`w-full px-4 py-3.5 bg-[#050509] border rounded-xl text-white placeholder-[#2a3441] focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all ${
                 errors.leadsPerWeek ? 'border-red-500/50' : 'border-[#1a2332]'
               }`}
             />
           </div>
 
-          <div>
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2">
+          <div className="group">
+            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
               <DollarSign className="w-4 h-4" />
               Average contract value
             </label>
@@ -136,15 +168,15 @@ export default function LossCalculator({ onComplete }) {
                   setErrors(prev => ({ ...prev, avgJobValue: false }))
                 }}
                 placeholder="2500"
-                className={`w-full pl-8 pr-4 py-3 bg-[#050509] border rounded-lg text-white placeholder-[#2a3441] focus:outline-none focus:border-[#3d4a59] transition-colors ${
+                className={`w-full pl-8 pr-4 py-3.5 bg-[#050509] border rounded-xl text-white placeholder-[#2a3441] focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all ${
                   errors.avgJobValue ? 'border-red-500/50' : 'border-[#1a2332]'
                 }`}
               />
             </div>
           </div>
 
-          <div>
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2">
+          <div className="group">
+            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
               <Clock className="w-4 h-4" />
               Current response latency
             </label>
@@ -156,7 +188,7 @@ export default function LossCalculator({ onComplete }) {
                   setLatency(selected)
                   setErrors(prev => ({ ...prev, latency: false }))
                 }}
-                className={`w-full px-4 py-3 bg-[#050509] border rounded-lg text-white appearance-none focus:outline-none focus:border-[#3d4a59] transition-colors cursor-pointer ${
+                className={`w-full px-4 py-3.5 bg-[#050509] border rounded-xl text-white appearance-none focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all cursor-pointer ${
                   errors.latency ? 'border-red-500/50' : 'border-[#1a2332]'
                 } ${!latency ? 'text-[#2a3441]' : ''}`}
               >
@@ -171,8 +203,8 @@ export default function LossCalculator({ onComplete }) {
             </div>
           </div>
 
-          <div>
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2">
+          <div className="group">
+            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
               <Percent className="w-4 h-4" />
               Close rate
             </label>
@@ -187,7 +219,7 @@ export default function LossCalculator({ onComplete }) {
                   setErrors(prev => ({ ...prev, closeRate: false }))
                 }}
                 placeholder="30"
-                className={`w-full pr-8 pl-4 py-3 bg-[#050509] border rounded-lg text-white placeholder-[#2a3441] focus:outline-none focus:border-[#3d4a59] transition-colors ${
+                className={`w-full pr-10 pl-4 py-3.5 bg-[#050509] border rounded-xl text-white placeholder-[#2a3441] focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all ${
                   errors.closeRate ? 'border-red-500/50' : 'border-[#1a2332]'
                 }`}
               />
@@ -196,35 +228,38 @@ export default function LossCalculator({ onComplete }) {
           </div>
         </div>
 
-        {/* Results - clinical, not dramatic */}
+        {/* Results */}
         {showResults && hasAllInputs && (
-          <div className="border-t border-[#1a2332] p-6">
+          <div className="relative border-t border-[#1a2332] p-6 bg-gradient-to-b from-[#0d1320] to-[#0a0f1a]">
+            {/* Results glow */}
+            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#00d4cf]/30 to-transparent" />
+
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="p-4 bg-[#050509] rounded-lg border border-[#1a2332]">
-                <p className="text-xs text-[#4b5563] uppercase tracking-wider mb-1 font-mono">
-                  Monthly gap
+              <div className="p-4 bg-[#050509] rounded-xl border border-[#1a2332] group hover:border-[#1a2332]/80 transition-colors">
+                <p className="text-xs text-[#4b5563] uppercase tracking-wider mb-1.5 font-mono">
+                  Monthly Gap
                 </p>
-                <p className="text-2xl font-semibold text-white font-mono">
+                <p className="text-2xl sm:text-3xl font-semibold text-white font-mono tracking-tight">
                   {formatCurrency(results.monthlyRevenueLoss)}
                 </p>
               </div>
-              <div className="p-4 bg-[#050509] rounded-lg border border-[#1a2332]">
-                <p className="text-xs text-[#4b5563] uppercase tracking-wider mb-1 font-mono">
-                  Jobs affected
+              <div className="p-4 bg-[#050509] rounded-xl border border-[#1a2332] group hover:border-[#1a2332]/80 transition-colors">
+                <p className="text-xs text-[#4b5563] uppercase tracking-wider mb-1.5 font-mono">
+                  Jobs Affected
                 </p>
-                <p className="text-2xl font-semibold text-white font-mono">
-                  {results.monthlyJobsLost}/mo
+                <p className="text-2xl sm:text-3xl font-semibold text-white font-mono tracking-tight">
+                  {results.monthlyJobsLost}<span className="text-lg text-[#6b7280]">/mo</span>
                 </p>
               </div>
             </div>
 
             <p className="text-sm text-[#6b7280] mb-6">
-              At {latency.decay} decay rate, approximately {results.decayedLeadsPerWeek} leads per week do not convert due to response latency.
+              At <span className="text-[#9ca3af]">{latency.decay}</span> decay rate, approximately <span className="text-white">{results.decayedLeadsPerWeek} leads</span> per week do not convert due to response latency.
             </p>
 
             <button
               onClick={handleSubmit}
-              className="w-full py-3.5 px-6 bg-white text-[#050509] font-medium rounded-lg transition-colors duration-200 hover:bg-[#e5e5e5]"
+              className="w-full py-4 px-6 bg-white text-[#050509] font-medium rounded-xl transition-all duration-300 hover:bg-[#00d4cf] hover:shadow-[0_0_30px_rgba(0,212,207,0.2)]"
             >
               Review response architecture
             </button>
@@ -232,7 +267,7 @@ export default function LossCalculator({ onComplete }) {
         )}
 
         {/* Methodology */}
-        <div className="px-6 pb-5">
+        <div className="relative px-6 pb-5">
           <button
             onClick={() => setShowMethodology(!showMethodology)}
             className="flex items-center gap-2 text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors"
@@ -242,13 +277,15 @@ export default function LossCalculator({ onComplete }) {
           </button>
 
           {showMethodology && (
-            <div className="mt-3 p-4 bg-[#050509] rounded-lg border border-[#1a2332] text-xs text-[#4b5563] font-mono space-y-1">
-              <p>&lt;5 min = 0% decay</p>
-              <p>5-15 min = 10% decay</p>
-              <p>15-60 min = 25% decay</p>
-              <p>1-4 hours = 40% decay</p>
-              <p>4-24 hours = 60% decay</p>
-              <p>&gt;24 hours = 75% decay</p>
+            <div className="mt-3 p-4 bg-[#050509] rounded-xl border border-[#1a2332] text-xs text-[#4b5563] font-mono space-y-1">
+              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
+                <span>&lt;5 min = 0%</span>
+                <span>1-4 hrs = 40%</span>
+                <span>5-15 min = 10%</span>
+                <span>4-24 hrs = 60%</span>
+                <span>15-60 min = 25%</span>
+                <span>&gt;24 hrs = 75%</span>
+              </div>
             </div>
           )}
         </div>
