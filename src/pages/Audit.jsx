@@ -372,10 +372,10 @@ export default function Audit() {
                           ref={countryButtonRef}
                           type="button"
                           onClick={openDropdown}
-                          className="flex items-center justify-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-3 py-3.5 text-white hover:border-[#3d4a59] transition-colors min-w-[130px]"
+                          className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-3 py-3.5 text-white hover:border-[#3d4a59] transition-colors w-[130px]"
                         >
                           <span className="text-lg leading-none">{formData.country.flag}</span>
-                          <span className="text-[#9ca3af] text-sm">{formData.country.dial}</span>
+                          <span className="text-[#9ca3af] text-sm flex-1 text-center">{formData.country.dial}</span>
                           <ChevronDown className={`w-4 h-4 text-[#6b7280] transition-transform ${countryDropdownOpen ? "rotate-180" : ""}`} />
                         </button>
 

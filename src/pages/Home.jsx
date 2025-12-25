@@ -248,6 +248,14 @@ export default function Home() {
           STAT — THE HOOK (FIXED)
           ============================================ */}
       <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
+        {/* Subtle background gradients */}
+        <div className="absolute -top-[200px] -left-[300px] w-[800px] h-[800px] rounded-full opacity-30 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.15) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -bottom-[200px] -right-[200px] w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.1) 0%, transparent 60%)' }}
+        />
+
         {/* Animated rings */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div
@@ -319,8 +327,14 @@ export default function Home() {
       <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20 pointer-events-none"
+        {/* Background glows */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-25 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -top-[100px] -right-[200px] w-[600px] h-[600px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.15) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -bottom-[150px] -left-[200px] w-[500px] h-[500px] rounded-full opacity-15 pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
         />
 
@@ -445,11 +459,18 @@ export default function Home() {
       {/* ============================================
           CALCULATOR
           ============================================ */}
-      <section id="calculator" className="py-32 sm:py-40 relative">
+      <section id="calculator" className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <div className="absolute top-1/2 right-[30%] -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl pointer-events-none"
+        {/* Background glows */}
+        <div className="absolute top-1/2 right-[30%] -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-25 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -top-[150px] -left-[200px] w-[700px] h-[700px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.15) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -bottom-[200px] right-[10%] w-[500px] h-[500px] rounded-full opacity-15 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)' }}
         />
 
         <div
@@ -484,11 +505,18 @@ export default function Home() {
       {/* ============================================
           FINAL CTA
           ============================================ */}
-      <section className="py-32 sm:py-40 relative">
+      <section className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-30 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)' }}
+        {/* Background glows */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-30 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.25) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -top-[100px] -left-[200px] w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
+        />
+        <div className="absolute -bottom-[100px] -right-[150px] w-[400px] h-[400px] rounded-full opacity-20 pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.15) 0%, transparent 60%)' }}
         />
 
         <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
