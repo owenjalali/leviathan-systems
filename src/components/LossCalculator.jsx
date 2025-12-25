@@ -1,7 +1,6 @@
-import { useState, useEffect, useRef } from 'react'
-import { Activity, DollarSign, Clock, Users, Percent, ChevronDown, Info } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { DollarSign, Clock, Users, Percent, ChevronDown } from 'lucide-react'
 
-// Response latency decay model
 const getDecayRate = (minutes) => {
   if (minutes < 5) return 0
   if (minutes <= 15) return 0.10
@@ -11,7 +10,7 @@ const getDecayRate = (minutes) => {
   return 0.75
 }
 
-const latencyOptions = [
+const responseOptions = [
   { label: 'Under 5 minutes', value: 3, decay: '0%' },
   { label: '5-15 minutes', value: 10, decay: '10%' },
   { label: '15-60 minutes', value: 30, decay: '25%' },
@@ -29,34 +28,31 @@ const formatCurrency = (num) => {
 export default function LossCalculator({ onComplete }) {
   const [leadsPerWeek, setLeadsPerWeek] = useState('')
   const [avgJobValue, setAvgJobValue] = useState('')
-  const [latency, setLatency] = useState(null)
+  const [responseTime, setResponseTime] = useState(null)
   const [closeRate, setCloseRate] = useState('')
   const [showResults, setShowResults] = useState(false)
   const [errors, setErrors] = useState({})
-  const [showMethodology, setShowMethodology] = useState(false)
-
-  const firstInputRef = useRef(null)
 
   const calculate = () => {
     const leads = parseFloat(leadsPerWeek) || 0
     const jobValue = parseFloat(avgJobValue) || 0
     const rate = parseFloat(closeRate) / 100 || 0
-    const decay = latency ? getDecayRate(latency.value) : 0
+    const decay = responseTime ? getDecayRate(responseTime.value) : 0
 
-    const decayedLeadsPerWeek = leads * decay
-    const monthlyRevenueLoss = decayedLeadsPerWeek * 4.33 * jobValue * rate
-    const monthlyJobsLost = decayedLeadsPerWeek * 4.33 * rate
+    const lostLeadsPerWeek = leads * decay
+    const monthlyLoss = lostLeadsPerWeek * 4.33 * jobValue * rate
+    const monthlyJobsLost = lostLeadsPerWeek * 4.33 * rate
 
     return {
-      decayedLeadsPerWeek: Math.round(decayedLeadsPerWeek * 10) / 10,
-      monthlyRevenueLoss: Math.round(monthlyRevenueLoss),
+      lostLeadsPerWeek: Math.round(lostLeadsPerWeek * 10) / 10,
+      monthlyLoss: Math.round(monthlyLoss),
       monthlyJobsLost: Math.round(monthlyJobsLost * 10) / 10,
       decayPercent: decay * 100
     }
   }
 
   const results = calculate()
-  const hasAllInputs = leadsPerWeek && avgJobValue && latency && closeRate
+  const hasAllInputs = leadsPerWeek && avgJobValue && responseTime && closeRate
 
   useEffect(() => {
     if (hasAllInputs && !showResults) {
@@ -68,7 +64,7 @@ export default function LossCalculator({ onComplete }) {
     const newErrors = {}
     if (!leadsPerWeek) newErrors.leadsPerWeek = true
     if (!avgJobValue) newErrors.avgJobValue = true
-    if (!latency) newErrors.latency = true
+    if (!responseTime) newErrors.responseTime = true
     if (!closeRate) newErrors.closeRate = true
     setErrors(newErrors)
     return Object.keys(newErrors).length === 0
@@ -80,64 +76,25 @@ export default function LossCalculator({ onComplete }) {
     }
   }
 
-  // Count filled inputs for progress
-  const filledCount = [leadsPerWeek, avgJobValue, latency, closeRate].filter(Boolean).length
-
   return (
-    <div id="calculator" className="w-full max-w-xl">
-      <div className="relative bg-[#0a0f1a] border border-[#1a2332] rounded-2xl overflow-hidden shadow-2xl shadow-black/30">
-
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.02] pointer-events-none"
-          style={{
-            backgroundImage: `linear-gradient(to right, #ffffff 1px, transparent 1px),
-                             linear-gradient(to bottom, #ffffff 1px, transparent 1px)`,
-            backgroundSize: '30px 30px'
-          }}
-        />
+    <div id="calculator-form" className="w-full max-w-xl">
+      <div className="bg-[#0a0f1a] border border-[#1a2332] rounded-2xl overflow-hidden">
 
         {/* Header */}
-        <div className="relative px-6 py-5 border-b border-[#1a2332]">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-9 h-9 rounded-xl bg-[#1a2332] flex items-center justify-center">
-                <Activity className="w-4 h-4 text-[#00d4cf]" />
-              </div>
-              <div>
-                <p className="text-sm text-white font-medium">
-                  Latency Calculator
-                </p>
-                <p className="text-xs text-[#4b5563]">
-                  Response delay cost
-                </p>
-              </div>
-            </div>
-
-            {/* Progress indicator */}
-            <div className="flex items-center gap-1">
-              {[0, 1, 2, 3].map((i) => (
-                <div
-                  key={i}
-                  className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${
-                    i < filledCount ? 'bg-[#00d4cf]' : 'bg-[#1a2332]'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
+        <div className="px-6 py-5 border-b border-[#1a2332]">
+          <h3 className="text-lg font-semibold text-white">Lead loss calculator</h3>
+          <p className="text-sm text-[#6b7280] mt-1">Enter your numbers to see the estimated monthly impact.</p>
         </div>
 
         {/* Inputs */}
-        <div className="relative p-6 space-y-5">
+        <div className="p-6 space-y-5">
 
-          <div className="group">
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
+          <div>
+            <label className="flex items-center gap-2 text-sm text-[#9ca3af] mb-2">
               <Users className="w-4 h-4" />
-              Weekly inbound volume
+              How many leads do you get per week?
             </label>
             <input
-              ref={firstInputRef}
               type="number"
               inputMode="numeric"
               value={leadsPerWeek}
@@ -145,20 +102,20 @@ export default function LossCalculator({ onComplete }) {
                 setLeadsPerWeek(e.target.value)
                 setErrors(prev => ({ ...prev, leadsPerWeek: false }))
               }}
-              placeholder="25"
-              className={`w-full px-4 py-3.5 bg-[#050509] border rounded-xl text-white placeholder-[#2a3441] focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all ${
+              placeholder="e.g., 20"
+              className={`w-full px-4 py-3.5 bg-[#030306] border rounded-xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] transition-colors ${
                 errors.leadsPerWeek ? 'border-red-500/50' : 'border-[#1a2332]'
               }`}
             />
           </div>
 
-          <div className="group">
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
+          <div>
+            <label className="flex items-center gap-2 text-sm text-[#9ca3af] mb-2">
               <DollarSign className="w-4 h-4" />
-              Average contract value
+              What's your average job value?
             </label>
             <div className="relative">
-              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4b5563]">$</span>
+              <span className="absolute left-4 top-1/2 -translate-y-1/2 text-[#6b7280]">$</span>
               <input
                 type="number"
                 inputMode="numeric"
@@ -167,46 +124,46 @@ export default function LossCalculator({ onComplete }) {
                   setAvgJobValue(e.target.value)
                   setErrors(prev => ({ ...prev, avgJobValue: false }))
                 }}
-                placeholder="2500"
-                className={`w-full pl-8 pr-4 py-3.5 bg-[#050509] border rounded-xl text-white placeholder-[#2a3441] focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all ${
+                placeholder="e.g., 2,500"
+                className={`w-full pl-8 pr-4 py-3.5 bg-[#030306] border rounded-xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] transition-colors ${
                   errors.avgJobValue ? 'border-red-500/50' : 'border-[#1a2332]'
                 }`}
               />
             </div>
           </div>
 
-          <div className="group">
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
+          <div>
+            <label className="flex items-center gap-2 text-sm text-[#9ca3af] mb-2">
               <Clock className="w-4 h-4" />
-              Current response latency
+              How long does it usually take you to respond?
             </label>
             <div className="relative">
               <select
-                value={latency ? latency.value : ''}
+                value={responseTime ? responseTime.value : ''}
                 onChange={(e) => {
-                  const selected = latencyOptions.find(opt => opt.value === parseInt(e.target.value))
-                  setLatency(selected)
-                  setErrors(prev => ({ ...prev, latency: false }))
+                  const selected = responseOptions.find(opt => opt.value === parseInt(e.target.value))
+                  setResponseTime(selected)
+                  setErrors(prev => ({ ...prev, responseTime: false }))
                 }}
-                className={`w-full px-4 py-3.5 bg-[#050509] border rounded-xl text-white appearance-none focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all cursor-pointer ${
-                  errors.latency ? 'border-red-500/50' : 'border-[#1a2332]'
-                } ${!latency ? 'text-[#2a3441]' : ''}`}
+                className={`w-full px-4 py-3.5 bg-[#030306] border rounded-xl text-white appearance-none focus:outline-none focus:border-[#00d4cf] transition-colors cursor-pointer ${
+                  errors.responseTime ? 'border-red-500/50' : 'border-[#1a2332]'
+                } ${!responseTime ? 'text-[#4b5563]' : ''}`}
               >
-                <option value="" disabled>Select latency</option>
-                {latencyOptions.map(opt => (
+                <option value="" disabled>Select your typical response time</option>
+                {responseOptions.map(opt => (
                   <option key={opt.value} value={opt.value}>
-                    {opt.label} — {opt.decay} decay
+                    {opt.label}
                   </option>
                 ))}
               </select>
-              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#4b5563] pointer-events-none" />
+              <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6b7280] pointer-events-none" />
             </div>
           </div>
 
-          <div className="group">
-            <label className="flex items-center gap-2 text-sm text-[#6b7280] mb-2.5 group-focus-within:text-[#9ca3af] transition-colors">
+          <div>
+            <label className="flex items-center gap-2 text-sm text-[#9ca3af] mb-2">
               <Percent className="w-4 h-4" />
-              Close rate
+              What percentage of leads do you usually close?
             </label>
             <div className="relative">
               <input
@@ -218,77 +175,54 @@ export default function LossCalculator({ onComplete }) {
                   setCloseRate(e.target.value ? String(val) : '')
                   setErrors(prev => ({ ...prev, closeRate: false }))
                 }}
-                placeholder="30"
-                className={`w-full pr-10 pl-4 py-3.5 bg-[#050509] border rounded-xl text-white placeholder-[#2a3441] focus:outline-none focus:border-[#00d4cf]/50 focus:bg-[#080c14] transition-all ${
+                placeholder="e.g., 30"
+                className={`w-full pr-10 pl-4 py-3.5 bg-[#030306] border rounded-xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] transition-colors ${
                   errors.closeRate ? 'border-red-500/50' : 'border-[#1a2332]'
                 }`}
               />
-              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#4b5563]">%</span>
+              <span className="absolute right-4 top-1/2 -translate-y-1/2 text-[#6b7280]">%</span>
             </div>
           </div>
         </div>
 
         {/* Results */}
         {showResults && hasAllInputs && (
-          <div className="relative border-t border-[#1a2332] p-6 bg-gradient-to-b from-[#0d1320] to-[#0a0f1a]">
-            {/* Results glow */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-3/4 h-px bg-gradient-to-r from-transparent via-[#00d4cf]/30 to-transparent" />
+          <div className="border-t border-[#1a2332] p-6 bg-[#0d1320]">
+            <p className="text-sm text-[#9ca3af] mb-4">
+              Based on your numbers, slow response time is likely costing you:
+            </p>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="p-4 bg-[#050509] rounded-xl border border-[#1a2332] group hover:border-[#1a2332]/80 transition-colors">
-                <p className="text-xs text-[#4b5563] uppercase tracking-wider mb-1.5 font-mono">
-                  Monthly Gap
+              <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
+                <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
+                  Lost per month
                 </p>
-                <p className="text-2xl sm:text-3xl font-semibold text-white font-mono tracking-tight">
-                  {formatCurrency(results.monthlyRevenueLoss)}
+                <p className="text-3xl font-bold text-white">
+                  {formatCurrency(results.monthlyLoss)}
                 </p>
               </div>
-              <div className="p-4 bg-[#050509] rounded-xl border border-[#1a2332] group hover:border-[#1a2332]/80 transition-colors">
-                <p className="text-xs text-[#4b5563] uppercase tracking-wider mb-1.5 font-mono">
-                  Jobs Affected
+              <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
+                <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
+                  Jobs missed
                 </p>
-                <p className="text-2xl sm:text-3xl font-semibold text-white font-mono tracking-tight">
-                  {results.monthlyJobsLost}<span className="text-lg text-[#6b7280]">/mo</span>
+                <p className="text-3xl font-bold text-white">
+                  ~{results.monthlyJobsLost}<span className="text-lg font-normal text-[#6b7280]">/mo</span>
                 </p>
               </div>
             </div>
 
             <p className="text-sm text-[#6b7280] mb-6">
-              At <span className="text-[#9ca3af]">{latency.decay}</span> decay rate, approximately <span className="text-white">{results.decayedLeadsPerWeek} leads</span> per week do not convert due to response latency.
+              That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> that likely went to a competitor who responded faster.
             </p>
 
             <button
               onClick={handleSubmit}
-              className="w-full py-4 px-6 bg-white text-[#050509] font-medium rounded-xl transition-all duration-300 hover:bg-[#00d4cf] hover:shadow-[0_0_30px_rgba(0,212,207,0.2)]"
+              className="w-full py-4 px-6 bg-white text-[#030306] font-semibold rounded-xl transition-all duration-300 hover:bg-[#00d4cf]"
             >
-              Review response architecture
+              Talk to us about fixing this
             </button>
           </div>
         )}
-
-        {/* Methodology */}
-        <div className="relative px-6 pb-5">
-          <button
-            onClick={() => setShowMethodology(!showMethodology)}
-            className="flex items-center gap-2 text-xs text-[#4b5563] hover:text-[#6b7280] transition-colors"
-          >
-            <Info className="w-3 h-3" />
-            {showMethodology ? 'Hide' : 'View'} decay model
-          </button>
-
-          {showMethodology && (
-            <div className="mt-3 p-4 bg-[#050509] rounded-xl border border-[#1a2332] text-xs text-[#4b5563] font-mono space-y-1">
-              <div className="grid grid-cols-2 gap-x-4 gap-y-1">
-                <span>&lt;5 min = 0%</span>
-                <span>1-4 hrs = 40%</span>
-                <span>5-15 min = 10%</span>
-                <span>4-24 hrs = 60%</span>
-                <span>15-60 min = 25%</span>
-                <span>&gt;24 hrs = 75%</span>
-              </div>
-            </div>
-          )}
-        </div>
       </div>
     </div>
   )
