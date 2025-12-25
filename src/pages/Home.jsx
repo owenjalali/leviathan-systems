@@ -336,15 +336,6 @@ export default function Home() {
 
           {/* Visual flow */}
           <div className="relative">
-            {/* Connecting line - desktop */}
-            <div className="hidden lg:block absolute top-1/2 left-[16%] right-[16%] h-[2px] -translate-y-1/2">
-              <div className="absolute inset-0 bg-white/5" />
-              <div
-                className="absolute inset-y-0 left-0 bg-gradient-to-r from-[#00d4cf] to-[#7c72ff] transition-all duration-1000"
-                style={{ width: howVisible ? '100%' : '0%', transitionDelay: '0.3s' }}
-              />
-            </div>
-
             <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
               {[
                 {
