@@ -77,23 +77,18 @@ export default function LossCalculator({ onComplete }) {
         {/* Header */}
         <div className="px-6 py-5 border-b border-[#1a2332]">
           <h3 className="text-lg font-semibold text-white">Lead Leak Check</h3>
-          <p className="text-sm text-[#6b7280] mt-1">See how many leads you lose when no one responds fast enough.</p>
         </div>
 
         {/* Example result — shown before interaction */}
         {!hasAllInputs && (
           <div className="px-6 py-4 bg-[#0d1320] border-b border-[#1a2332]">
-            <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-2">Example</p>
             <p className="text-sm text-[#9ca3af] mb-3">
-              A business with 20 leads/week, $2,500 avg job, 30% close rate, responding in 1-4 hours:
+              20 leads/week, $2,500 avg job, 30% close rate, 1-4 hour response:
             </p>
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-bold text-white">$8,650</span>
               <span className="text-sm text-[#6b7280]">lost per month</span>
             </div>
-            <p className="text-xs text-[#4b5563] mt-2">
-              That's ~14 jobs per month going to competitors who responded faster.
-            </p>
           </div>
         )}
 
@@ -227,9 +222,8 @@ export default function LossCalculator({ onComplete }) {
             </p>
 
             <div className="p-4 bg-[#030306]/50 rounded-xl border border-[#1a2332] mb-6">
-              <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-2">About these numbers</p>
               <p className="text-sm text-[#9ca3af] mb-2">
-                These estimates are based on industry response data. The assumptions are conservative.
+                Based on industry response data. Conservative estimates.
               </p>
               <p className="text-sm text-white font-medium">
                 Even if this model is wrong by 50%, the loss is still material.
