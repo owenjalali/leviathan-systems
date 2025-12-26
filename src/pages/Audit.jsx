@@ -297,11 +297,11 @@ export default function Audit() {
           </span>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
-            Map your delay cost.
+            Map your losses.
           </h1>
 
           <p className="text-lg text-[#9ca3af] leading-relaxed">
-            30 minutes. We show you exactly where delays are costing you and what
+            30 minutes. We show you exactly where set backs in revenue reside, and what
             the fix looks like.
           </p>
 

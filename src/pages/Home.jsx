@@ -159,7 +159,7 @@ export default function Home() {
                 </button>
                 <button
                   onClick={() => navigate('/audit')}
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#38bdf8] text-[#030306] font-semibold rounded-full transition-all duration-300 hover:bg-[#7dd3fc] hover:shadow-[0_0_50px_rgba(56,189,248,0.4)] hover:scale-[1.02]"
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#00d4cf] text-[#030306] font-semibold rounded-full transition-all duration-300 hover:bg-[#00e5df] hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
                 >
                   Start Saving
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
@@ -507,7 +507,7 @@ export default function Home() {
             <span className="text-[#6b7280]">So why waste both?</span>
           </h2>
           <p className="text-xl text-[#6b7280] mb-12">
-            Talk to us about optimizing your time.
+            Talk to us about optimizing your time and your revenue.
           </p>
 
           <button
