@@ -1,5 +1,11 @@
 import { createPortal } from "react-dom";
-import { ArrowRight, Check, AlertCircle, ChevronDown, TrendingDown } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  AlertCircle,
+  ChevronDown,
+  TrendingDown,
+} from "lucide-react";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useState, useEffect, useRef, useCallback } from "react";
 
@@ -47,14 +53,18 @@ export default function Audit() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({ top: 0, left: 0, width: 0 });
+  const [dropdownPosition, setDropdownPosition] = useState({
+    top: 0,
+    left: 0,
+    width: 0,
+  });
   const [calculatorResults, setCalculatorResults] = useState(null);
 
   const countryButtonRef = useRef(null);
 
   // Get calculator results from session storage
   useEffect(() => {
-    const stored = sessionStorage.getItem('calculatorResults');
+    const stored = sessionStorage.getItem("calculatorResults");
     if (stored) {
       setCalculatorResults(JSON.parse(stored));
     }
@@ -67,7 +77,7 @@ export default function Audit() {
       setDropdownPosition({
         top: rect.bottom + 4,
         left: rect.left,
-        width: Math.max(280, rect.width)
+        width: Math.max(280, rect.width),
       });
     }
   }, [countryDropdownOpen]);
@@ -76,11 +86,11 @@ export default function Audit() {
   useEffect(() => {
     if (countryDropdownOpen) {
       updateDropdownPosition();
-      window.addEventListener('scroll', updateDropdownPosition, true);
-      window.addEventListener('resize', updateDropdownPosition);
+      window.addEventListener("scroll", updateDropdownPosition, true);
+      window.addEventListener("resize", updateDropdownPosition);
       return () => {
-        window.removeEventListener('scroll', updateDropdownPosition, true);
-        window.removeEventListener('resize', updateDropdownPosition);
+        window.removeEventListener("scroll", updateDropdownPosition, true);
+        window.removeEventListener("resize", updateDropdownPosition);
       };
     }
   }, [countryDropdownOpen, updateDropdownPosition]);
@@ -90,7 +100,7 @@ export default function Audit() {
     setDropdownPosition({
       top: rect.bottom + 4,
       left: rect.left,
-      width: Math.max(280, rect.width)
+      width: Math.max(280, rect.width),
     });
     setCountryDropdownOpen(true);
   };
@@ -139,10 +149,17 @@ export default function Audit() {
     const digits = value.replace(/\D/g, "");
     if (countryDial === "+1") {
       if (digits.length <= 3) return digits;
-      if (digits.length <= 6) return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6, 10)}`;
+      if (digits.length <= 6)
+        return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
+      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(
+        6,
+        10
+      )}`;
     }
-    if (digits.length > 6) return digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6);
+    if (digits.length > 6)
+      return (
+        digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6)
+      );
     if (digits.length > 3) return digits.slice(0, 3) + " " + digits.slice(3);
     return digits;
   };
@@ -163,16 +180,22 @@ export default function Audit() {
 
   const validateForm = () => {
     const newErrors = {};
-    if (!formData.businessName.trim()) newErrors.businessName = "Business name is required";
+    if (!formData.businessName.trim())
+      newErrors.businessName = "Business name is required";
     if (!formData.industry) newErrors.industry = "Please select an industry";
     if (!formData.name.trim()) newErrors.name = "Your name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
-    else if (!validateEmail(formData.email)) newErrors.email = "Please enter a valid email";
+    else if (!validateEmail(formData.email))
+      newErrors.email = "Please enter a valid email";
     if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-    else if (!validatePhone(formData.phone)) newErrors.phone = "Please enter a valid phone number";
-    if (!formData.volume) newErrors.volume = "Please select your monthly volume";
-    if (formData.channels.length === 0) newErrors.channels = "Please select at least one channel";
-    if (formData.painPoints.length === 0) newErrors.painPoints = "Please select at least one issue";
+    else if (!validatePhone(formData.phone))
+      newErrors.phone = "Please enter a valid phone number";
+    if (!formData.volume)
+      newErrors.volume = "Please select your monthly volume";
+    if (formData.channels.length === 0)
+      newErrors.channels = "Please select at least one channel";
+    if (formData.painPoints.length === 0)
+      newErrors.painPoints = "Please select at least one issue";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -197,25 +220,32 @@ export default function Audit() {
       painPoints: formData.painPoints.join(", "),
       crm: formData.crm,
       schedulingTool: formData.schedulingTool,
-      calculatorResults: calculatorResults ? JSON.stringify(calculatorResults) : null,
+      calculatorResults: calculatorResults
+        ? JSON.stringify(calculatorResults)
+        : null,
       submittedAt: new Date().toISOString(),
     };
 
     try {
       const response = await fetch("https://formspree.io/f/xbdrwznd", {
         method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
         body: JSON.stringify(submitData),
       });
 
       if (response.ok) {
         setStep(2);
-        sessionStorage.removeItem('calculatorResults');
+        sessionStorage.removeItem("calculatorResults");
       } else {
         throw new Error("Failed to submit form");
       }
     } catch (error) {
-      setSubmitError("Something went wrong. Please try again or email us directly.");
+      setSubmitError(
+        "Something went wrong. Please try again or email us directly."
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -257,7 +287,9 @@ export default function Audit() {
         <div
           ref={heroRef}
           className={`mx-auto max-w-2xl px-6 text-center relative z-10 transition-all duration-700 ${
-            heroVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            heroVisible
+              ? "opacity-100 translate-y-0"
+              : "opacity-0 translate-y-8"
           }`}
         >
           <span className="inline-block px-3 py-1.5 mb-4 text-xs font-medium tracking-wider uppercase text-[#00d4cf] bg-[#00d4cf]/10 rounded-full border border-[#00d4cf]/20">
@@ -269,7 +301,8 @@ export default function Audit() {
           </h1>
 
           <p className="text-lg text-[#9ca3af] leading-relaxed">
-            30 minutes. We show you exactly where leads are slipping and what the fix looks like.
+            30 minutes. We show you exactly where leads are slipping and what
+            the fix looks like.
           </p>
 
           {/* Show calculator results if available */}
@@ -277,10 +310,15 @@ export default function Audit() {
             <div className="mt-8 p-4 bg-red-950/20 border border-red-500/20 rounded-2xl">
               <div className="flex items-center justify-center gap-2 mb-2">
                 <TrendingDown className="w-4 h-4 text-red-400" />
-                <span className="text-red-400 text-sm font-medium">Your estimated leak</span>
+                <span className="text-red-400 text-sm font-medium">
+                  Your estimated leak
+                </span>
               </div>
               <p className="text-2xl font-bold text-white">
-                {formatCurrency(calculatorResults.monthlyLoss)}<span className="text-[#6b7280] text-lg font-normal">/month</span>
+                {formatCurrency(calculatorResults.monthlyLoss)}
+                <span className="text-[#6b7280] text-lg font-normal">
+                  /month
+                </span>
               </p>
             </div>
           )}
@@ -299,18 +337,33 @@ export default function Audit() {
                 </span>
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Business name *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Business name *
+                    </label>
                     <input
                       type="text"
                       value={formData.businessName}
-                      onChange={(e) => updateField("businessName", e.target.value)}
-                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${errors.businessName ? "border-red-500" : "border-[#1a2332]"}`}
+                      onChange={(e) =>
+                        updateField("businessName", e.target.value)
+                      }
+                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                        errors.businessName
+                          ? "border-red-500"
+                          : "border-[#1a2332]"
+                      }`}
                       placeholder="Your company name"
                     />
-                    {errors.businessName && <p className="text-red-400 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.businessName}</p>}
+                    {errors.businessName && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.businessName}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Website (optional)</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Website (optional)
+                    </label>
                     <input
                       type="url"
                       value={formData.website}
@@ -320,19 +373,36 @@ export default function Audit() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Industry *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Industry *
+                    </label>
                     <div className="relative">
                       <select
                         value={formData.industry}
-                        onChange={(e) => updateField("industry", e.target.value)}
-                        className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all appearance-none cursor-pointer ${errors.industry ? "border-red-500" : "border-[#1a2332]"} ${!formData.industry ? "text-[#4b5563]" : ""}`}
+                        onChange={(e) =>
+                          updateField("industry", e.target.value)
+                        }
+                        className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all appearance-none cursor-pointer ${
+                          errors.industry
+                            ? "border-red-500"
+                            : "border-[#1a2332]"
+                        } ${!formData.industry ? "text-[#4b5563]" : ""}`}
                       >
                         <option value="">Select industry</option>
-                        {industries.map((ind) => <option key={ind} value={ind}>{ind}</option>)}
+                        {industries.map((ind) => (
+                          <option key={ind} value={ind}>
+                            {ind}
+                          </option>
+                        ))}
                       </select>
                       <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6b7280] pointer-events-none" />
                     </div>
-                    {errors.industry && <p className="text-red-400 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.industry}</p>}
+                    {errors.industry && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.industry}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -344,28 +414,48 @@ export default function Audit() {
                 </span>
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Your name *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Your name *
+                    </label>
                     <input
                       type="text"
                       value={formData.name}
                       onChange={(e) => updateField("name", e.target.value)}
-                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${errors.name ? "border-red-500" : "border-[#1a2332]"}`}
+                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                        errors.name ? "border-red-500" : "border-[#1a2332]"
+                      }`}
                     />
-                    {errors.name && <p className="text-red-400 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.name}</p>}
+                    {errors.name && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.name}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Email *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Email *
+                    </label>
                     <input
                       type="email"
                       value={formData.email}
                       onChange={(e) => updateField("email", e.target.value)}
-                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${errors.email ? "border-red-500" : "border-[#1a2332]"}`}
+                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                        errors.email ? "border-red-500" : "border-[#1a2332]"
+                      }`}
                       placeholder="you@company.com"
                     />
-                    {errors.email && <p className="text-red-400 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.email}</p>}
+                    {errors.email && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.email}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Phone *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Phone *
+                    </label>
                     <div className="flex gap-2">
                       <div className="relative country-selector">
                         <button
@@ -374,55 +464,97 @@ export default function Audit() {
                           onClick={openDropdown}
                           className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-4 h-[54px] text-white hover:border-[#3d4a59] transition-colors"
                         >
-                          <span className="text-base" style={{ fontFamily: "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif" }}>{formData.country.flag}</span>
-                          <span className="text-[#9ca3af] text-sm">{formData.country.dial}</span>
-                          <ChevronDown className={`w-4 h-4 text-[#6b7280] transition-transform ${countryDropdownOpen ? "rotate-180" : ""}`} />
-                        </button>
-
-                        {countryDropdownOpen && createPortal(
-                          <div
-                            className="fixed bg-white rounded-2xl shadow-2xl border border-gray-200 z-[9999] overflow-hidden"
+                          <span
+                            className="text-base"
                             style={{
-                              top: dropdownPosition.top,
-                              left: dropdownPosition.left,
-                              width: "280px",
+                              fontFamily:
+                                "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif",
                             }}
                           >
+                            {formData.country.flag}
+                          </span>
+                          <span className="text-[#9ca3af] text-sm">
+                            {formData.country.dial}
+                          </span>
+                          <ChevronDown
+                            className={`w-4 h-4 text-[#6b7280] transition-transform ${
+                              countryDropdownOpen ? "rotate-180" : ""
+                            }`}
+                          />
+                        </button>
+
+                        {countryDropdownOpen &&
+                          createPortal(
                             <div
-                              className="overflow-y-auto"
+                              className="fixed bg-white rounded-2xl shadow-2xl border border-gray-200 z-[9999] overflow-hidden"
                               style={{
-                                maxHeight: "280px",
-                                scrollbarWidth: "thin",
-                                scrollbarColor: "rgba(0, 0, 0, 0.3) #f0f0f0"
+                                top: dropdownPosition.top,
+                                left: dropdownPosition.left,
+                                width: dropdownPosition.width,
                               }}
                             >
-                              {countries.map((country) => (
-                                <button
-                                  key={country.code}
-                                  type="button"
-                                  onClick={() => handleCountryChange(country)}
-                                  className={`w-full flex items-center gap-3 px-4 h-[44px] hover:bg-gray-100 transition-colors text-left ${formData.country.code === country.code ? "bg-gray-100" : ""}`}
-                                >
-                                  <span className="text-base" style={{ fontFamily: "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif" }}>{country.flag}</span>
-                                  <span className="text-gray-900 text-sm font-medium">{country.code}</span>
-                                  <span className="text-gray-600 text-sm flex-1 truncate">{country.name}</span>
-                                  <span className="text-gray-400 text-sm tabular-nums">{country.dial}</span>
-                                </button>
-                              ))}
-                            </div>
-                          </div>,
-                          document.getElementById("dropdown-root")
-                        )}
+                              <div
+                                className="overflow-y-auto"
+                                style={{
+                                  maxHeight: "280px",
+                                  scrollbarWidth: "thin",
+                                  scrollbarColor: "rgba(0, 0, 0, 0.3) #f0f0f0",
+                                }}
+                              >
+                                {countries.map((country) => (
+                                  <button
+                                    key={country.code}
+                                    type="button"
+                                    onClick={() => handleCountryChange(country)}
+                                    className={`w-full flex items-center gap-3 px-4 h-[44px] leading-none hover:bg-gray-100 transition-colors text-left ${
+                                      formData.country.code === country.code
+                                        ? "bg-gray-100"
+                                        : ""
+                                    }`}
+                                  >
+                                    <span
+                                      className="w-5 h-5 flex items-center justify-center text-lg leading-none"
+                                      style={{
+                                        fontFamily:
+                                          "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji'",
+                                      }}
+                                    >
+                                      {formData.country.flag}
+                                    </span>
+
+                                    <span className="text-gray-600 text-sm flex-1 truncate">
+                                      {country.name}
+                                    </span>
+                                    <span className="text-gray-400 text-sm tabular-nums">
+                                      {country.dial}
+                                    </span>
+                                  </button>
+                                ))}
+                              </div>
+                            </div>,
+                            document.getElementById("dropdown-root")
+                          )}
                       </div>
                       <input
                         type="tel"
                         value={formData.phone}
                         onChange={handlePhoneChange}
-                        className={`flex-1 px-4 h-[54px] bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${errors.phone ? "border-red-500" : "border-[#1a2332]"}`}
-                        placeholder={formData.country.dial === "+1" ? "(555) 123-4567" : "Phone number"}
+                        className={`flex-1 px-4 h-[44px] bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                          errors.phone ? "border-red-500" : "border-[#1a2332]"
+                        }`}
+                        placeholder={
+                          formData.country.dial === "+1"
+                            ? "(555) 123-4567"
+                            : "Phone number"
+                        }
                       />
                     </div>
-                    {errors.phone && <p className="text-red-400 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.phone}</p>}
+                    {errors.phone && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.phone}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -434,28 +566,47 @@ export default function Audit() {
                 </span>
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Monthly inbound interactions *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Monthly inbound interactions *
+                    </label>
                     <div className="relative">
                       <select
                         value={formData.volume}
                         onChange={(e) => updateField("volume", e.target.value)}
-                        className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all appearance-none cursor-pointer ${errors.volume ? "border-red-500" : "border-[#1a2332]"} ${!formData.volume ? "text-[#4b5563]" : ""}`}
+                        className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all appearance-none cursor-pointer ${
+                          errors.volume ? "border-red-500" : "border-[#1a2332]"
+                        } ${!formData.volume ? "text-[#4b5563]" : ""}`}
                       >
                         <option value="">Select volume</option>
-                        {volumes.map((vol) => <option key={vol} value={vol}>{vol}</option>)}
+                        {volumes.map((vol) => (
+                          <option key={vol} value={vol}>
+                            {vol}
+                          </option>
+                        ))}
                       </select>
                       <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-[#6b7280] pointer-events-none" />
                     </div>
-                    {errors.volume && <p className="text-red-400 text-sm mt-1 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.volume}</p>}
+                    {errors.volume && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.volume}
+                      </p>
+                    )}
                   </div>
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-3">Channels you use *</label>
+                    <label className="block text-sm text-[#9ca3af] mb-3">
+                      Channels you use *
+                    </label>
                     <div className="flex flex-wrap gap-2">
                       {channels.map((channel) => (
                         <button
                           key={channel}
                           type="button"
-                          onClick={() => { toggleArrayField("channels", channel); if (errors.channels) setErrors((prev) => ({ ...prev, channels: "" })); }}
+                          onClick={() => {
+                            toggleArrayField("channels", channel);
+                            if (errors.channels)
+                              setErrors((prev) => ({ ...prev, channels: "" }));
+                          }}
                           className={`px-4 py-2.5 text-sm rounded-full border transition-all duration-200 ${
                             formData.channels.includes(channel)
                               ? "bg-[#00d4cf] text-[#050509] border-[#00d4cf] font-medium"
@@ -466,7 +617,12 @@ export default function Audit() {
                         </button>
                       ))}
                     </div>
-                    {errors.channels && <p className="text-red-400 text-sm mt-2 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.channels}</p>}
+                    {errors.channels && (
+                      <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.channels}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
@@ -481,7 +637,11 @@ export default function Audit() {
                     <button
                       key={point}
                       type="button"
-                      onClick={() => { toggleArrayField("painPoints", point); if (errors.painPoints) setErrors((prev) => ({ ...prev, painPoints: "" })); }}
+                      onClick={() => {
+                        toggleArrayField("painPoints", point);
+                        if (errors.painPoints)
+                          setErrors((prev) => ({ ...prev, painPoints: "" }));
+                      }}
                       className={`px-4 py-2.5 text-sm rounded-full border transition-all duration-200 ${
                         formData.painPoints.includes(point)
                           ? "bg-[#00d4cf] text-[#050509] border-[#00d4cf] font-medium"
@@ -492,17 +652,27 @@ export default function Audit() {
                     </button>
                   ))}
                 </div>
-                {errors.painPoints && <p className="text-red-400 text-sm mt-2 flex items-center gap-1"><AlertCircle className="w-4 h-4" />{errors.painPoints}</p>}
+                {errors.painPoints && (
+                  <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
+                    <AlertCircle className="w-4 h-4" />
+                    {errors.painPoints}
+                  </p>
+                )}
               </div>
 
               {/* TOOLS */}
               <div>
                 <span className="inline-block px-3 py-1.5 mb-5 text-xs font-medium tracking-wider uppercase text-[#00d4cf] bg-[#00d4cf]/10 rounded-full border border-[#00d4cf]/20">
-                  Current Tools <span className="text-[#6b7280] normal-case tracking-normal">(Optional)</span>
+                  Current Tools{" "}
+                  <span className="text-[#6b7280] normal-case tracking-normal">
+                    (Optional)
+                  </span>
                 </span>
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">CRM you use</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      CRM you use
+                    </label>
                     <input
                       type="text"
                       value={formData.crm}
@@ -512,11 +682,15 @@ export default function Audit() {
                     />
                   </div>
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">Scheduling tool</label>
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Scheduling tool
+                    </label>
                     <input
                       type="text"
                       value={formData.schedulingTool}
-                      onChange={(e) => updateField("schedulingTool", e.target.value)}
+                      onChange={(e) =>
+                        updateField("schedulingTool", e.target.value)
+                      }
                       className="w-full px-4 py-3.5 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all"
                       placeholder="e.g. Calendly, ServiceTitan"
                     />
@@ -598,8 +772,13 @@ export default function Audit() {
                     "We map where leads are leaking.",
                     "You leave with a clear recommendation—even if we're not the right fit.",
                   ].map((item, index) => (
-                    <div key={item} className="flex gap-4 p-4 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl">
-                      <span className="text-[#00d4cf] font-bold">{index + 1}.</span>
+                    <div
+                      key={item}
+                      className="flex gap-4 p-4 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl"
+                    >
+                      <span className="text-[#00d4cf] font-bold">
+                        {index + 1}.
+                      </span>
                       <p className="text-[#9ca3af]">{item}</p>
                     </div>
                   ))}
