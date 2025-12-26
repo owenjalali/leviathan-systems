@@ -4,7 +4,25 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Leviathan Systems - Autonomous Revenue Infrastructure company. We build systems that capture revenue, maintain operational control, and scale without human dependency. Not an automation agency. Not a SaaS platform. Infrastructure.
+Leviathan Systems is an automation company that builds revenue-critical systems for service businesses.
+
+**Core belief**: Time leakage equals revenue leakage. Any business that relies on humans to respond, qualify, or follow up is structurally losing money.
+
+**What we do**: Leviathan designs and implements automated systems that handle inbound demand end-to-end. These systems respond instantly, qualify leads automatically, route them correctly, and book appointments or trigger next actions without delay. Our focus is not individual tools or features. We build systems that remove dependence on human speed, availability, and consistency.
+
+**Positioning**: We are not a traditional marketing agency, software reseller, or AI "chatbot" company. We are infrastructure.
+- If a business is slow, our systems recover lost revenue
+- If a business is fast, our systems protect them from risk, inconsistency, and human failure
+
+## Business Framing
+
+How to frame Leviathan:
+- Automation as reliability
+- Systems as protection
+- Speed as a baseline, not the value
+- Consistency and coverage as the real advantage
+
+**Tone**: Clear, confident, and technical but accessible. No hype, no buzzwords, no exaggerated claims. Frame everything in terms of risk removal, certainty, and operational leverage.
 
 ## Tech Stack
 
