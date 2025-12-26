@@ -462,17 +462,18 @@ export default function Audit() {
                           ref={countryButtonRef}
                           type="button"
                           onClick={openDropdown}
-                          className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-4 h-[54px] text-white hover:border-[#3d4a59] transition-colors"
+                          className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-4 h-[44px] text-white hover:border-[#3d4a59] transition-colors"
                         >
                           <span
-                            className="text-base"
+                            className="w-5 h-5 flex items-center justify-center text-lg leading-none shrink-0"
                             style={{
                               fontFamily:
-                                "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif",
+                                "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji'",
                             }}
                           >
                             {formData.country.flag}
                           </span>
+
                           <span className="text-[#9ca3af] text-sm">
                             {formData.country.dial}
                           </span>
