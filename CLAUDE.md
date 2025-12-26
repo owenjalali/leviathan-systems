@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+**Default Context**: When discussing Leviathan Systems in any conversation, use the business framing, positioning, and tone guidelines below as the default context. This applies to code, copy, strategy, and any client-facing content.
+
 ## Project Overview
 
 Leviathan Systems is an automation company that builds revenue-critical systems for service businesses.
