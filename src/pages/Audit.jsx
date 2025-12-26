@@ -297,11 +297,11 @@ export default function Audit() {
           </span>
 
           <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
-            Get your leak mapped.
+            Map your delay cost.
           </h1>
 
           <p className="text-lg text-[#9ca3af] leading-relaxed">
-            30 minutes. We show you exactly where leads are slipping and what
+            30 minutes. We show you exactly where delays are costing you and what
             the fix looks like.
           </p>
 
@@ -311,7 +311,7 @@ export default function Audit() {
               <div className="flex items-center justify-center gap-2 mb-2">
                 <TrendingDown className="w-4 h-4 text-red-400" />
                 <span className="text-red-400 text-sm font-medium">
-                  Your estimated leak
+                  Your estimated cost of delay
                 </span>
               </div>
               <p className="text-2xl font-bold text-white">

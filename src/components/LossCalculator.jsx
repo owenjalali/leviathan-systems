@@ -76,7 +76,7 @@ export default function LossCalculator({ onComplete }) {
 
         {/* Header */}
         <div className="px-6 py-5 border-b border-[#1a2332]">
-          <h3 className="text-lg font-semibold text-white">Lead Leak Check</h3>
+          <h3 className="text-lg font-semibold text-white">Delay Cost Calculator</h3>
         </div>
 
         {/* Example result — shown before interaction */}
@@ -87,7 +87,7 @@ export default function LossCalculator({ onComplete }) {
             </p>
             <div className="flex items-baseline gap-2">
               <span className="text-2xl font-bold text-white">$8,650</span>
-              <span className="text-sm text-[#6b7280]">lost per month</span>
+              <span className="text-sm text-[#6b7280]">delay cost per month</span>
             </div>
           </div>
         )}
@@ -195,13 +195,13 @@ export default function LossCalculator({ onComplete }) {
         {showResults && hasAllInputs && (
           <div className="border-t border-[#1a2332] p-6 bg-[#0d1320]">
             <p className="text-sm text-[#9ca3af] mb-4">
-              Based on your numbers, slow response time is likely costing you:
+              Based on your numbers, response delays are likely costing you:
             </p>
 
             <div className="grid grid-cols-2 gap-4 mb-6">
               <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
                 <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
-                  Lost per month
+                  Delay cost / month
                 </p>
                 <p className="text-3xl font-bold text-white">
                   {formatCurrency(results.monthlyLoss)}
@@ -218,7 +218,7 @@ export default function LossCalculator({ onComplete }) {
             </div>
 
             <p className="text-sm text-[#6b7280] mb-6">
-              That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> that likely went to a competitor who responded faster.
+              That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> going to competitors who responded faster.
             </p>
 
             <button

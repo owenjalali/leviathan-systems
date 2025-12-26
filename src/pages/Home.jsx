@@ -145,17 +145,26 @@ export default function Home() {
                 <span className="text-[#6b7280]">caused by human delay.</span>
               </h1>
 
-              <p className="text-xl text-[#6b7280] mb-12 max-w-md">
-                Instant response. Automatic qualification. Booked appointments.
+              <p className="text-xl text-[#6b7280] mb-12 max-w-lg">
+                Leviathan builds automated systems that respond instantly, qualify automatically, and book appointments.
               </p>
 
-              <button
-                onClick={scrollToCalculator}
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#030306] font-semibold rounded-full transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
-              >
-                Calculate your lead loss
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
+              <div className="flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={scrollToCalculator}
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-[#030306] font-semibold rounded-full transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
+                >
+                  Calculate Losses
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
+                <button
+                  onClick={() => navigate('/audit')}
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#38bdf8] text-[#030306] font-semibold rounded-full transition-all duration-300 hover:bg-[#7dd3fc] hover:shadow-[0_0_50px_rgba(56,189,248,0.4)] hover:scale-[1.02]"
+                >
+                  Start Saving
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </div>
             </div>
 
             {/* Right: Live Product Demo */}
@@ -461,12 +470,12 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="lg:sticky lg:top-32">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] mb-6">
-                Calculate your
+                Calculate what slow response
                 <br />
-                <span className="text-[#6b7280]">lead loss.</span>
+                <span className="text-[#6b7280]">is costing you.</span>
               </h2>
               <p className="text-lg text-[#6b7280] max-w-sm">
-                See how much slow response times are costing your business every month.
+                See how delays waste hours and reduce revenue every month.
               </p>
             </div>
 
