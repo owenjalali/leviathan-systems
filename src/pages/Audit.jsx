@@ -458,25 +458,30 @@ export default function Audit() {
                     </label>
                     <div className="flex gap-2">
                       <div className="relative country-selector">
+                        {/* Selected button */}
                         <button
                           ref={countryButtonRef}
                           type="button"
                           onClick={openDropdown}
                           className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-4 h-[44px] text-white hover:border-[#3d4a59] transition-colors"
                         >
-                          <span
-                            className="w-5 h-5 flex items-center justify-center text-lg leading-none shrink-0"
-                            style={{
-                              fontFamily:
-                                "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji'",
-                            }}
-                          >
-                            {formData.country.flag}
+                          <img
+                            src={`https://flagcdn.com/w20/${formData.country.code.toLowerCase()}.png`}
+                            srcSet={`https://flagcdn.com/w40/${formData.country.code.toLowerCase()}.png 2x`}
+                            width="20"
+                            height="15"
+                            alt=""
+                            className="shrink-0 rounded-sm"
+                          />
+
+                          <span className="text-white text-sm font-medium w-8 text-left">
+                            {formData.country.code}
                           </span>
 
                           <span className="text-[#9ca3af] text-sm">
                             {formData.country.dial}
                           </span>
+
                           <ChevronDown
                             className={`w-4 h-4 text-[#6b7280] transition-transform ${
                               countryDropdownOpen ? "rotate-180" : ""
@@ -484,49 +489,47 @@ export default function Audit() {
                           />
                         </button>
 
+                        {/* Dropdown */}
                         {countryDropdownOpen &&
                           createPortal(
                             <div
-                              className="fixed bg-white rounded-2xl shadow-2xl border border-gray-200 z-[9999] overflow-hidden"
+                              className="fixed z-[9999] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
                               style={{
                                 top: dropdownPosition.top,
                                 left: dropdownPosition.left,
                                 width: dropdownPosition.width,
                               }}
                             >
-                              <div
-                                className="overflow-y-auto"
-                                style={{
-                                  maxHeight: "280px",
-                                  scrollbarWidth: "thin",
-                                  scrollbarColor: "rgba(0, 0, 0, 0.3) #f0f0f0",
-                                }}
-                              >
+                              <div className="max-h-[280px] overflow-y-auto">
                                 {countries.map((country) => (
                                   <button
                                     key={country.code}
                                     type="button"
                                     onClick={() => handleCountryChange(country)}
-                                    className={`w-full flex items-center gap-3 px-4 h-[44px] leading-none hover:bg-gray-100 transition-colors text-left ${
+                                    className={`w-full flex items-center gap-3 px-4 h-[44px] text-left transition-colors hover:bg-gray-100 ${
                                       formData.country.code === country.code
                                         ? "bg-gray-100"
                                         : ""
                                     }`}
                                   >
-                                    <span
-                                      className="w-5 h-5 flex items-center justify-center text-lg leading-none"
-                                      style={{
-                                        fontFamily:
-                                          "'Segoe UI Emoji','Apple Color Emoji','Noto Color Emoji'",
-                                      }}
-                                    >
-                                      {formData.country.flag}
+                                    <img
+                                      src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
+                                      srcSet={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png 2x`}
+                                      width="20"
+                                      height="15"
+                                      alt=""
+                                      className="shrink-0 rounded-sm"
+                                    />
+
+                                    <span className="w-8 text-sm font-medium text-gray-900 shrink-0">
+                                      {country.code}
                                     </span>
 
-                                    <span className="text-gray-600 text-sm flex-1 truncate">
+                                    <span className="flex-1 text-sm text-gray-700 truncate">
                                       {country.name}
                                     </span>
-                                    <span className="text-gray-400 text-sm tabular-nums">
+
+                                    <span className="text-sm text-gray-400 tabular-nums">
                                       {country.dial}
                                     </span>
                                   </button>
@@ -536,6 +539,7 @@ export default function Audit() {
                             document.getElementById("dropdown-root")
                           )}
                       </div>
+
                       <input
                         type="tel"
                         value={formData.phone}
