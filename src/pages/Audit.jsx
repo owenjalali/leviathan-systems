@@ -372,9 +372,9 @@ export default function Audit() {
                           ref={countryButtonRef}
                           type="button"
                           onClick={openDropdown}
-                          className="flex items-center justify-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-3 py-3.5 text-white hover:border-[#3d4a59] transition-colors min-w-[130px]"
+                          className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-4 h-[54px] text-white hover:border-[#3d4a59] transition-colors"
                         >
-                          <span className="text-lg leading-none">{formData.country.flag}</span>
+                          <span className="text-base" style={{ fontFamily: "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif" }}>{formData.country.flag}</span>
                           <span className="text-[#9ca3af] text-sm">{formData.country.dial}</span>
                           <ChevronDown className={`w-4 h-4 text-[#6b7280] transition-transform ${countryDropdownOpen ? "rotate-180" : ""}`} />
                         </button>
@@ -385,7 +385,7 @@ export default function Audit() {
                             style={{
                               top: dropdownPosition.top,
                               left: dropdownPosition.left,
-                              width: `${dropdownPosition.width}px`,
+                              width: "280px",
                             }}
                           >
                             <div
@@ -401,11 +401,11 @@ export default function Audit() {
                                   key={country.code}
                                   type="button"
                                   onClick={() => handleCountryChange(country)}
-                                  className={`w-full flex items-center gap-3 px-4 py-3 hover:bg-gray-100 transition-colors text-left ${formData.country.code === country.code ? "bg-gray-100" : ""}`}
+                                  className={`w-full flex items-center gap-3 px-4 h-[44px] hover:bg-gray-100 transition-colors text-left ${formData.country.code === country.code ? "bg-gray-100" : ""}`}
                                 >
-                                  <span className="text-lg leading-none">{country.flag}</span>
-                                  <span className="text-gray-900 text-sm font-bold w-8 text-center">{country.code}</span>
-                                  <span className="text-gray-700 text-sm flex-1">{country.name}</span>
+                                  <span className="text-base" style={{ fontFamily: "'Segoe UI Emoji', 'Apple Color Emoji', 'Noto Color Emoji', sans-serif" }}>{country.flag}</span>
+                                  <span className="text-gray-900 text-sm font-medium">{country.code}</span>
+                                  <span className="text-gray-600 text-sm flex-1 truncate">{country.name}</span>
                                   <span className="text-gray-400 text-sm tabular-nums">{country.dial}</span>
                                 </button>
                               ))}
@@ -418,7 +418,7 @@ export default function Audit() {
                         type="tel"
                         value={formData.phone}
                         onChange={handlePhoneChange}
-                        className={`flex-1 px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${errors.phone ? "border-red-500" : "border-[#1a2332]"}`}
+                        className={`flex-1 px-4 h-[54px] bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${errors.phone ? "border-red-500" : "border-[#1a2332]"}`}
                         placeholder={formData.country.dial === "+1" ? "(555) 123-4567" : "Phone number"}
                       />
                     </div>
