@@ -1,13 +1,14 @@
-import { Link, Outlet, useLocation } from 'react-router-dom'
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { Menu, X, ArrowRight } from 'lucide-react'
 import { useState, useEffect } from 'react'
 import ScrollToTop from '../components/ScrollToTop'
-import logo from '../assets/logo.png'
+import logo from '../assets/Fully New Improved Leviathan Systems Logo.png'
 
 export default function MainLayout() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const [scrolled, setScrolled] = useState(false)
   const location = useLocation()
+  const navigate = useNavigate()
 
   const currentYear = new Date().getFullYear()
 
@@ -18,6 +19,18 @@ export default function MainLayout() {
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
+
+  const handleLogoClick = (e) => {
+    e.preventDefault()
+    if (location.pathname === '/') {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    } else {
+      navigate('/')
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' })
+      }, 100)
+    }
+  }
 
   return (
     <div className="min-h-screen bg-[#030306]">
@@ -31,13 +44,13 @@ export default function MainLayout() {
       }`}>
         <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <div className="flex-1">
-            <Link to="/" className="group">
+            <a href="/" onClick={handleLogoClick} className="group cursor-pointer">
               <img
                 src={logo}
                 alt="Leviathan Systems"
-                className="h-14 w-auto transition-transform duration-300 group-hover:scale-105"
+                className="h-16 w-auto transition-transform duration-300 group-hover:scale-105"
               />
-            </Link>
+            </a>
           </div>
 
           {/* Desktop navigation - Minimal, confident */}
@@ -91,7 +104,7 @@ export default function MainLayout() {
               <img
                 src={logo}
                 alt="Leviathan Systems"
-                className="h-8 w-auto opacity-40"
+                className="h-14 w-auto opacity-60"
               />
             </div>
             <p className="text-xs text-[#4b5563]">

@@ -4,6 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Default Context**: When discussing Leviathan Systems in any conversation, use the business framing, positioning, and tone guidelines below as the default context. This applies to code, copy, strategy, and any client-facing content.
 
+## Git Workflow (Required)
+
+**Always create a branch for any changes.** Never commit directly to master.
+
+1. Create a feature branch before making any changes
+2. Make commits on the feature branch
+3. Push the branch and create a PR
+4. Wait for user approval before merging
+5. Merge to master only after approval
+6. Delete the feature branch after merging
+
+This workflow is non-negotiable for all code changes.
+
 ## Project Overview
 
 Leviathan Systems is an automation company that builds revenue-critical systems for service businesses.
