@@ -5,6 +5,7 @@ import {
   AlertCircle,
   ChevronDown,
   TrendingDown,
+  Shield,
 } from "lucide-react";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
 import { useState, useEffect, useRef, useCallback } from "react";
@@ -296,31 +297,52 @@ export default function Audit() {
             Automation Audit
           </span>
 
-          <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
-            Map your losses.
-          </h1>
-
-          <p className="text-lg text-[#9ca3af] leading-relaxed">
-            30 minutes. We show you exactly where set backs in revenue reside, and what
-            the fix looks like.
-          </p>
-
-          {/* Show calculator results if available */}
-          {calculatorResults && (
-            <div className="mt-8 p-4 bg-red-950/20 border border-red-500/20 rounded-2xl">
-              <div className="flex items-center justify-center gap-2 mb-2">
-                <TrendingDown className="w-4 h-4 text-red-400" />
-                <span className="text-red-400 text-sm font-medium">
-                  Your estimated cost of delay
-                </span>
-              </div>
-              <p className="text-2xl font-bold text-white">
-                {formatCurrency(calculatorResults.monthlyLoss)}
-                <span className="text-[#6b7280] text-lg font-normal">
-                  /month
-                </span>
+          {calculatorResults?.monthlyLoss === 0 ? (
+            <>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
+                Make it permanent.
+              </h1>
+              <p className="text-lg text-[#9ca3af] leading-relaxed">
+                Your response time isn't the problem. But it depends on humans being available every time.
               </p>
-            </div>
+              <div className="mt-8 p-4 bg-[#00d4cf]/10 border border-[#00d4cf]/20 rounded-2xl">
+                <div className="flex items-center justify-center gap-2 mb-2">
+                  <Shield className="w-4 h-4 text-[#00d4cf]" />
+                  <span className="text-[#00d4cf] text-sm font-medium">
+                    No revenue lost to delay
+                  </span>
+                </div>
+                <p className="text-sm text-[#9ca3af]">
+                  30 minutes. We'll show you how to lock this in without depending on availability.
+                </p>
+              </div>
+            </>
+          ) : (
+            <>
+              <h1 className="text-3xl sm:text-4xl font-bold text-white leading-tight mb-4">
+                Map your losses.
+              </h1>
+              <p className="text-lg text-[#9ca3af] leading-relaxed">
+                30 minutes. We show you exactly where set backs in revenue reside, and what
+                the fix looks like.
+              </p>
+              {calculatorResults && (
+                <div className="mt-8 p-4 bg-red-950/20 border border-red-500/20 rounded-2xl">
+                  <div className="flex items-center justify-center gap-2 mb-2">
+                    <TrendingDown className="w-4 h-4 text-red-400" />
+                    <span className="text-red-400 text-sm font-medium">
+                      Your estimated cost of delay
+                    </span>
+                  </div>
+                  <p className="text-2xl font-bold text-white">
+                    {formatCurrency(calculatorResults.monthlyLoss)}
+                    <span className="text-[#6b7280] text-lg font-normal">
+                      /month
+                    </span>
+                  </p>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>

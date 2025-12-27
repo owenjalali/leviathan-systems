@@ -194,39 +194,64 @@ export default function LossCalculator({ onComplete }) {
         {/* Results */}
         {showResults && hasAllInputs && (
           <div className="border-t border-[#1a2332] p-6 bg-[#0d1320]">
-            <p className="text-sm text-[#9ca3af] mb-4">
-              Based on your numbers, response delays are likely costing you:
-            </p>
+            {results.monthlyLoss === 0 ? (
+              <>
+                <p className="text-2xl font-bold text-white mb-2">
+                  $0 lost to delay.
+                </p>
+                <p className="text-sm text-[#9ca3af] mb-4">
+                  Your response time isn't the problem.
+                </p>
+                <p className="text-sm text-[#6b7280] mb-4">
+                  The risk isn't speed. It's consistency. This depends on someone being available, every lead, every time. Peak hours. After-hours. Mid-job. What happens when someone misses one?
+                </p>
+                <p className="text-sm text-white font-medium mb-6">
+                  Infrastructure doesn't get busy.
+                </p>
+                <button
+                  onClick={handleSubmit}
+                  className="w-full py-4 px-6 bg-white text-[#030306] font-semibold rounded-xl transition-all duration-300 hover:bg-[#00d4cf]"
+                >
+                  See how to make it permanent
+                </button>
+              </>
+            ) : (
+              <>
+                <p className="text-sm text-[#9ca3af] mb-4">
+                  Based on your numbers, response delays are likely costing you:
+                </p>
 
-            <div className="grid grid-cols-2 gap-4 mb-6">
-              <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
-                <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
-                  Delay cost / month
-                </p>
-                <p className="text-3xl font-bold text-white">
-                  {formatCurrency(results.monthlyLoss)}
-                </p>
-              </div>
-              <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
-                <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
-                  Jobs missed
-                </p>
-                <p className="text-3xl font-bold text-white">
-                  ~{results.monthlyJobsLost}<span className="text-lg font-normal text-[#6b7280]">/mo</span>
-                </p>
-              </div>
-            </div>
+                <div className="grid grid-cols-2 gap-4 mb-6">
+                  <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
+                    <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
+                      Delay cost / month
+                    </p>
+                    <p className="text-3xl font-bold text-white">
+                      {formatCurrency(results.monthlyLoss)}
+                    </p>
+                  </div>
+                  <div className="p-4 bg-[#030306] rounded-xl border border-[#1a2332]">
+                    <p className="text-xs text-[#6b7280] uppercase tracking-wider mb-1">
+                      Jobs missed
+                    </p>
+                    <p className="text-3xl font-bold text-white">
+                      ~{results.monthlyJobsLost}<span className="text-lg font-normal text-[#6b7280]">/mo</span>
+                    </p>
+                  </div>
+                </div>
 
-            <p className="text-sm text-[#6b7280] mb-6">
-              That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> going to competitors who responded faster.
-            </p>
+                <p className="text-sm text-[#6b7280] mb-6">
+                  That's roughly <span className="text-white font-medium">{results.lostLeadsPerWeek} leads per week</span> going to competitors who responded faster.
+                </p>
 
-            <button
-              onClick={handleSubmit}
-              className="w-full py-4 px-6 bg-white text-[#030306] font-semibold rounded-xl transition-all duration-300 hover:bg-[#00d4cf]"
-            >
-              Talk to us about fixing this
-            </button>
+                <button
+                  onClick={handleSubmit}
+                  className="w-full py-4 px-6 bg-white text-[#030306] font-semibold rounded-xl transition-all duration-300 hover:bg-[#00d4cf]"
+                >
+                  Talk to us about fixing this
+                </button>
+              </>
+            )}
           </div>
         )}
       </div>
