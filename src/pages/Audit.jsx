@@ -110,13 +110,16 @@ export default function Audit() {
     businessName: "",
     website: "",
     industry: "",
+    industry_other: "", // NEW: conditional field when "Other" is selected
     name: "",
     email: "",
     country: countries[0],
     phone: "",
     volume: "",
     channels: [],
+    channels_other: "", // NEW: conditional field when "Other" is selected
     painPoints: [],
+    painPoints_other: "", // NEW: conditional field when "Something else" is selected
     crm: "",
     schedulingTool: "",
   });
@@ -184,6 +187,9 @@ export default function Audit() {
     if (!formData.businessName.trim())
       newErrors.businessName = "Business name is required";
     if (!formData.industry) newErrors.industry = "Please select an industry";
+    // Conditional validation: industry_other is required when "Other" is selected
+    if (formData.industry === "Other" && !formData.industry_other.trim())
+      newErrors.industry_other = "Please specify your industry";
     if (!formData.name.trim()) newErrors.name = "Your name is required";
     if (!formData.email.trim()) newErrors.email = "Email is required";
     else if (!validateEmail(formData.email))
@@ -195,8 +201,14 @@ export default function Audit() {
       newErrors.volume = "Please select your monthly volume";
     if (formData.channels.length === 0)
       newErrors.channels = "Please select at least one channel";
+    // Conditional validation: channels_other is required when "Other" is selected
+    if (formData.channels.includes("Other") && !formData.channels_other.trim())
+      newErrors.channels_other = "Please specify other channel";
     if (formData.painPoints.length === 0)
       newErrors.painPoints = "Please select at least one issue";
+    // Conditional validation: painPoints_other is required when "Something else" is selected
+    if (formData.painPoints.includes("Something else") && !formData.painPoints_other.trim())
+      newErrors.painPoints_other = "Please describe the issue";
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -208,17 +220,24 @@ export default function Audit() {
     setIsSubmitting(true);
     setSubmitError("");
 
+    // Build submit data - existing fields remain unchanged for automation compatibility
     const submitData = {
       businessName: formData.businessName,
       website: formData.website,
       industry: formData.industry,
+      // NEW: industry_other - only populated when industry === "Other"
+      industry_other: formData.industry === "Other" ? formData.industry_other : "",
       name: formData.name,
       email: formData.email,
       phone: `${formData.country.dial} ${formData.phone}`,
       country: formData.country.name,
       volume: formData.volume,
       channels: formData.channels.join(", "),
+      // NEW: channels_other - only populated when "Other" is in channels array
+      channels_other: formData.channels.includes("Other") ? formData.channels_other : "",
       painPoints: formData.painPoints.join(", "),
+      // NEW: painPoints_other - only populated when "Something else" is in painPoints array
+      painPoints_other: formData.painPoints.includes("Something else") ? formData.painPoints_other : "",
       crm: formData.crm,
       schedulingTool: formData.schedulingTool,
       calculatorResults: calculatorResults
@@ -401,9 +420,13 @@ export default function Audit() {
                     <div className="relative">
                       <select
                         value={formData.industry}
-                        onChange={(e) =>
-                          updateField("industry", e.target.value)
-                        }
+                        onChange={(e) => {
+                          updateField("industry", e.target.value);
+                          // Clear industry_other error when "Other" is deselected
+                          if (e.target.value !== "Other") {
+                            setErrors((prev) => ({ ...prev, industry_other: "" }));
+                          }
+                        }}
                         className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all appearance-none cursor-pointer ${
                           errors.industry
                             ? "border-red-500"
@@ -424,6 +447,29 @@ export default function Audit() {
                         <AlertCircle className="w-4 h-4" />
                         {errors.industry}
                       </p>
+                    )}
+                    {/* Conditional input: appears when "Other" is selected */}
+                    {formData.industry === "Other" && (
+                      <div className="mt-3">
+                        <label className="block text-sm text-[#9ca3af] mb-2">
+                          Please specify your industry *
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.industry_other}
+                          onChange={(e) => updateField("industry_other", e.target.value)}
+                          className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                            errors.industry_other ? "border-red-500" : "border-[#1a2332]"
+                          }`}
+                          placeholder="e.g. E-commerce, SaaS, Construction"
+                        />
+                        {errors.industry_other && (
+                          <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                            <AlertCircle className="w-4 h-4" />
+                            {errors.industry_other}
+                          </p>
+                        )}
+                      </div>
                     )}
                   </div>
                 </div>
@@ -593,9 +639,13 @@ export default function Audit() {
                 </span>
                 <div className="space-y-5">
                   <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">
-                      Monthly inbound interactions *
+                    <label className="block text-sm text-[#9ca3af] mb-1">
+                      Monthly inbound leads or client inquiries *
                     </label>
+                    {/* Helper text - clarifies what to count */}
+                    <p className="text-xs text-[#6b7280] mb-2">
+                      Includes calls, messages, chats, and form submissions.
+                    </p>
                     <div className="relative">
                       <select
                         value={formData.volume}
@@ -633,6 +683,10 @@ export default function Audit() {
                             toggleArrayField("channels", channel);
                             if (errors.channels)
                               setErrors((prev) => ({ ...prev, channels: "" }));
+                            // Clear channels_other error when "Other" is deselected
+                            if (channel === "Other" && formData.channels.includes("Other")) {
+                              setErrors((prev) => ({ ...prev, channels_other: "" }));
+                            }
                           }}
                           className={`px-4 py-2.5 text-sm rounded-full border transition-all duration-200 ${
                             formData.channels.includes(channel)
@@ -644,6 +698,29 @@ export default function Audit() {
                         </button>
                       ))}
                     </div>
+                    {/* Conditional input: appears when "Other" is selected */}
+                    {formData.channels.includes("Other") && (
+                      <div className="mt-3">
+                        <label className="block text-sm text-[#9ca3af] mb-2">
+                          Please specify other channel *
+                        </label>
+                        <input
+                          type="text"
+                          value={formData.channels_other}
+                          onChange={(e) => updateField("channels_other", e.target.value)}
+                          className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                            errors.channels_other ? "border-red-500" : "border-[#1a2332]"
+                          }`}
+                          placeholder="e.g. Email, Social DMs, WhatsApp"
+                        />
+                        {errors.channels_other && (
+                          <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                            <AlertCircle className="w-4 h-4" />
+                            {errors.channels_other}
+                          </p>
+                        )}
+                      </div>
+                    )}
                     {errors.channels && (
                       <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
                         <AlertCircle className="w-4 h-4" />
@@ -668,6 +745,10 @@ export default function Audit() {
                         toggleArrayField("painPoints", point);
                         if (errors.painPoints)
                           setErrors((prev) => ({ ...prev, painPoints: "" }));
+                        // Clear painPoints_other error when "Something else" is deselected
+                        if (point === "Something else" && formData.painPoints.includes("Something else")) {
+                          setErrors((prev) => ({ ...prev, painPoints_other: "" }));
+                        }
                       }}
                       className={`px-4 py-2.5 text-sm rounded-full border transition-all duration-200 ${
                         formData.painPoints.includes(point)
@@ -679,6 +760,29 @@ export default function Audit() {
                     </button>
                   ))}
                 </div>
+                {/* Conditional input: appears when "Something else" is selected */}
+                {formData.painPoints.includes("Something else") && (
+                  <div className="mt-3">
+                    <label className="block text-sm text-[#9ca3af] mb-2">
+                      Please describe the issue *
+                    </label>
+                    <input
+                      type="text"
+                      value={formData.painPoints_other}
+                      onChange={(e) => updateField("painPoints_other", e.target.value)}
+                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                        errors.painPoints_other ? "border-red-500" : "border-[#1a2332]"
+                      }`}
+                      placeholder="Describe what you're trying to fix..."
+                    />
+                    {errors.painPoints_other && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.painPoints_other}
+                      </p>
+                    )}
+                  </div>
+                )}
                 {errors.painPoints && (
                   <p className="text-red-400 text-sm mt-2 flex items-center gap-1">
                     <AlertCircle className="w-4 h-4" />
