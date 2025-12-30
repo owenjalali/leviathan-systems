@@ -10,10 +10,12 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 1. Create a feature branch before making any changes
 2. Make commits on the feature branch
-3. Push the branch and create a PR
-4. Wait for user approval before merging
-5. Merge to master only after approval
-6. Delete the feature branch after merging
+3. Push the branch to remote
+4. **Start dev server (`npm run dev`) and provide localhost link for user to preview changes**
+5. Provide GitHub compare link for user to review code
+6. Wait for user approval before merging
+7. Merge to master only after approval
+8. Delete the feature branch after merging
 
 This workflow is non-negotiable for all code changes.
 
