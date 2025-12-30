@@ -221,23 +221,24 @@ export default function Audit() {
     setSubmitError("");
 
     // Build submit data - existing fields remain unchanged for automation compatibility
+    // NEW fields use null (not "") when unused, so n8n can use: field_other ?? field
     const submitData = {
       businessName: formData.businessName,
       website: formData.website,
       industry: formData.industry,
-      // NEW: industry_other - only populated when industry === "Other"
-      industry_other: formData.industry === "Other" ? formData.industry_other : "",
+      // n8n logic: industry_other ?? industry
+      industry_other: formData.industry === "Other" ? formData.industry_other : null,
       name: formData.name,
       email: formData.email,
       phone: `${formData.country.dial} ${formData.phone}`,
       country: formData.country.name,
       volume: formData.volume,
       channels: formData.channels.join(", "),
-      // NEW: channels_other - only populated when "Other" is in channels array
-      channels_other: formData.channels.includes("Other") ? formData.channels_other : "",
+      // n8n logic: channels_other ?? channels
+      channels_other: formData.channels.includes("Other") ? formData.channels_other : null,
       painPoints: formData.painPoints.join(", "),
-      // NEW: painPoints_other - only populated when "Something else" is in painPoints array
-      painPoints_other: formData.painPoints.includes("Something else") ? formData.painPoints_other : "",
+      // n8n logic: painPoints_other ?? painPoints
+      painPoints_other: formData.painPoints.includes("Something else") ? formData.painPoints_other : null,
       crm: formData.crm,
       schedulingTool: formData.schedulingTool,
       calculatorResults: calculatorResults
