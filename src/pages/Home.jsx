@@ -458,86 +458,139 @@ export default function Home() {
       <section ref={engageRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
+        {/* Background gradient wash — subtle, doesn't compete with hero */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] pointer-events-none opacity-10"
+          style={{
+            background: 'radial-gradient(ellipse at center, rgba(0,212,207,0.2) 0%, rgba(124,114,255,0.1) 50%, transparent 80%)'
+          }}
+        />
+
         <div className="mx-auto max-w-6xl px-6 relative z-10">
-          {/* Section label */}
-          <div className={`text-center mb-6 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <span className="inline-block px-4 py-1.5 text-[11px] font-medium tracking-[0.2em] uppercase text-[#6b7280] bg-white/[0.03] rounded-full border border-white/10">
-              Engagement Model
+          {/* Eyebrow — plain text, no pill, no brackets */}
+          <div className={`text-center mb-8 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
+            <span className="text-[11px] font-medium tracking-[0.25em] uppercase text-[#6b7280]/60">
+              Partner-Led Revenue Infrastructure
             </span>
           </div>
 
-          {/* Headline */}
-          <div className={`text-center mb-6 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.1s' }}>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1]">
-              From diagnosis to deployment.
-            </h2>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#6b7280] leading-[1.1] mt-1">
-              With you, not just for you.
-            </h2>
-          </div>
+          {/* Headline — two lines, sequential animation */}
+          <h2
+            className={`text-center text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+            style={{ transitionDelay: '0.15s' }}
+          >
+            From diagnosis to deployment.
+          </h2>
+          <h2
+            className={`text-center text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#6b7280] leading-[1.1] mt-1 mb-6 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+            style={{ transitionDelay: '0.3s' }}
+          >
+            With you, not just for you.
+          </h2>
 
           {/* Subhead */}
-          <p className={`text-center text-lg text-[#6b7280] max-w-xl mx-auto mb-20 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.2s' }}>
+          <p
+            className={`text-center text-lg text-[#6b7280] max-w-xl mx-auto mb-20 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+            style={{ transitionDelay: '0.5s' }}
+          >
             Every business leaks revenue in different places.
             We start by finding yours — then design the system that removes it.
           </p>
 
-          {/* Three columns */}
-          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
-            {/* Column 1 — Diagnosis (Primary CTA) */}
+          {/* Columns container with spine */}
+          <div className="relative mb-16">
+            {/* Visual spine — gradient glow rail (bias slightly left toward Column 1) */}
             <div
-              className={`relative transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{ transitionDelay: '0.3s' }}
-            >
-              <div className="p-8 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-white/15 transition-all duration-300 lg:scale-[1.02]">
-                <h3 className="text-lg font-semibold text-white mb-4">Revenue diagnosis</h3>
-                <p className="text-[#9ca3af] leading-relaxed mb-6">
-                  We map where revenue breaks — response delays, follow-ups, handoffs, and capacity gaps.
-                  You see the losses clearly before anything is built.
-                </p>
-                <button
-                  onClick={() => navigate('/audit')}
-                  className="group inline-flex items-center gap-2 text-[#00d4cf] text-sm font-medium transition-colors hover:text-[#00e5df]"
-                >
-                  Run the audit
-                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-                </button>
-              </div>
-            </div>
-
-            {/* Column 2 — System Design */}
-            <div
-              className={`relative transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{ transitionDelay: '0.45s' }}
-            >
-              <div className="p-8 rounded-2xl border border-white/5 bg-white/[0.01] transition-all duration-300">
-                <h3 className="text-lg font-semibold text-white mb-4">System design</h3>
-                <p className="text-[#9ca3af] leading-relaxed">
-                  We design automation around your lead flow, sales motion, and constraints.
-                  No templates. No generic workflows.
-                </p>
-              </div>
-            </div>
-
-            {/* Column 3 — Implementation */}
-            <div
-              className={`relative transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              className={`absolute hidden lg:block left-[30%] top-0 bottom-0 w-px pointer-events-none transition-all duration-700 ${engageVisible ? 'opacity-100' : 'opacity-0'}`}
               style={{ transitionDelay: '0.6s' }}
             >
-              <div className="p-8 rounded-2xl border border-white/5 bg-white/[0.01] transition-all duration-300">
-                <h3 className="text-lg font-semibold text-white mb-4">Implementation & optimization</h3>
-                <p className="text-[#9ca3af] leading-relaxed">
-                  We implement, monitor, and refine.
-                  Systems run automatically. We stay involved where it matters.
-                </p>
+              <div
+                className="absolute inset-0 w-6 -translate-x-1/2 blur-xl opacity-15"
+                style={{
+                  background: 'linear-gradient(180deg, #00d4cf 0%, #7c72ff 100%)'
+                }}
+              />
+            </div>
+
+            {/* Node dots above columns */}
+            <div
+              className={`absolute hidden lg:flex top-0 left-0 right-0 justify-around px-[8%] -translate-y-4 pointer-events-none transition-all duration-700 ${engageVisible ? 'opacity-100' : 'opacity-0'}`}
+              style={{ transitionDelay: '0.6s' }}
+            >
+              <div className="w-1.5 h-1.5 rounded-full bg-[#00d4cf]/40 blur-[2px]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#00d4cf]/25 blur-[2px]" />
+              <div className="w-1.5 h-1.5 rounded-full bg-[#7c72ff]/25 blur-[2px]" />
+            </div>
+
+            {/* Three columns */}
+            <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
+              {/* Column 1 — Revenue Diagnosis (Entry Vector) */}
+              <div
+                className={`relative lg:translate-y-0 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+                style={{ transitionDelay: '0.8s' }}
+              >
+                {/* Glow behind Column 1 */}
+                <div
+                  className="absolute -inset-3 rounded-3xl blur-2xl opacity-30"
+                  style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 70%)' }}
+                />
+                {/* Card */}
+                <div className="relative p-8 rounded-2xl border border-[#00d4cf]/15 bg-white/[0.025]">
+                  <h3 className="text-lg font-semibold text-white mb-4">Revenue diagnosis</h3>
+                  <p className="text-[#9ca3af] leading-relaxed mb-6">
+                    We map where revenue breaks — response delays, follow-ups, handoffs, and capacity gaps.
+                    You see the losses clearly before anything is built.
+                  </p>
+                  <button
+                    onClick={() => navigate('/audit')}
+                    className="group inline-flex items-center gap-2 text-[#00d4cf] text-sm font-medium transition-colors hover:text-[#00e5df]"
+                  >
+                    Run the audit
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                  </button>
+                </div>
+              </div>
+
+              {/* Column 2 — System Design (offset lower) */}
+              <div
+                className={`relative lg:translate-y-4 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0 lg:translate-y-4' : 'opacity-0 translate-y-3'}`}
+                style={{ transitionDelay: '1.05s' }}
+              >
+                <div className="p-8 rounded-2xl border border-white/5 bg-white/[0.01]">
+                  <h3 className="text-lg font-semibold text-white mb-4">System design</h3>
+                  <p className="text-[#9ca3af] leading-relaxed">
+                    We design automation around your lead flow, sales motion, and constraints.
+                    No templates. No generic workflows.
+                  </p>
+                </div>
+              </div>
+
+              {/* Column 3 — Implementation (offset mid) */}
+              <div
+                className={`relative lg:translate-y-2 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0 lg:translate-y-2' : 'opacity-0 translate-y-3'}`}
+                style={{ transitionDelay: '1.3s' }}
+              >
+                <div className="p-8 rounded-2xl border border-white/5 bg-white/[0.01]">
+                  <h3 className="text-lg font-semibold text-white mb-4">Implementation & optimization</h3>
+                  <p className="text-[#9ca3af] leading-relaxed">
+                    We implement, monitor, and refine.
+                    Systems run automatically. We stay involved where it matters.
+                  </p>
+                </div>
               </div>
             </div>
           </div>
 
-          {/* Closing line */}
-          <p className={`text-center text-sm text-[#4b5563] transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.75s' }}>
-            We work with a small number of partners at a time.
-          </p>
+          {/* Partnership line — premium, quiet */}
+          <div
+            className={`flex items-center justify-center gap-2 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
+            style={{ transitionDelay: '1.6s' }}
+          >
+            <div className="w-1.5 h-1.5 rounded-full bg-[#00d4cf]/40" />
+            <p className="text-sm text-[#4b5563]">
+              We work with a small number of partners at a time.
+            </p>
+          </div>
         </div>
       </section>
 
