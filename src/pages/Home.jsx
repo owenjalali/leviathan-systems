@@ -10,6 +10,7 @@ export default function Home() {
   const statRef = useRef(null)
   const [calcRef, calcVisible] = useScrollAnimation(0.1)
   const [howRef, howVisible] = useScrollAnimation(0.15)
+  const [engageRef, engageVisible] = useScrollAnimation(0.15)
   const [statValue, setStatValue] = useState(0)
   const [statVisible, setStatVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
@@ -447,6 +448,96 @@ export default function Home() {
               ))}
             </div>
           </div>
+        </div>
+      </section>
+
+
+      {/* ============================================
+          ENGAGEMENT MODEL — PARTNERSHIP LAYER
+          ============================================ */}
+      <section ref={engageRef} className="py-32 sm:py-40 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        <div className="mx-auto max-w-6xl px-6 relative z-10">
+          {/* Section label */}
+          <div className={`text-center mb-6 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <span className="inline-block px-4 py-1.5 text-[11px] font-medium tracking-[0.2em] uppercase text-[#6b7280] bg-white/[0.03] rounded-full border border-white/10">
+              Engagement Model
+            </span>
+          </div>
+
+          {/* Headline */}
+          <div className={`text-center mb-6 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.1s' }}>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1]">
+              From diagnosis to deployment.
+            </h2>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#6b7280] leading-[1.1] mt-1">
+              With you, not just for you.
+            </h2>
+          </div>
+
+          {/* Subhead */}
+          <p className={`text-center text-lg text-[#6b7280] max-w-xl mx-auto mb-20 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.2s' }}>
+            Every business leaks revenue in different places.
+            We start by finding yours — then design the system that removes it.
+          </p>
+
+          {/* Three columns */}
+          <div className="grid lg:grid-cols-3 gap-8 lg:gap-12 mb-16">
+            {/* Column 1 — Diagnosis (Primary CTA) */}
+            <div
+              className={`relative transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: '0.3s' }}
+            >
+              <div className="p-8 rounded-2xl border border-white/10 bg-white/[0.02] hover:border-white/15 transition-all duration-300 lg:scale-[1.02]">
+                <h3 className="text-lg font-semibold text-white mb-4">Revenue diagnosis</h3>
+                <p className="text-[#9ca3af] leading-relaxed mb-6">
+                  We map where revenue breaks — response delays, follow-ups, handoffs, and capacity gaps.
+                  You see the losses clearly before anything is built.
+                </p>
+                <button
+                  onClick={() => navigate('/audit')}
+                  className="group inline-flex items-center gap-2 text-[#00d4cf] text-sm font-medium transition-colors hover:text-[#00e5df]"
+                >
+                  Run the audit
+                  <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </button>
+              </div>
+            </div>
+
+            {/* Column 2 — System Design */}
+            <div
+              className={`relative transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: '0.45s' }}
+            >
+              <div className="p-8 rounded-2xl border border-white/5 bg-white/[0.01] transition-all duration-300">
+                <h3 className="text-lg font-semibold text-white mb-4">System design</h3>
+                <p className="text-[#9ca3af] leading-relaxed">
+                  We design automation around your lead flow, sales motion, and constraints.
+                  No templates. No generic workflows.
+                </p>
+              </div>
+            </div>
+
+            {/* Column 3 — Implementation */}
+            <div
+              className={`relative transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+              style={{ transitionDelay: '0.6s' }}
+            >
+              <div className="p-8 rounded-2xl border border-white/5 bg-white/[0.01] transition-all duration-300">
+                <h3 className="text-lg font-semibold text-white mb-4">Implementation & optimization</h3>
+                <p className="text-[#9ca3af] leading-relaxed">
+                  We implement, monitor, and refine.
+                  Systems run automatically. We stay involved where it matters.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Closing line */}
+          <p className={`text-center text-sm text-[#4b5563] transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.75s' }}>
+            We work with a small number of partners at a time.
+          </p>
         </div>
       </section>
 
