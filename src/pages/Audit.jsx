@@ -1,4 +1,3 @@
-import { createPortal } from "react-dom";
 import {
   ArrowRight,
   Check,
@@ -8,7 +7,7 @@ import {
   Shield,
 } from "lucide-react";
 import { useScrollAnimation } from "../hooks/useScrollAnimation";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { useState, useEffect, useRef } from "react";
 
 const industries = [
   "Home Services",
@@ -32,36 +31,13 @@ const painPoints = [
   "Something else",
 ];
 
-const countries = [
-  { code: "US", name: "United States", dial: "+1", flag: "🇺🇸" },
-  { code: "CA", name: "Canada", dial: "+1", flag: "🇨🇦" },
-  { code: "GB", name: "United Kingdom", dial: "+44", flag: "🇬🇧" },
-  { code: "AU", name: "Australia", dial: "+61", flag: "🇦🇺" },
-  { code: "DE", name: "Germany", dial: "+49", flag: "🇩🇪" },
-  { code: "FR", name: "France", dial: "+33", flag: "🇫🇷" },
-  { code: "NL", name: "Netherlands", dial: "+31", flag: "🇳🇱" },
-  { code: "IE", name: "Ireland", dial: "+353", flag: "🇮🇪" },
-  { code: "NZ", name: "New Zealand", dial: "+64", flag: "🇳🇿" },
-  { code: "SG", name: "Singapore", dial: "+65", flag: "🇸🇬" },
-  { code: "AE", name: "UAE", dial: "+971", flag: "🇦🇪" },
-  { code: "IN", name: "India", dial: "+91", flag: "🇮🇳" },
-  { code: "MX", name: "Mexico", dial: "+52", flag: "🇲🇽" },
-  { code: "BR", name: "Brazil", dial: "+55", flag: "🇧🇷" },
-];
-
 export default function Audit() {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
-  const [countryDropdownOpen, setCountryDropdownOpen] = useState(false);
-  const [dropdownPosition, setDropdownPosition] = useState({
-    top: 0,
-    left: 0,
-    width: 0,
-  });
   const [calculatorResults, setCalculatorResults] = useState(null);
 
-  const countryButtonRef = useRef(null);
+  const formRef = useRef(null);
 
   // Get calculator results from session storage
   useEffect(() => {
@@ -71,55 +47,16 @@ export default function Audit() {
     }
   }, []);
 
-  // Update dropdown position - recalculate on scroll/resize
-  const updateDropdownPosition = useCallback(() => {
-    if (countryButtonRef.current && countryDropdownOpen) {
-      const rect = countryButtonRef.current.getBoundingClientRect();
-      setDropdownPosition({
-        top: rect.bottom + 4,
-        left: rect.left,
-        width: Math.max(280, rect.width),
-      });
-    }
-  }, [countryDropdownOpen]);
-
-  // Update position on scroll and resize
-  useEffect(() => {
-    if (countryDropdownOpen) {
-      updateDropdownPosition();
-      window.addEventListener("scroll", updateDropdownPosition, true);
-      window.addEventListener("resize", updateDropdownPosition);
-      return () => {
-        window.removeEventListener("scroll", updateDropdownPosition, true);
-        window.removeEventListener("resize", updateDropdownPosition);
-      };
-    }
-  }, [countryDropdownOpen, updateDropdownPosition]);
-
-  const openDropdown = () => {
-    const rect = countryButtonRef.current.getBoundingClientRect();
-    setDropdownPosition({
-      top: rect.bottom + 4,
-      left: rect.left,
-      width: Math.max(280, rect.width),
-    });
-    setCountryDropdownOpen(true);
-  };
-
   const [formData, setFormData] = useState({
     businessName: "",
     website: "",
     industry: "",
-    industry_other: "", // NEW: conditional field when "Other" is selected
-    name: "",
-    email: "",
-    country: countries[0],
-    phone: "",
+    industry_other: "",
     volume: "",
     channels: [],
-    channels_other: "", // NEW: conditional field when "Other" is selected
+    channels_other: "",
     painPoints: [],
-    painPoints_other: "", // NEW: conditional field when "Something else" is selected
+    painPoints_other: "",
     crm: "",
     schedulingTool: "",
   });
@@ -143,43 +80,16 @@ export default function Audit() {
     }));
   };
 
-  const validateEmail = (email) => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const validatePhone = (phone) => {
-    const digits = phone.replace(/\D/g, "");
-    return digits.length >= 7 && digits.length <= 15;
-  };
+  const scrollToFirstError = (errorKeys) => {
+    if (errorKeys.length === 0 || !formRef.current) return;
 
-  const formatPhone = (value, countryDial) => {
-    const digits = value.replace(/\D/g, "");
-    if (countryDial === "+1") {
-      if (digits.length <= 3) return digits;
-      if (digits.length <= 6)
-        return `(${digits.slice(0, 3)}) ${digits.slice(3)}`;
-      return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(
-        6,
-        10
-      )}`;
+    // Find the first element with an error
+    const firstErrorKey = errorKeys[0];
+    const errorElement = formRef.current.querySelector(`[data-field="${firstErrorKey}"]`);
+
+    if (errorElement) {
+      errorElement.scrollIntoView({ behavior: "smooth", block: "center" });
     }
-    if (digits.length > 6)
-      return (
-        digits.slice(0, 3) + " " + digits.slice(3, 6) + " " + digits.slice(6)
-      );
-    if (digits.length > 3) return digits.slice(0, 3) + " " + digits.slice(3);
-    return digits;
-  };
-
-  const handlePhoneChange = (e) => {
-    const formatted = formatPhone(e.target.value, formData.country.dial);
-    updateField("phone", formatted);
-  };
-
-  const handleCountryChange = (country) => {
-    updateField("country", country);
-    if (formData.phone) {
-      const reformatted = formatPhone(formData.phone, country.dial);
-      updateField("phone", reformatted);
-    }
-    setCountryDropdownOpen(false);
   };
 
   const validateForm = () => {
@@ -187,57 +97,43 @@ export default function Audit() {
     if (!formData.businessName.trim())
       newErrors.businessName = "Business name is required";
     if (!formData.industry) newErrors.industry = "Please select an industry";
-    // Conditional validation: industry_other is required when "Other" is selected
     if (formData.industry === "Other" && !formData.industry_other.trim())
       newErrors.industry_other = "Please specify your industry";
-    if (!formData.name.trim()) newErrors.name = "Your name is required";
-    if (!formData.email.trim()) newErrors.email = "Email is required";
-    else if (!validateEmail(formData.email))
-      newErrors.email = "Please enter a valid email";
-    if (!formData.phone.trim()) newErrors.phone = "Phone number is required";
-    else if (!validatePhone(formData.phone))
-      newErrors.phone = "Please enter a valid phone number";
     if (!formData.volume)
       newErrors.volume = "Please select your monthly volume";
     if (formData.channels.length === 0)
       newErrors.channels = "Please select at least one channel";
-    // Conditional validation: channels_other is required when "Other" is selected
     if (formData.channels.includes("Other") && !formData.channels_other.trim())
       newErrors.channels_other = "Please specify other channel";
     if (formData.painPoints.length === 0)
       newErrors.painPoints = "Please select at least one issue";
-    // Conditional validation: painPoints_other is required when "Something else" is selected
     if (formData.painPoints.includes("Something else") && !formData.painPoints_other.trim())
       newErrors.painPoints_other = "Please describe the issue";
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+    return newErrors;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
+    const validationErrors = validateForm();
+    const errorKeys = Object.keys(validationErrors);
+    if (errorKeys.length > 0) {
+      scrollToFirstError(errorKeys);
+      return;
+    }
 
     setIsSubmitting(true);
     setSubmitError("");
 
-    // Build submit data - existing fields remain unchanged for automation compatibility
-    // NEW fields use null (not "") when unused, so n8n can use: field_other ?? field
     const submitData = {
       businessName: formData.businessName,
       website: formData.website,
       industry: formData.industry,
-      // n8n logic: industry_other ?? industry
       industry_other: formData.industry === "Other" ? formData.industry_other : null,
-      name: formData.name,
-      email: formData.email,
-      phone: `${formData.country.dial} ${formData.phone}`,
-      country: formData.country.name,
       volume: formData.volume,
       channels: formData.channels.join(", "),
-      // n8n logic: channels_other ?? channels
       channels_other: formData.channels.includes("Other") ? formData.channels_other : null,
       painPoints: formData.painPoints.join(", "),
-      // n8n logic: painPoints_other ?? painPoints
       painPoints_other: formData.painPoints.includes("Something else") ? formData.painPoints_other : null,
       crm: formData.crm,
       schedulingTool: formData.schedulingTool,
@@ -280,16 +176,6 @@ export default function Audit() {
       });
     }
   }, [step]);
-
-  useEffect(() => {
-    const handleClickOutside = (e) => {
-      if (countryDropdownOpen && !e.target.closest(".country-selector")) {
-        setCountryDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => document.removeEventListener("click", handleClickOutside);
-  }, [countryDropdownOpen]);
 
   const formatCurrency = (num) => {
     if (num >= 1000000) return `$${(num / 1000000).toFixed(1)}M`;
@@ -371,14 +257,14 @@ export default function Audit() {
       <section className="py-8 border-t border-[#1a2332]">
         <div className="mx-auto max-w-2xl px-6">
           {step === 1 && (
-            <form onSubmit={handleSubmit} className="space-y-10">
+            <form ref={formRef} onSubmit={handleSubmit} className="space-y-10">
               {/* BUSINESS DETAILS */}
               <div>
                 <span className="inline-block px-3 py-1.5 mb-5 text-xs font-medium tracking-wider uppercase text-[#00d4cf] bg-[#00d4cf]/10 rounded-full border border-[#00d4cf]/20">
                   Business Details
                 </span>
                 <div className="space-y-5">
-                  <div>
+                  <div data-field="businessName">
                     <label className="block text-sm text-[#9ca3af] mb-2">
                       Business name *
                     </label>
@@ -414,7 +300,7 @@ export default function Audit() {
                       placeholder="https://"
                     />
                   </div>
-                  <div>
+                  <div data-field="industry">
                     <label className="block text-sm text-[#9ca3af] mb-2">
                       Industry *
                     </label>
@@ -451,7 +337,7 @@ export default function Audit() {
                     )}
                     {/* Conditional input: appears when "Other" is selected */}
                     {formData.industry === "Other" && (
-                      <div className="mt-3">
+                      <div className="mt-3" data-field="industry_other">
                         <label className="block text-sm text-[#9ca3af] mb-2">
                           Please specify your industry *
                         </label>
@@ -476,170 +362,13 @@ export default function Audit() {
                 </div>
               </div>
 
-              {/* CONTACT */}
-              <div>
-                <span className="inline-block px-3 py-1.5 mb-5 text-xs font-medium tracking-wider uppercase text-[#00d4cf] bg-[#00d4cf]/10 rounded-full border border-[#00d4cf]/20">
-                  Contact
-                </span>
-                <div className="space-y-5">
-                  <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">
-                      Your name *
-                    </label>
-                    <input
-                      type="text"
-                      value={formData.name}
-                      onChange={(e) => updateField("name", e.target.value)}
-                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
-                        errors.name ? "border-red-500" : "border-[#1a2332]"
-                      }`}
-                    />
-                    {errors.name && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.name}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">
-                      Email *
-                    </label>
-                    <input
-                      type="email"
-                      value={formData.email}
-                      onChange={(e) => updateField("email", e.target.value)}
-                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
-                        errors.email ? "border-red-500" : "border-[#1a2332]"
-                      }`}
-                      placeholder="you@company.com"
-                    />
-                    {errors.email && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.email}
-                      </p>
-                    )}
-                  </div>
-                  <div>
-                    <label className="block text-sm text-[#9ca3af] mb-2">
-                      Phone *
-                    </label>
-                    <div className="flex gap-2">
-                      <div className="relative country-selector">
-                        {/* Selected button */}
-                        <button
-                          ref={countryButtonRef}
-                          type="button"
-                          onClick={openDropdown}
-                          className="flex items-center gap-2 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl px-4 h-[44px] text-white hover:border-[#3d4a59] transition-colors"
-                        >
-                          <img
-                            src={`https://flagcdn.com/w20/${formData.country.code.toLowerCase()}.png`}
-                            srcSet={`https://flagcdn.com/w40/${formData.country.code.toLowerCase()}.png 2x`}
-                            width="20"
-                            height="15"
-                            alt=""
-                            className="shrink-0 rounded-sm"
-                          />
-
-                          <span className="text-white text-sm font-medium w-8 text-left">
-                            {formData.country.code}
-                          </span>
-
-                          <span className="text-[#9ca3af] text-sm">
-                            {formData.country.dial}
-                          </span>
-
-                          <ChevronDown
-                            className={`w-4 h-4 text-[#6b7280] transition-transform ${
-                              countryDropdownOpen ? "rotate-180" : ""
-                            }`}
-                          />
-                        </button>
-
-                        {/* Dropdown */}
-                        {countryDropdownOpen &&
-                          createPortal(
-                            <div
-                              className="fixed z-[9999] bg-white rounded-2xl shadow-2xl border border-gray-200 overflow-hidden"
-                              style={{
-                                top: dropdownPosition.top,
-                                left: dropdownPosition.left,
-                                width: dropdownPosition.width,
-                              }}
-                            >
-                              <div className="max-h-[280px] overflow-y-auto">
-                                {countries.map((country) => (
-                                  <button
-                                    key={country.code}
-                                    type="button"
-                                    onClick={() => handleCountryChange(country)}
-                                    className={`w-full flex items-center gap-3 px-4 h-[44px] text-left transition-colors hover:bg-gray-100 ${
-                                      formData.country.code === country.code
-                                        ? "bg-gray-100"
-                                        : ""
-                                    }`}
-                                  >
-                                    <img
-                                      src={`https://flagcdn.com/w20/${country.code.toLowerCase()}.png`}
-                                      srcSet={`https://flagcdn.com/w40/${country.code.toLowerCase()}.png 2x`}
-                                      width="20"
-                                      height="15"
-                                      alt=""
-                                      className="shrink-0 rounded-sm"
-                                    />
-
-                                    <span className="w-8 text-sm font-medium text-gray-900 shrink-0">
-                                      {country.code}
-                                    </span>
-
-                                    <span className="flex-1 text-sm text-gray-700 truncate">
-                                      {country.name}
-                                    </span>
-
-                                    <span className="text-sm text-gray-400 tabular-nums">
-                                      {country.dial}
-                                    </span>
-                                  </button>
-                                ))}
-                              </div>
-                            </div>,
-                            document.getElementById("dropdown-root")
-                          )}
-                      </div>
-
-                      <input
-                        type="tel"
-                        value={formData.phone}
-                        onChange={handlePhoneChange}
-                        className={`flex-1 px-4 h-[44px] bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
-                          errors.phone ? "border-red-500" : "border-[#1a2332]"
-                        }`}
-                        placeholder={
-                          formData.country.dial === "+1"
-                            ? "(555) 123-4567"
-                            : "Phone number"
-                        }
-                      />
-                    </div>
-                    {errors.phone && (
-                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
-                        <AlertCircle className="w-4 h-4" />
-                        {errors.phone}
-                      </p>
-                    )}
-                  </div>
-                </div>
-              </div>
-
               {/* VOLUME + CHANNELS */}
               <div>
                 <span className="inline-block px-3 py-1.5 mb-5 text-xs font-medium tracking-wider uppercase text-[#00d4cf] bg-[#00d4cf]/10 rounded-full border border-[#00d4cf]/20">
                   Volume + Channels
                 </span>
                 <div className="space-y-5">
-                  <div>
+                  <div data-field="volume">
                     <label className="block text-sm text-[#9ca3af] mb-1">
                       Monthly inbound leads or client inquiries *
                     </label>
@@ -671,7 +400,7 @@ export default function Audit() {
                       </p>
                     )}
                   </div>
-                  <div>
+                  <div data-field="channels">
                     <label className="block text-sm text-[#9ca3af] mb-3">
                       Channels you use *
                     </label>
@@ -701,7 +430,7 @@ export default function Audit() {
                     </div>
                     {/* Conditional input: appears when "Other" is selected */}
                     {formData.channels.includes("Other") && (
-                      <div className="mt-3">
+                      <div className="mt-3" data-field="channels_other">
                         <label className="block text-sm text-[#9ca3af] mb-2">
                           Please specify other channel *
                         </label>
@@ -733,7 +462,7 @@ export default function Audit() {
               </div>
 
               {/* PAIN POINTS */}
-              <div>
+              <div data-field="painPoints">
                 <span className="inline-block px-3 py-1.5 mb-5 text-xs font-medium tracking-wider uppercase text-[#00d4cf] bg-[#00d4cf]/10 rounded-full border border-[#00d4cf]/20">
                   What are you trying to fix?
                 </span>
@@ -763,7 +492,7 @@ export default function Audit() {
                 </div>
                 {/* Conditional input: appears when "Something else" is selected */}
                 {formData.painPoints.includes("Something else") && (
-                  <div className="mt-3">
+                  <div className="mt-3" data-field="painPoints_other">
                     <label className="block text-sm text-[#9ca3af] mb-2">
                       Please describe the issue *
                     </label>
@@ -871,7 +600,7 @@ export default function Audit() {
                   <Check className="h-5 w-5 text-[#050509]" />
                 </div>
                 <p className="text-white font-medium">
-                  Thanks, {formData.name}. Now pick a time.
+                  Thanks! Now pick a time.
                 </p>
               </div>
 
@@ -902,7 +631,7 @@ export default function Audit() {
                   {[
                     "We review your answers before the call.",
                     "We map where leads are leaking.",
-                    "You leave with a clear recommendation—even if we're not the right fit.",
+                    "You leave with a clear recommendation, even if we're not the right fit.",
                   ].map((item, index) => (
                     <div
                       key={item}

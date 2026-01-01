@@ -734,7 +734,7 @@ export default function Begin() {
                   {[
                     "We review your answers before the call.",
                     "We map where leads are leaking.",
-                    "You leave with a clear recommendation—even if we're not the right fit.",
+                    "You leave with a clear recommendation, even if we're not the right fit.",
                   ].map((item, index) => (
                     <div
                       key={item}

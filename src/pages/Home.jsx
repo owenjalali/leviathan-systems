@@ -554,7 +554,7 @@ export default function Home() {
               {/* Text content */}
               <h3 className="text-lg font-semibold text-white mb-2">Revenue diagnosis</h3>
               <p className="text-sm text-white/60 leading-relaxed mb-4">
-                We map where revenue breaks — response delays, follow-ups, and capacity gaps.
+                We map where revenue breaks across response, follow ups, and system execution.
               </p>
               <button
                 onClick={() => navigate('/audit')}
@@ -794,7 +794,7 @@ export default function Home() {
           </p>
 
           <button
-            onClick={scrollToCalculator}
+            onClick={() => navigate('/audit')}
             className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)] hover:scale-[1.02]"
           >
             Get started

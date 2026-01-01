@@ -19,7 +19,7 @@ export default function Infrastructure() {
           </h1>
 
           <p className="text-xl text-gray-400 leading-relaxed max-w-2xl animate-reveal delay-200">
-            Leviathan infrastructure operates continuously — capturing revenue,
+            Leviathan infrastructure operates continuously: capturing revenue,
             maintaining control, and scaling without human dependency.
           </p>
         </div>
@@ -40,8 +40,8 @@ export default function Infrastructure() {
               </div>
               <div className="space-y-6 text-gray-400 leading-relaxed animate-layer delay-200">
                 <p className="text-lg">
-                  Every inbound opportunity — every call, every inquiry, every signal of
-                  interest — is acknowledged, qualified, and routed.
+                  Every inbound opportunity: every call, every inquiry, every signal of
+                  interest is acknowledged, qualified, and routed.
                 </p>
                 <p className="text-lg text-gray-300">
                   Without delay. Without exception. Without depending on someone being available.
@@ -68,7 +68,7 @@ export default function Infrastructure() {
                   Visibility into what's working, what's breaking, and where money is at risk.
                 </p>
                 <p className="text-lg text-gray-300">
-                  Control isn't about micromanaging. It's about knowing — in real time —
+                  Control isn't about micromanaging. It's about knowing, in real time,
                   the state of every process that touches revenue.
                 </p>
                 <p className="text-lg">
@@ -123,7 +123,7 @@ export default function Infrastructure() {
                 The entry point to Leviathan infrastructure.
               </p>
               <p className="text-lg text-gray-400 mt-6 leading-relaxed">
-                Secretary handles inbound demand — calls, inquiries, scheduling —
+                Secretary handles inbound demand: calls, inquiries, and scheduling,
                 so opportunities never wait for a human to be available.
               </p>
             </div>
@@ -160,7 +160,7 @@ export default function Infrastructure() {
             Infrastructure requires commitment.
           </p>
           <p className="text-2xl text-white font-light mb-16 animate-reveal delay-100">
-            For those ready to build — we're here.
+            For those ready to build, we're here.
           </p>
 
           <Link

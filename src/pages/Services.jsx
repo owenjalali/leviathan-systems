@@ -7,7 +7,7 @@ const services = [
   {
     icon: Phone,
     title: 'Inbound Capture',
-    description: 'Never miss a lead—even at 2am.',
+    description: 'Never miss a lead, even at 2am.',
     bullets: [
       'Phone, web chat, SMS, and form capture',
       'Instant acknowledgment',
