@@ -36,6 +36,7 @@ export default function Audit() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState("");
   const [calculatorResults, setCalculatorResults] = useState(null);
+  const [sessionId, setSessionId] = useState(null);
 
   const formRef = useRef(null);
 
@@ -125,7 +126,12 @@ export default function Audit() {
     setIsSubmitting(true);
     setSubmitError("");
 
+    // Generate unique session ID for matching Formspree data with Calendly booking
+    const newSessionId = crypto.randomUUID();
+    setSessionId(newSessionId);
+
     const submitData = {
+      sessionId: newSessionId,
       businessName: formData.businessName,
       website: formData.website,
       industry: formData.industry,
@@ -156,6 +162,8 @@ export default function Audit() {
       if (response.ok) {
         setStep(2);
         sessionStorage.removeItem("calculatorResults");
+        // Scroll to top of page for booking section
+        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
         throw new Error("Failed to submit form");
       }
@@ -169,13 +177,15 @@ export default function Audit() {
   };
 
   useEffect(() => {
-    if (step === 2 && window.Calendly) {
+    if (step === 2 && window.Calendly && sessionId) {
+      // Include sessionId as utm_content so it passes through to Calendly webhook
+      const calendlyUrl = `https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=00d4cf&utm_content=${sessionId}`;
       window.Calendly.initInlineWidget({
-        url: "https://calendly.com/leviathanaidev?background_color=ffffff&text_color=1a1a1a&primary_color=00d4cf",
+        url: calendlyUrl,
         parentElement: document.getElementById("calendly-embed"),
       });
     }
-  }, [step]);
+  }, [step, sessionId]);
 
   const formatCurrency = (num) => {
     if (num >= 1000000) return `$${(num / 1000000).toFixed(1)}M`;
