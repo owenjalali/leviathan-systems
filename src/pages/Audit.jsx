@@ -18,7 +18,7 @@ const industries = [
   "Other",
 ];
 
-const volumes = ["Less than 500", "500 – 2,000", "2,000 – 10,000", "10,000+"];
+const volumes = ["Less than 100", "100 – 500", "500 – 2,000", "2,000+"];
 
 const channels = ["Inbound calls", "Web chat", "SMS", "Contact forms", "Other"];
 
@@ -130,10 +130,20 @@ export default function Audit() {
     const newSessionId = crypto.randomUUID();
     setSessionId(newSessionId);
 
+    // Ensure website has https:// prefix
+    const formatWebsite = (url) => {
+      if (!url || !url.trim()) return "";
+      const trimmed = url.trim();
+      if (trimmed.startsWith("https://") || trimmed.startsWith("http://")) {
+        return trimmed;
+      }
+      return `https://${trimmed}`;
+    };
+
     const submitData = {
       sessionId: newSessionId,
       businessName: formData.businessName,
-      website: formData.website,
+      website: formatWebsite(formData.website),
       industry: formData.industry,
       industry_other: formData.industry === "Other" ? formData.industry_other : null,
       volume: formData.volume,
