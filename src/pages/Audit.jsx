@@ -97,6 +97,12 @@ export default function Audit() {
     const newErrors = {};
     if (!formData.businessName.trim())
       newErrors.businessName = "Business name is required";
+    // Validate website format if provided (optional field)
+    if (formData.website.trim()) {
+      const websitePattern = /^(https?:\/\/)?[\w.-]+\.[a-z]{2,}(\/.*)?$/i;
+      if (!websitePattern.test(formData.website.trim()))
+        newErrors.website = "Please enter a valid website (e.g. example.com)";
+    }
     if (!formData.industry) newErrors.industry = "Please select an industry";
     if (formData.industry === "Other" && !formData.industry_other.trim())
       newErrors.industry_other = "Please specify your industry";
@@ -307,17 +313,25 @@ export default function Audit() {
                       </p>
                     )}
                   </div>
-                  <div>
+                  <div data-field="website">
                     <label className="block text-sm text-[#9ca3af] mb-2">
                       Website (optional)
                     </label>
                     <input
-                      type="url"
+                      type="text"
                       value={formData.website}
                       onChange={(e) => updateField("website", e.target.value)}
-                      className="w-full px-4 py-3.5 bg-[#0a0f1a] border border-[#1a2332] rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all"
-                      placeholder="https://"
+                      className={`w-full px-4 py-3.5 bg-[#0a0f1a] border rounded-2xl text-white placeholder-[#4b5563] focus:outline-none focus:border-[#00d4cf] focus:ring-1 focus:ring-[#00d4cf]/30 transition-all ${
+                        errors.website ? "border-red-500" : "border-[#1a2332]"
+                      }`}
+                      placeholder="example.com"
                     />
+                    {errors.website && (
+                      <p className="text-red-400 text-sm mt-1 flex items-center gap-1">
+                        <AlertCircle className="w-4 h-4" />
+                        {errors.website}
+                      </p>
+                    )}
                   </div>
                   <div data-field="industry">
                     <label className="block text-sm text-[#9ca3af] mb-2">
