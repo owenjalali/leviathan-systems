@@ -136,13 +136,16 @@ export default function Audit() {
     const newSessionId = crypto.randomUUID();
     setSessionId(newSessionId);
 
-    // Ensure website has https:// (upgrade http to https)
+    // Ensure website has exactly one https:// prefix
     const formatWebsite = (url) => {
       if (!url || !url.trim()) return "";
-      const trimmed = url.trim();
-      if (trimmed.startsWith("https://")) return trimmed;
-      if (trimmed.startsWith("http://")) return trimmed.replace("http://", "https://");
-      return `https://${trimmed}`;
+      let cleaned = url.trim();
+      // Strip all http:// and https:// prefixes
+      while (cleaned.startsWith("https://") || cleaned.startsWith("http://")) {
+        cleaned = cleaned.replace(/^https?:\/\//, "");
+      }
+      // Add single https:// prefix
+      return cleaned ? `https://${cleaned}` : "";
     };
 
     const submitData = {
