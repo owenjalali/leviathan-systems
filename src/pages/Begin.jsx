@@ -733,7 +733,7 @@ export default function Begin() {
                 <div className="space-y-4">
                   {[
                     "We review your answers before the call.",
-                    "We map where leads are leaking.",
+                    "We expose where revenue breaks down.",
                     "You leave with a clear recommendation, even if we're not the right fit.",
                   ].map((item, index) => (
                     <div
