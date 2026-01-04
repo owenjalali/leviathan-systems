@@ -19,6 +19,15 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 This workflow is non-negotiable for all code changes.
 
+## Protected Pages (DO NOT MODIFY)
+
+The following pages are protected and should NEVER be modified:
+- `src/pages/Audit.jsx` - Audit form and booking flow
+- `src/pages/Begin.jsx` - Alternative booking flow
+- `src/pages/Book.jsx` - Simple booking page
+
+These pages contain critical form logic, Formspree integration, and Calendly booking. Any changes could break the user journey.
+
 ## Project Overview
 
 Leviathan Systems is an automation company that builds revenue-critical systems for service businesses.

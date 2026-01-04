@@ -53,13 +53,19 @@ export default function MainLayout() {
             </a>
           </div>
 
-          {/* Desktop navigation - Minimal, confident */}
+          {/* Desktop navigation */}
           <div className="hidden md:flex items-center gap-8">
+            <Link
+              to="/about"
+              className="text-sm text-[#9ca3af] hover:text-white transition-colors duration-200"
+            >
+              About
+            </Link>
             <Link
               to="/audit"
               className="text-sm text-[#9ca3af] hover:text-white transition-colors duration-200"
             >
-              See how it works
+              Book a Call
             </Link>
           </div>
 
@@ -77,15 +83,22 @@ export default function MainLayout() {
 
         {/* Mobile menu */}
         <div className={`md:hidden transition-all duration-300 overflow-hidden ${
-          mobileMenuOpen ? 'max-h-32 opacity-100' : 'max-h-0 opacity-0'
+          mobileMenuOpen ? 'max-h-48 opacity-100' : 'max-h-0 opacity-0'
         }`}>
           <div className="px-6 pb-6 pt-2 bg-[#030306]/95 backdrop-blur-xl border-t border-[#1a2332]/50">
+            <Link
+              to="/about"
+              onClick={() => setMobileMenuOpen(false)}
+              className="block py-3 text-base text-[#9ca3af] hover:text-white transition-colors"
+            >
+              About
+            </Link>
             <Link
               to="/audit"
               onClick={() => setMobileMenuOpen(false)}
               className="block py-3 text-base text-[#9ca3af] hover:text-white transition-colors"
             >
-              See how it works
+              Book a Call
             </Link>
           </div>
         </div>

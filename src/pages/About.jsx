@@ -1,151 +1,142 @@
 import { Link } from 'react-router-dom'
-import { ArrowRight } from 'lucide-react'
+import { ArrowRight, Check } from 'lucide-react'
+import { useScrollAnimation } from '../hooks/useScrollAnimation'
 
 export default function About() {
+  const [heroRef, heroVisible] = useScrollAnimation(0.1)
+  const [howRef, howVisible] = useScrollAnimation(0.1)
+  const [beliefRef, beliefVisible] = useScrollAnimation(0.1)
+  const [ctaRef, ctaVisible] = useScrollAnimation(0.1)
+
   return (
-    <div className="bg-[#0a0a0a] pt-24">
+    <div className="bg-[#030306] pt-24">
 
-      {/* HERO */}
-      <section className="py-24">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="text-[#d4af37] text-sm font-medium tracking-[0.3em] uppercase mb-6 animate-reveal">
-            About
-          </p>
+      {/* HERO - WHO WE ARE */}
+      <section ref={heroRef} className="py-24 sm:py-32 relative overflow-hidden">
+        {/* Background glow */}
+        <div
+          className="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full opacity-20 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
+        />
 
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-10 animate-reveal delay-100">
-            Infrastructure,
-            <br />
-            <span className="text-gray-500">not software.</span>
-          </h1>
+        <div className="mx-auto max-w-4xl px-6 relative z-10">
+          <div className={`transition-all duration-700 ${heroVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] mb-10">
+              We're Leviathan Systems.
+            </h1>
 
-          <p className="text-xl sm:text-2xl text-gray-400 leading-relaxed max-w-2xl animate-reveal delay-200">
-            Leviathan Systems builds autonomous revenue infrastructure for operations
-            where money depends on consistency, speed, and control.
-          </p>
+            <div className="space-y-6 text-xl text-[#9ca3af] leading-relaxed max-w-2xl">
+              <p>
+                We partner with service businesses to build automation that captures revenue you're currently losing.
+              </p>
+              <p className="text-white">
+                Not software you install and forget.
+                <br />
+                Not a chatbot that frustrates your customers.
+                <br />
+                A system built around how <span className="text-[#00d4cf]">your</span> business actually works.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* WHAT WE ARE NOT */}
-      <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a]">
+      {/* HOW WE WORK - PARTNERSHIP */}
+      <section ref={howRef} className="py-24 sm:py-32 relative overflow-hidden border-t border-white/5">
         <div className="mx-auto max-w-4xl px-6">
-          <p className="text-[#d4af37] text-sm font-medium tracking-[0.3em] uppercase mb-6 animate-layer">
-            Clarity
-          </p>
+          <div className={`transition-all duration-700 ${howVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-[#00d4cf] text-sm font-medium tracking-[0.2em] uppercase mb-6">
+              How We Work
+            </p>
 
-          <h2 className="text-2xl sm:text-3xl font-bold text-white mb-14 animate-layer delay-100">
-            What we are not.
-          </h2>
+            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-10">
+              Every business is different.
+            </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-            {[
-              'An automation agency',
-              'A SaaS platform',
-              'A chatbot company',
-              'A software installer'
-            ].map((item, index) => (
-              <div
-                key={item}
-                className={`flex items-center gap-5 text-lg text-gray-500 animate-layer delay-${(index + 2) * 100}`}
-              >
-                <div className="w-6 h-px bg-[#2d2d2d]" />
-                {item}
-              </div>
-            ))}
+            <div className="space-y-6 text-xl text-[#9ca3af] leading-relaxed max-w-2xl">
+              <p>
+                That's why we start by learning yours—how leads find you, what happens when they do, and where things break down.
+              </p>
+              <p>
+                Then we build a system that fits. Not a template. Not a one-size-fits-all solution.
+              </p>
+              <p className="text-white font-medium">
+                Yours.
+              </p>
+            </div>
           </div>
 
-          <div className="mt-20 pt-16 border-t border-[#1a1a1a]">
-            <p className="text-xl text-gray-400 leading-relaxed animate-layer delay-400">
-              Those are mechanisms. Not identity.
-            </p>
-            <p className="text-xl text-white mt-5 animate-layer delay-500">
-              Leviathan sells revenue protection, control, and predictability.
-              The systems are simply how the infrastructure is delivered.
-            </p>
+          {/* What we do together */}
+          <div className={`mt-16 grid sm:grid-cols-2 gap-6 transition-all duration-700 delay-200 ${howVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            {[
+              'We learn how your business operates',
+              'We identify where opportunities slip away',
+              'We design automation around your actual workflow',
+              'We implement, monitor, and refine'
+            ].map((item, i) => (
+              <div key={i} className="flex items-start gap-4 p-5 rounded-xl border border-white/5 bg-white/[0.02]">
+                <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#00d4cf]/20 flex items-center justify-center mt-0.5">
+                  <Check className="w-3.5 h-3.5 text-[#00d4cf]" />
+                </div>
+                <p className="text-[#9ca3af]">{item}</p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* BELIEF */}
-      <section className="py-24 border-t border-[#1a1a1a] section-depth">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="text-[#d4af37] text-sm font-medium tracking-[0.3em] uppercase mb-10 animate-layer">
-            Foundational Belief
-          </p>
+      <section ref={beliefRef} className="py-24 sm:py-32 relative overflow-hidden border-t border-white/5">
+        {/* Background glow */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-15 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.3) 0%, transparent 60%)' }}
+        />
 
-          <blockquote className="text-3xl sm:text-4xl text-white font-light leading-relaxed animate-layer delay-100">
-            "If money touches a process, it should never rely on memory or humans alone."
-          </blockquote>
-
-          <div className="mt-20 space-y-8 text-lg sm:text-xl text-gray-400 leading-relaxed">
-            <p className="animate-layer delay-200">
-              Leviathan exists to eliminate missed opportunities, revenue leakage,
-              operational chaos, and growth bottlenecks caused by human limits.
+        <div className="mx-auto max-w-4xl px-6 relative z-10">
+          <div className={`transition-all duration-700 ${beliefVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <p className="text-[#00d4cf] text-sm font-medium tracking-[0.2em] uppercase mb-6">
+              What We Believe
             </p>
-            <p className="text-gray-300 animate-layer delay-300">
-              We replace fragile processes with always-on systems.
-            </p>
-          </div>
-        </div>
-      </section>
 
-      {/* WHAT WE PROVIDE */}
-      <section className="py-24 bg-[#0d0d0d] border-t border-[#1a1a1a]">
-        <div className="mx-auto max-w-4xl px-6">
-          <p className="text-[#d4af37] text-sm font-medium tracking-[0.3em] uppercase mb-10 animate-layer">
-            What We Provide
-          </p>
+            <blockquote className="text-3xl sm:text-4xl text-white font-semibold leading-[1.2] mb-10">
+              Speed isn't the advantage.
+              <br />
+              <span className="text-[#6b7280]">Consistency is.</span>
+            </blockquote>
 
-          <div className="space-y-14">
-            {[
-              {
-                title: 'Strength',
-                description: 'Systems that don\'t break under pressure.'
-              },
-              {
-                title: 'Control',
-                description: 'Visibility into every process that touches revenue.'
-              },
-              {
-                title: 'Scale',
-                description: 'Growth without proportional headcount.'
-              },
-              {
-                title: 'Trust',
-                description: 'Infrastructure you can rely on when it matters.'
-              }
-            ].map((item, index) => (
-              <div
-                key={item.title}
-                className={`flex gap-10 items-baseline animate-layer delay-${(index + 1) * 100}`}
-              >
-                <h3 className="text-xl font-semibold text-white w-32 shrink-0">
-                  {item.title}
-                </h3>
-                <p className="text-gray-400 text-lg">
-                  {item.description}
-                </p>
-              </div>
-            ))}
+            <div className="space-y-6 text-xl text-[#9ca3af] leading-relaxed max-w-2xl">
+              <p>
+                Anyone can answer fast on a good day.
+              </p>
+              <p>
+                We build systems that answer fast <span className="text-white">every day</span>—whether you're busy, closed, or on vacation.
+              </p>
+            </div>
           </div>
         </div>
       </section>
 
       {/* CTA */}
-      <section className="py-24 border-t border-[#1a1a1a] section-depth">
+      <section ref={ctaRef} className="py-24 sm:py-32 relative overflow-hidden border-t border-white/5">
         <div className="mx-auto max-w-3xl px-6 text-center">
-          <p className="text-2xl text-gray-400 font-light mb-10 leading-relaxed animate-reveal">
-            The question isn't whether you need infrastructure.
-            <br />
-            <span className="text-white">It's whether you're ready for it.</span>
-          </p>
+          <div className={`transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="text-3xl sm:text-4xl font-semibold text-white mb-6">
+              Want to see if we're a fit?
+            </h2>
 
-          <Link
-            to="/begin"
-            className="group inline-flex items-center gap-3 text-[#d4af37] text-sm font-medium tracking-wide hover:text-[#f4d03f] transition-all duration-500 animate-scale delay-100"
-          >
-            <span className="hover-line">Explore If Infrastructure Fits</span>
-            <ArrowRight className="h-4 w-4 transition-transform duration-500 group-hover:translate-x-2" />
-          </Link>
+            <p className="text-xl text-[#9ca3af] mb-10">
+              Book a free 30-minute call. We'll learn about your business and tell you honestly if we can help.
+            </p>
+
+            <Link
+              to="/audit"
+              className="group inline-flex items-center gap-3 px-8 py-4 bg-white text-[#030306] font-semibold rounded-full transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
+            >
+              Book a Free Assessment
+              <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+            </Link>
+          </div>
         </div>
       </section>
 

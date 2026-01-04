@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom'
-import { ArrowRight, Phone, MessageSquare, Mail, Check, Zap, Calendar, CheckCircle2 } from 'lucide-react'
+import { ArrowRight, Phone, MessageSquare, Clock, Check, Users, Calendar, Shield, Eye } from 'lucide-react'
 import LossCalculator from '../components/LossCalculator'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { useEffect, useState, useRef } from 'react'
@@ -10,44 +10,27 @@ export default function Home() {
   const statRef = useRef(null)
   const [calcRef, calcVisible] = useScrollAnimation(0.1)
   const [howRef, howVisible] = useScrollAnimation(0.15)
-  const [engageRef, engageVisible] = useScrollAnimation(0.15)
+  const [outcomesRef, outcomesVisible] = useScrollAnimation(0.15)
+  const [ctaRef, ctaVisible] = useScrollAnimation(0.15)
   const [statValue, setStatValue] = useState(0)
   const [statVisible, setStatVisible] = useState(false)
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 })
-  const [activeLead, setActiveLead] = useState(0)
   const [isLoaded, setIsLoaded] = useState(false)
   const [activeStep, setActiveStep] = useState(0)
-
-
-  // Simulated live leads
-  const leads = [
-    { id: 1, icon: Phone, source: 'Inbound Call', time: '0:08', location: 'Phoenix, AZ' },
-    { id: 2, icon: MessageSquare, source: 'Web Form', time: '0:12', location: 'Austin, TX' },
-    { id: 3, icon: Mail, source: 'SMS', time: '0:05', location: 'Denver, CO' },
-  ]
 
   // Initial load animation
   useEffect(() => {
     setIsLoaded(true)
   }, [])
 
-  // Cycle through leads
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setActiveLead((prev) => (prev + 1) % leads.length)
-    }, 2500)
-    return () => clearInterval(interval)
-  }, [leads.length])
-
   // Cycle through steps when visible
   useEffect(() => {
     if (!howVisible) return
     const interval = setInterval(() => {
       setActiveStep((prev) => (prev + 1) % 3)
-    }, 2000)
+    }, 3000)
     return () => clearInterval(interval)
   }, [howVisible])
-
 
   // Animated counter for 78%
   useEffect(() => {
@@ -106,7 +89,7 @@ export default function Home() {
     <div className="bg-[#030306]">
 
       {/* ============================================
-          HERO — PRODUCT VISUALIZATION
+          HERO — CLEAR VALUE PROPOSITION
           ============================================ */}
       <section ref={heroRef} className="min-h-screen flex items-center pt-20 pb-32 relative overflow-hidden">
 
@@ -138,126 +121,61 @@ export default function Home() {
         </div>
 
         <div className="mx-auto max-w-7xl px-6 relative z-10 w-full">
-          <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+          <div className="max-w-3xl mx-auto text-center">
 
-            {/* Left: Copy */}
             <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-              <h1 className="text-[2.75rem] sm:text-6xl lg:text-7xl font-semibold text-white leading-[1] tracking-[-0.03em] mb-8">
-                We eliminate revenue loss
+              <h1 className="text-[2.75rem] sm:text-6xl lg:text-7xl font-semibold text-white leading-[1.05] tracking-[-0.03em] mb-8">
+                Stop losing customers
                 <br />
-                <span className="text-[#6b7280]">caused by human delay.</span>
+                <span className="text-[#6b7280]">to slow responses.</span>
               </h1>
 
-              <p className="text-xl text-[#6b7280] mb-12 max-w-lg">
-                Leviathan builds automated systems that respond instantly, qualify automatically, and book appointments.
+              <p className="text-xl text-[#9ca3af] mb-12 max-w-xl mx-auto">
+                We help service businesses capture every lead, automatically.
+                No more missed calls. No more forgotten follow-ups.
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4">
+              <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button
                   onClick={scrollToCalculator}
                   className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-white text-[#030306] font-semibold rounded-full transition-all duration-300 hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
                 >
-                  Calculate Losses
+                  See What You're Losing
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
                 <button
                   onClick={() => navigate('/audit')}
-                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 bg-[#00d4cf] text-[#030306] font-semibold rounded-full transition-all duration-300 hover:bg-[#00e5df] hover:shadow-[0_0_50px_rgba(0,212,207,0.4)] hover:scale-[1.02]"
+                  className="group inline-flex items-center justify-center gap-3 px-8 py-4 border border-white/20 text-white font-semibold rounded-full transition-all duration-300 hover:bg-white/5 hover:border-white/30"
                 >
-                  Start Saving
+                  Book a Free Assessment
                   <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </button>
               </div>
             </div>
 
-            {/* Right: Live Product Demo */}
-            <div
-              className={`relative transition-all duration-1000 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-              style={{
-                transform: `perspective(1000px) rotateY(${mousePos.x * -0.5}deg) rotateX(${mousePos.y * 0.5}deg)`,
-                transition: 'transform 0.5s cubic-bezier(0.22, 1, 0.36, 1)'
-              }}
-            >
-              <div className="absolute -inset-4 rounded-3xl bg-gradient-to-br from-[#00d4cf]/20 via-transparent to-[#7c72ff]/20 blur-2xl opacity-50" />
-
-              <div className="relative rounded-2xl border border-white/10 bg-[#0a0f1a]/80 backdrop-blur-xl overflow-hidden shadow-2xl">
-                <div className="px-6 py-4 border-b border-white/5 flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <div className="flex gap-1.5">
-                      <div className="w-3 h-3 rounded-full bg-[#ff5f57]" />
-                      <div className="w-3 h-3 rounded-full bg-[#febc2e]" />
-                      <div className="w-3 h-3 rounded-full bg-[#28c840]" />
-                    </div>
-                    <span className="text-xs text-[#6b7280] font-medium">Live Feed</span>
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-[#00d4cf] animate-pulse" />
-                    <span className="text-xs text-[#6b7280]">Active</span>
-                  </div>
-                </div>
-
-                <div className="p-4 space-y-3">
-                  {leads.map((lead, i) => {
-                    const Icon = lead.icon
-                    const isActive = i === activeLead
-                    return (
-                      <div
-                        key={lead.id}
-                        className={`relative p-4 rounded-xl border transition-all duration-500 ${
-                          isActive ? 'border-[#00d4cf]/30 bg-[#00d4cf]/5' : 'border-white/5 bg-white/[0.02]'
-                        }`}
-                        style={{ opacity: isActive ? 1 : 0.5, transform: isActive ? 'scale(1)' : 'scale(0.98)' }}
-                      >
-                        <div className="flex items-center justify-between">
-                          <div className="flex items-center gap-3">
-                            <div className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors duration-300 ${isActive ? 'bg-[#00d4cf]/20' : 'bg-white/5'}`}>
-                              <Icon className={`w-5 h-5 transition-colors duration-300 ${isActive ? 'text-[#00d4cf]' : 'text-[#6b7280]'}`} />
-                            </div>
-                            <div>
-                              <div className="text-sm font-medium text-white">{lead.source}</div>
-                              <div className="text-xs text-[#6b7280]">{lead.location}</div>
-                            </div>
-                          </div>
-                          <div className="text-right">
-                            <div className={`text-xs font-mono transition-colors duration-300 ${isActive ? 'text-[#00d4cf]' : 'text-[#6b7280]'}`}>
-                              {lead.time}
-                            </div>
-                            {isActive && (
-                              <div className="flex items-center gap-1 mt-1">
-                                <Check className="w-3 h-3 text-[#00d4cf]" />
-                                <span className="text-xs text-[#00d4cf]">Responded</span>
-                              </div>
-                            )}
-                          </div>
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                <div className="px-6 py-4 border-t border-white/5 bg-black/20">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div className="text-2xl font-semibold text-white">$12,400</div>
-                      <div className="text-xs text-[#6b7280]">Revenue captured today</div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-semibold text-[#00d4cf]">&lt;60s</div>
-                      <div className="text-xs text-[#6b7280]">Avg response</div>
-                    </div>
-                  </div>
-                </div>
+            {/* Simple trust indicators */}
+            <div className={`mt-20 flex flex-wrap items-center justify-center gap-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+              <div className="flex items-center gap-2 text-[#6b7280]">
+                <Clock className="w-4 h-4 text-[#00d4cf]" />
+                <span className="text-sm">Responds in under 60 seconds</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#6b7280]">
+                <Phone className="w-4 h-4 text-[#00d4cf]" />
+                <span className="text-sm">Handles calls, texts, and forms</span>
+              </div>
+              <div className="flex items-center gap-2 text-[#6b7280]">
+                <Calendar className="w-4 h-4 text-[#00d4cf]" />
+                <span className="text-sm">Books appointments automatically</span>
               </div>
             </div>
+
           </div>
         </div>
       </section>
 
 
-
-
       {/* ============================================
-          STAT — THE HOOK (FIXED)
+          STAT — THE PROBLEM
           ============================================ */}
       <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
         {/* Animated rings */}
@@ -316,17 +234,25 @@ export default function Home() {
             </span>
           </div>
 
-          <p className={`text-xl sm:text-2xl text-[#9ca3af] max-w-lg mx-auto transition-all duration-700 ${
+          <p className={`text-xl sm:text-2xl text-[#9ca3af] max-w-2xl mx-auto transition-all duration-700 ${
             statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
           }`} style={{ transitionDelay: '0.5s' }}>
             of customers hire whoever responds first.
+          </p>
+
+          <p className={`text-lg text-[#6b7280] max-w-xl mx-auto mt-6 transition-all duration-700 ${
+            statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ transitionDelay: '0.7s' }}>
+            When a lead calls and you're busy, they call your competitor.
+            <br />
+            When a form sits overnight, they've already booked elsewhere.
           </p>
         </div>
       </section>
 
 
       {/* ============================================
-          HOW IT WORKS — VISUAL FLOW
+          HOW WE WORK — PARTNERSHIP FLOW
           ============================================ */}
       <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
@@ -338,37 +264,37 @@ export default function Home() {
 
         <div className="mx-auto max-w-6xl px-6 relative z-10">
           <div className={`text-center mb-20 transition-all duration-700 ${howVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
-            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-4">
-              How it works
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6">
+              How we work with you
             </h2>
-            <p className="text-lg text-[#6b7280]">
-              Lead to booked appointment. Automatically.
+            <p className="text-lg text-[#9ca3af] max-w-2xl mx-auto">
+              We don't sell you a box and walk away. We partner with you to understand your business, find where you're losing money, and build a system that actually works.
             </p>
           </div>
 
-          {/* Visual flow */}
+          {/* 3-Step Flow */}
           <div className="relative">
             <div className="grid lg:grid-cols-3 gap-8 lg:gap-12">
               {[
                 {
-                  icon: Phone,
+                  icon: Users,
                   num: '01',
-                  title: 'Lead comes in',
-                  desc: 'Phone call, web form, or text message. Any channel, any time.',
+                  title: 'We Learn Your Business',
+                  desc: 'We start with a conversation. How do leads reach you? What happens when you\'re busy? Where do things fall through the cracks?',
                   color: '#00d4cf'
                 },
                 {
-                  icon: Zap,
+                  icon: Eye,
                   num: '02',
-                  title: 'Instant response',
-                  desc: 'Under 60 seconds. Automated. Before they call your competitor.',
+                  title: 'We Find Where You\'re Losing Money',
+                  desc: 'We look at your current process and identify exactly where opportunities slip away—missed calls, slow follow-ups, leads that go cold.',
                   color: '#7c72ff'
                 },
                 {
-                  icon: Calendar,
+                  icon: Shield,
                   num: '03',
-                  title: 'Appointment booked',
-                  desc: 'Qualified, scheduled, and synced to your calendar automatically.',
+                  title: 'We Build a System to Fix It',
+                  desc: 'Custom automation that handles responses, qualifies leads, and books appointments—without you lifting a finger.',
                   color: '#00d4cf'
                 },
               ].map((step, i) => {
@@ -430,7 +356,7 @@ export default function Home() {
                       </div>
 
                       <h3 className="text-xl font-semibold text-white mb-3">{step.title}</h3>
-                      <p className="text-[#6b7280] leading-relaxed">{step.desc}</p>
+                      <p className="text-[#9ca3af] leading-relaxed">{step.desc}</p>
 
                     </div>
                   </div>
@@ -455,257 +381,54 @@ export default function Home() {
 
 
       {/* ============================================
-          ENGAGEMENT MODEL — PARTNERSHIP LAYER
+          WHAT YOU GET — OUTCOMES
           ============================================ */}
-      <section ref={engageRef} className="py-32 sm:py-40 relative overflow-hidden">
+      <section ref={outcomesRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background gradient wash — subtle, doesn't compete with hero */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[600px] pointer-events-none opacity-10"
-          style={{
-            background: 'radial-gradient(ellipse at center, rgba(0,212,207,0.2) 0%, rgba(124,114,255,0.1) 50%, transparent 80%)'
-          }}
-        />
-
-        <div className="mx-auto max-w-6xl px-6 relative z-10">
-          {/* Eyebrow — visible pill with gradient accent */}
-          <div className={`text-center mb-8 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}>
-            <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#00d4cf]/10 border border-[#00d4cf]/20">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#00d4cf] animate-pulse" />
-              <span className="text-xs font-medium tracking-[0.15em] uppercase text-[#00d4cf]">
-                Partner-Led Revenue Infrastructure
-              </span>
-            </span>
+        <div className="mx-auto max-w-4xl px-6 relative z-10">
+          <div className={`text-center mb-16 transition-all duration-700 ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6">
+              What changes for you
+            </h2>
+            <p className="text-lg text-[#9ca3af]">
+              After we implement your system:
+            </p>
           </div>
 
-          {/* Headline — two lines, sequential animation */}
-          <h2
-            className={`text-center text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
-            style={{ transitionDelay: '0.15s' }}
-          >
-            From diagnosis to deployment.
-          </h2>
-          <h2
-            className={`text-center text-4xl sm:text-5xl lg:text-6xl font-semibold text-[#6b7280] leading-[1.1] mt-1 mb-6 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
-            style={{ transitionDelay: '0.3s' }}
-          >
-            With you, not just for you.
-          </h2>
-
-          {/* Subhead */}
-          <div
-            className={`text-center text-lg text-white/50 max-w-xl mx-auto mb-20 transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
-            style={{ transitionDelay: '0.5s' }}
-          >
-            <p>Every business leaks revenue in different places.</p>
-            <p>We start by finding yours. Then we design the system that removes it.</p>
-          </div>
-
-          {/* THREE DASHBOARD MOCKUPS */}
-          <div className="grid lg:grid-cols-3 gap-8 mb-16">
-
-            {/* ========== ZONE 1: EXPOSURE MAPPING ========== */}
-            <div
-              className={`transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-              style={{ transitionDelay: '0.5s' }}
-            >
-              {/* Control Surface Card */}
-              <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 mb-5 relative overflow-hidden">
-                {/* Subtle glow */}
-                <div className="absolute -top-20 -right-20 w-40 h-40 bg-[#00d4cf]/10 rounded-full blur-3xl" />
-
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-medium text-white/50 uppercase tracking-wider">Exposure Analysis</span>
-                  <div className={`w-2 h-2 rounded-full bg-[#00d4cf] ${engageVisible ? 'animate-status-pulse' : ''}`} />
-                </div>
-
-                {/* Surfaces Scanned */}
-                <div className="space-y-3 mb-5">
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">Response pathways</span>
-                    <span className="text-xs font-medium text-[#00d4cf]/80">Mapped</span>
+          <div className="grid sm:grid-cols-2 gap-6">
+            {[
+              {
+                text: 'Every call gets answered, even at 2am',
+                icon: Phone
+              },
+              {
+                text: 'Every lead gets an instant response',
+                icon: MessageSquare
+              },
+              {
+                text: 'Qualified appointments land on your calendar',
+                icon: Calendar
+              },
+              {
+                text: 'You see exactly what\'s happening, in real-time',
+                icon: Eye
+              }
+            ].map((item, i) => {
+              const Icon = item.icon
+              return (
+                <div
+                  key={i}
+                  className={`flex items-start gap-4 p-6 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-700 ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ transitionDelay: `${0.1 + i * 0.1}s` }}
+                >
+                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#00d4cf]/10 border border-[#00d4cf]/20 flex items-center justify-center">
+                    <Check className="w-5 h-5 text-[#00d4cf]" />
                   </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">Handoff points</span>
-                    <span className="text-xs font-medium text-[#00d4cf]/80">Identified</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">Capacity constraints</span>
-                    <span className="text-xs font-medium text-[#00d4cf]/80">Documented</span>
-                  </div>
-                  <div className="flex items-center justify-between">
-                    <span className="text-sm text-white/70">Leakage vectors</span>
-                    <span className="text-xs font-medium text-amber-400/80">Flagged</span>
-                  </div>
+                  <p className="text-lg text-white/90 pt-1.5">{item.text}</p>
                 </div>
-
-                {/* Divider */}
-                <div className="h-px bg-white/10 mb-4" />
-
-                {/* Status */}
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/40">Diagnosis</span>
-                  <span className="text-sm font-medium text-[#00d4cf]">Ready to review</span>
-                </div>
-              </div>
-
-              {/* Text content */}
-              <h3 className="text-lg font-semibold text-white mb-2">Revenue diagnosis</h3>
-              <p className="text-sm text-white/60 leading-relaxed mb-4">
-                We map where revenue breaks across response, follow ups, and system execution.
-              </p>
-              <button
-                onClick={() => navigate('/audit')}
-                className="group inline-flex items-center gap-2 text-[#00d4cf] text-sm font-medium transition-colors hover:text-[#00e5df]"
-              >
-                Start the audit
-                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-              </button>
-            </div>
-
-            {/* ========== ZONE 2: SYSTEM ARCHITECTURE ========== */}
-            <div
-              className={`transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-              style={{ transitionDelay: '0.7s' }}
-            >
-              {/* Control Surface Card */}
-              <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 mb-5 relative overflow-hidden">
-                {/* Subtle glow */}
-                <div className="absolute -top-20 -left-20 w-40 h-40 bg-[#00d4cf]/10 rounded-full blur-3xl" />
-                <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-[#7c72ff]/10 rounded-full blur-3xl" />
-
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-medium text-white/50 uppercase tracking-wider">System Architecture</span>
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400/60" />
-                </div>
-
-                {/* Channels Section */}
-                <div className="mb-4">
-                  <span className="text-[10px] text-white/40 uppercase tracking-wider">Channels Monitored</span>
-                  <div className="space-y-2 mt-2">
-                    {['Phone', 'SMS', 'Web Forms'].map((channel, i) => (
-                      <div key={channel} className="flex items-center justify-between">
-                        <span className="text-sm text-white/70">{channel}</span>
-                        <div className="flex items-center gap-1.5">
-                          <div className={`w-1.5 h-1.5 rounded-full bg-emerald-400 ${engageVisible ? 'animate-status-pulse' : ''}`} style={{ animationDelay: `${i * 0.2}s` }} />
-                          <span className="text-xs text-emerald-400/80">Connected</span>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Rules Section */}
-                <div className="mb-4">
-                  <span className="text-[10px] text-white/40 uppercase tracking-wider">Automation Layer</span>
-                  <div className="space-y-2 mt-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Qualification rules</span>
-                      <span className="text-xs font-medium text-[#00d4cf]/80">Loaded</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Routing logic</span>
-                      <span className="text-xs font-medium text-[#00d4cf]/80">Active</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Response targets</span>
-                      <span className="text-xs font-medium text-[#00d4cf]/80">Set</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="h-px bg-white/10 mb-3" />
-
-                {/* Status */}
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/40">Integrations</span>
-                  <span className="text-sm font-medium text-emerald-400">Configured</span>
-                </div>
-              </div>
-
-              {/* Text content */}
-              <h3 className="text-lg font-semibold text-white mb-2">System design</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
-                We design automation around your lead flow, sales motion, and constraints.
-              </p>
-            </div>
-
-            {/* ========== ZONE 3: ONGOING PRESENCE ========== */}
-            <div
-              className={`transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'}`}
-              style={{ transitionDelay: '0.9s' }}
-            >
-              {/* Control Surface Card */}
-              <div className="bg-[#0d1117] border border-white/10 rounded-xl p-5 mb-5 relative overflow-hidden">
-                {/* Subtle glow */}
-                <div className="absolute -bottom-20 -right-20 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl" />
-
-                {/* Header */}
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-xs font-medium text-white/50 uppercase tracking-wider">System Status</span>
-                  <div className="flex items-center gap-1.5">
-                    <div className={`w-2 h-2 rounded-full bg-emerald-400 ${engageVisible ? 'animate-status-pulse' : ''}`} />
-                    <span className="text-xs text-emerald-400">Active</span>
-                  </div>
-                </div>
-
-                {/* Coverage Status */}
-                <div className="mb-4">
-                  <span className="text-[10px] text-white/40 uppercase tracking-wider">Coverage</span>
-                  <div className="space-y-2 mt-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Inbound routing</span>
-                      <span className="text-xs font-medium text-emerald-400/80">Armed</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Response automation</span>
-                      <span className="text-xs font-medium text-emerald-400/80">Enabled</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Escalation rules</span>
-                      <span className="text-xs font-medium text-emerald-400/80">Defined</span>
-                    </div>
-                    <div className="flex items-center justify-between">
-                      <span className="text-sm text-white/70">Monitoring</span>
-                      <span className="text-xs font-medium text-emerald-400/80">Continuous</span>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Divider */}
-                <div className="h-px bg-white/10 mb-3" />
-
-                {/* Presence */}
-                <div className="flex items-center justify-between">
-                  <span className="text-xs text-white/40">Leviathan</span>
-                  <span className="text-sm font-medium text-[#00d4cf]">Involved</span>
-                </div>
-              </div>
-
-              {/* Text content */}
-              <h3 className="text-lg font-semibold text-white mb-2">Implementation & optimization</h3>
-              <p className="text-sm text-white/60 leading-relaxed">
-                We implement, monitor, and refine. Systems run automatically.
-              </p>
-            </div>
-
-          </div>
-
-          {/* Partnership line — prominent */}
-          <div
-            className={`flex items-center justify-center transition-all duration-700 ${engageVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-3'}`}
-            style={{ transitionDelay: '1.1s' }}
-          >
-            <div className="inline-flex items-center gap-3 px-5 py-2.5 rounded-full bg-white/[0.04] border border-white/10">
-              <div className="w-2 h-2 rounded-full bg-[#00d4cf] animate-pulse" />
-              <p className="text-sm font-medium text-white/80">
-                We work with a small number of partners at a time.
-              </p>
-            </div>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -730,12 +453,12 @@ export default function Home() {
           <div className="grid lg:grid-cols-2 gap-16 items-start">
             <div className="lg:sticky lg:top-32">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white leading-[1.1] mb-6">
-                Calculate what slow response
+                How much could slow responses
                 <br />
-                <span className="text-[#6b7280]">is costing you.</span>
+                <span className="text-[#6b7280]">be costing you?</span>
               </h2>
-              <p className="text-lg text-[#6b7280] max-w-sm">
-                See how delays waste hours and reduce revenue every month.
+              <p className="text-lg text-[#9ca3af] max-w-sm">
+                Most service businesses lose thousands every month to missed calls and delayed follow-ups. Let's see your number.
               </p>
             </div>
 
@@ -751,54 +474,78 @@ export default function Home() {
 
 
       {/* ============================================
-          FINAL CTA
+          THE CALL CTA
           ============================================ */}
-      <section className="py-32 sm:py-40 relative overflow-hidden">
+      <section ref={ctaRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Teal glow - left side */}
+        {/* Background glows */}
         <div
-          className="absolute top-1/2 -left-[10%] -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.4) 0%, transparent 60%)' }}
-        />
-
-        {/* Purple glow - right side */}
-        <div
-          className="absolute top-1/2 -right-[10%] -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.4) 0%, transparent 60%)' }}
-        />
-
-        {/* Center teal glow */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full opacity-25 blur-3xl pointer-events-none"
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
         />
 
-        {/* Subtle grid overlay */}
-        <div
-          className="absolute inset-0 opacity-[0.015] pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '60px 60px'
-          }}
-        />
+        <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
+          <div className={`transition-all duration-700 ${ctaVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
+            <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6 leading-[1.1]">
+              Let's figure out
+              <br />
+              <span className="text-[#6b7280]">if we can help.</span>
+            </h2>
+
+            <p className="text-xl text-[#9ca3af] mb-10">
+              Book a free 30-minute call with our team.
+            </p>
+
+            {/* What happens on the call */}
+            <div className="text-left max-w-md mx-auto mb-12 space-y-4">
+              <p className="text-[#6b7280] font-medium mb-4">What happens on the call:</p>
+              {[
+                'We learn about your business and how leads reach you today',
+                'We identify where opportunities might be slipping through',
+                'We tell you honestly if automation makes sense for you'
+              ].map((item, i) => (
+                <div key={i} className="flex items-start gap-3">
+                  <div className="flex-shrink-0 w-5 h-5 rounded-full bg-[#00d4cf]/20 flex items-center justify-center mt-0.5">
+                    <Check className="w-3 h-3 text-[#00d4cf]" />
+                  </div>
+                  <p className="text-[#9ca3af]">{item}</p>
+                </div>
+              ))}
+            </div>
+
+            <p className="text-[#6b7280] mb-10">
+              No pitch. No pressure. Just a conversation.
+            </p>
+
+            <button
+              onClick={() => navigate('/audit')}
+              className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)] hover:scale-[1.02]"
+            >
+              Book a Free Assessment
+              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            </button>
+          </div>
+        </div>
+      </section>
+
+
+      {/* ============================================
+          FOOTER CTA
+          ============================================ */}
+      <section className="py-24 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
         <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
-          <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6 leading-[1.1]">
-            Time is money.
-            <br />
-            <span className="text-[#6b7280]">So why waste both?</span>
-          </h2>
-          <p className="text-xl text-white/50 mb-12">
-            Talk to us about optimizing your time and your revenue.
+          <p className="text-xl text-[#6b7280] mb-8">
+            Ready to stop losing money to slow responses?
           </p>
-
           <button
             onClick={() => navigate('/audit')}
-            className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)] hover:scale-[1.02]"
+            className="group inline-flex items-center gap-2 text-[#00d4cf] font-medium transition-colors hover:text-[#00e5df]"
           >
-            Get started
-            <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+            Book a Free Assessment
+            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
           </button>
         </div>
       </section>

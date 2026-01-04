@@ -1,7 +1,11 @@
 {
   "permissions": {
     "allow": [
-      "Bash(claude mcp add:*)"
+      "Bash(claude mcp add:*)",
+      "Bash(git worktree:*)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$\\(cat <<''EOF''\nRedesign Engagement Model with system-state UI panels\n\n- Replace fake metrics with capability indicators \\(Mapped, Loaded, Armed, etc.\\)\n- Add dashboard mockups with visual drama \\(glows, animations\\)\n- Zone 1: Exposure Analysis with leakage detection states\n- Zone 2: System Architecture with channel/automation status\n- Zone 3: System Status with coverage and monitoring states\n- Enhanced CTA section with teal/purple background elements\n- Improved text visibility throughout section\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
+      "Bash(git commit:*)"
     ]
   }
 }
