@@ -125,14 +125,13 @@ export default function Home() {
 
             <div className={`transition-all duration-1000 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <h1 className="text-[2.75rem] sm:text-6xl lg:text-7xl font-semibold text-white leading-[1.05] tracking-[-0.03em] mb-8">
-                Stop losing customers
+                AI automation
                 <br />
-                <span className="text-[#6b7280]">to slow responses.</span>
+                <span className="text-[#6b7280]">that grows your business.</span>
               </h1>
 
               <p className="text-xl text-[#9ca3af] mb-12 max-w-xl mx-auto">
-                We help your business capture leads, automatically.
-                No more missed calls. No more forgotten follow-ups.
+                We partner with you to learn how your business works, then build the automation that fits. Lead handling, CRM, pipeline management, and more.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
@@ -153,19 +152,19 @@ export default function Home() {
               </div>
             </div>
 
-            {/* Simple trust indicators */}
+            {/* What we automate */}
             <div className={`mt-20 flex flex-wrap items-center justify-center gap-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
               <div className="flex items-center gap-2 text-[#6b7280]">
-                <Clock className="w-4 h-4 text-[#00d4cf]" />
-                <span className="text-sm">Responds in under 60 seconds</span>
+                <MessageSquare className="w-4 h-4 text-[#00d4cf]" />
+                <span className="text-sm">Lead response</span>
               </div>
               <div className="flex items-center gap-2 text-[#6b7280]">
-                <Phone className="w-4 h-4 text-[#00d4cf]" />
-                <span className="text-sm">Handles calls, texts, and forms</span>
+                <Users className="w-4 h-4 text-[#00d4cf]" />
+                <span className="text-sm">CRM management</span>
               </div>
               <div className="flex items-center gap-2 text-[#6b7280]">
                 <Calendar className="w-4 h-4 text-[#00d4cf]" />
-                <span className="text-sm">Books appointments automatically</span>
+                <span className="text-sm">Pipeline automation</span>
               </div>
             </div>
 
@@ -178,14 +177,10 @@ export default function Home() {
           STAT — THE PROBLEM
           ============================================ */}
       <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
-        {/* Background orbs like hero */}
+        {/* Subtle background accent */}
         <div
-          className="absolute w-[1000px] h-[1000px] -top-[300px] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.12) 0%, rgba(0,212,207,0.04) 40%, transparent 70%)' }}
-        />
-        <div
-          className="absolute w-[600px] h-[600px] top-[30%] -right-[150px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.08) 0%, transparent 60%)' }}
+          className="absolute w-[800px] h-[800px] -top-[200px] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.06) 0%, rgba(0,212,207,0.02) 40%, transparent 70%)' }}
         />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
@@ -272,14 +267,10 @@ export default function Home() {
       <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background orbs like hero */}
+        {/* Subtle background accent */}
         <div
-          className="absolute w-[900px] h-[900px] -top-[200px] -left-[200px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.1) 0%, rgba(124,114,255,0.03) 40%, transparent 70%)' }}
-        />
-        <div
-          className="absolute w-[800px] h-[800px] top-[40%] -right-[200px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.1) 0%, rgba(0,212,207,0.03) 40%, transparent 70%)' }}
+          className="absolute w-[600px] h-[600px] top-[20%] -right-[100px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.05) 0%, transparent 60%)' }}
         />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
@@ -412,14 +403,10 @@ export default function Home() {
       <section ref={outcomesRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background orbs like hero */}
+        {/* Subtle background accent */}
         <div
-          className="absolute w-[800px] h-[800px] -top-[100px] -right-[200px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.1) 0%, rgba(0,212,207,0.03) 40%, transparent 70%)' }}
-        />
-        <div
-          className="absolute w-[700px] h-[700px] top-[50%] -left-[200px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.08) 0%, rgba(124,114,255,0.02) 40%, transparent 70%)' }}
+          className="absolute w-[500px] h-[500px] top-[30%] -left-[100px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.04) 0%, transparent 60%)' }}
         />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
@@ -428,7 +415,7 @@ export default function Home() {
           }}
         />
 
-        <div className="mx-auto max-w-4xl px-6 relative z-10">
+        <div className="mx-auto max-w-5xl px-6 relative z-10">
           <div className={`text-center mb-16 transition-all duration-700 ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
             <h2 className="text-4xl sm:text-5xl lg:text-6xl font-semibold text-white mb-6">
               What changes for you
@@ -438,22 +425,68 @@ export default function Home() {
             </p>
           </div>
 
+          {/* Before/After Visual Comparison */}
+          <div className={`grid md:grid-cols-2 gap-6 mb-16 transition-all duration-700 ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`} style={{ transitionDelay: '0.1s' }}>
+            {/* Before */}
+            <div className="relative p-8 rounded-3xl border border-red-500/20 bg-red-500/[0.03]">
+              <div className="absolute -top-3 left-6 px-3 py-1 bg-[#030306] text-red-400 text-sm font-medium rounded-full border border-red-500/30">
+                Before
+              </div>
+              <div className="space-y-4 mt-2">
+                {[
+                  'Leads slip through when you\'re busy',
+                  'Hours lost to repetitive tasks',
+                  'No idea what\'s working or not',
+                  'Always playing catch up'
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 text-[#9ca3af]">
+                    <div className="w-1.5 h-1.5 rounded-full bg-red-400/60" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* After */}
+            <div className="relative p-8 rounded-3xl border border-[#00d4cf]/30 bg-[#00d4cf]/[0.03]">
+              <div className="absolute -top-3 left-6 px-3 py-1 bg-[#030306] text-[#00d4cf] text-sm font-medium rounded-full border border-[#00d4cf]/30">
+                After
+              </div>
+              {/* Glow effect */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#00d4cf]/5 to-transparent pointer-events-none" />
+              <div className="space-y-4 mt-2 relative">
+                {[
+                  'Every lead gets handled instantly',
+                  'Automation does the repetitive work',
+                  'Full visibility into your pipeline',
+                  'Systems run while you focus on growth'
+                ].map((item, i) => (
+                  <div key={i} className="flex items-center gap-3 text-white/90">
+                    <Check className="w-4 h-4 text-[#00d4cf] flex-shrink-0" />
+                    <span>{item}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Outcome cards */}
           <div className="grid sm:grid-cols-2 gap-6">
             {[
               {
-                text: 'Every call gets answered, even at 2am',
-                icon: Phone
+                text: 'More time for the work that actually matters',
+                icon: Clock
               },
               {
-                text: 'Every lead gets an instant response',
-                icon: MessageSquare
-              },
-              {
-                text: 'Qualified appointments land on your calendar',
+                text: 'Fewer missed opportunities, more closed deals',
                 icon: Calendar
               },
               {
-                text: 'You see exactly what\'s happening, in real-time',
+                text: 'Confidence your business runs even when you\'re not looking',
+                icon: Shield
+              },
+              {
+                text: 'Visibility into every lead, conversation, and outcome',
                 icon: Eye
               }
             ].map((item, i) => {
@@ -461,13 +494,13 @@ export default function Home() {
               return (
                 <div
                   key={i}
-                  className={`flex items-start gap-4 p-6 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-700 ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
-                  style={{ transitionDelay: `${0.1 + i * 0.1}s` }}
+                  className={`flex items-start gap-4 p-6 rounded-2xl border border-white/5 bg-white/[0.02] transition-all duration-700 hover:border-[#00d4cf]/20 hover:bg-[#00d4cf]/[0.02] ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}
+                  style={{ transitionDelay: `${0.2 + i * 0.1}s` }}
                 >
-                  <div className="flex-shrink-0 w-10 h-10 rounded-xl bg-[#00d4cf]/10 border border-[#00d4cf]/20 flex items-center justify-center">
-                    <Check className="w-5 h-5 text-[#00d4cf]" />
+                  <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-br from-[#00d4cf]/20 to-[#7c72ff]/10 border border-[#00d4cf]/20 flex items-center justify-center">
+                    <Icon className="w-5 h-5 text-[#00d4cf]" />
                   </div>
-                  <p className="text-lg text-white/90 pt-1.5">{item.text}</p>
+                  <p className="text-lg text-white/90 pt-2.5">{item.text}</p>
                 </div>
               )
             })}
@@ -482,14 +515,10 @@ export default function Home() {
       <section id="calculator" className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background orbs like hero */}
+        {/* Subtle background accent */}
         <div
-          className="absolute w-[900px] h-[900px] -top-[200px] -left-[300px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.1) 0%, rgba(124,114,255,0.03) 40%, transparent 70%)' }}
-        />
-        <div
-          className="absolute w-[800px] h-[800px] top-[20%] -right-[200px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.12) 0%, rgba(0,212,207,0.04) 40%, transparent 70%)' }}
+          className="absolute w-[600px] h-[600px] top-[10%] -right-[150px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.05) 0%, transparent 60%)' }}
         />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
@@ -512,7 +541,7 @@ export default function Home() {
                 <span className="text-[#6b7280]">be costing you?</span>
               </h2>
               <p className="text-lg text-[#9ca3af] max-w-sm">
-                Most service businesses lose thousands every month to missed calls and delayed follow-ups. Let's see your number.
+                Most businesses lose thousands every month to missed calls and delayed followups. Let's see your number.
               </p>
             </div>
 
@@ -533,18 +562,14 @@ export default function Home() {
       <section ref={ctaRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background orbs like hero */}
+        {/* Subtle background accents */}
         <div
-          className="absolute w-[1000px] h-[1000px] -top-[300px] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.12) 0%, rgba(0,212,207,0.04) 40%, transparent 70%)' }}
+          className="absolute w-[700px] h-[700px] -top-[200px] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.06) 0%, transparent 60%)' }}
         />
         <div
-          className="absolute w-[700px] h-[700px] top-[40%] -left-[200px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.1) 0%, rgba(124,114,255,0.03) 40%, transparent 70%)' }}
-        />
-        <div
-          className="absolute w-[600px] h-[600px] top-[30%] -right-[150px] rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.08) 0%, transparent 60%)' }}
+          className="absolute w-[500px] h-[500px] top-[50%] -right-[100px] rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.04) 0%, transparent 60%)' }}
         />
         <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
           style={{
@@ -562,7 +587,7 @@ export default function Home() {
             </h2>
 
             <p className="text-xl text-[#9ca3af] mb-10">
-              Book a free 30-minute call with our team.
+              Book a free 30 minute call with our team.
             </p>
 
             {/* What happens on the call */}
@@ -585,7 +610,7 @@ export default function Home() {
             {/* Final CTA - inline with Call section */}
             <div className="mt-16 pt-10 border-t border-white/10">
               <p className="text-xl text-[#6b7280] mb-6">
-                Ready to stop losing money to slow responses?
+                Ready to start saving with AI automation?
               </p>
               <button
                 onClick={() => navigate('/audit')}

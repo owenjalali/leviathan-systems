@@ -8,7 +8,7 @@ export default function About() {
   }, [])
 
   return (
-    <div className="bg-[#030306] min-h-screen flex items-center justify-center relative overflow-hidden">
+    <div className="bg-[#030306] min-h-screen flex items-center justify-center relative overflow-hidden pt-20">
       {/* Background glows */}
       <div
         className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
