@@ -131,7 +131,7 @@ export default function Home() {
               </h1>
 
               <p className="text-xl text-[#9ca3af] mb-12 max-w-xl mx-auto">
-                We help service businesses capture every lead, automatically.
+                We help your business capture every lead, automatically.
                 No more missed calls. No more forgotten follow-ups.
               </p>
 
@@ -257,9 +257,17 @@ export default function Home() {
       <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
-        {/* Background glow */}
+        {/* Background glows */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20 pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
+        />
+        <div
+          className="absolute top-1/4 -left-[5%] w-[400px] h-[400px] rounded-full opacity-15 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.25) 0%, transparent 60%)' }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-[5%] w-[350px] h-[350px] rounded-full opacity-15 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.2) 0%, transparent 60%)' }}
         />
 
         <div className="mx-auto max-w-6xl px-6 relative z-10">
@@ -287,14 +295,14 @@ export default function Home() {
                   icon: Eye,
                   num: '02',
                   title: 'We Find Where You\'re Losing Money',
-                  desc: 'We look at your current process and identify exactly where opportunities slip away—missed calls, slow follow-ups, leads that go cold.',
+                  desc: 'We look at your current process and identify exactly where opportunities slip away. Missed calls. Slow follow-ups. Leads that go cold.',
                   color: '#7c72ff'
                 },
                 {
                   icon: Shield,
                   num: '03',
                   title: 'We Build a System to Fix It',
-                  desc: 'Custom automation that handles responses, qualifies leads, and books appointments—without you lifting a finger.',
+                  desc: 'Custom automation that handles responses, qualifies leads, and books appointments. All without you lifting a finger.',
                   color: '#00d4cf'
                 },
               ].map((step, i) => {
@@ -385,6 +393,16 @@ export default function Home() {
           ============================================ */}
       <section ref={outcomesRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Background glows */}
+        <div
+          className="absolute top-1/3 -left-[10%] w-[500px] h-[500px] rounded-full opacity-15 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
+        />
+        <div
+          className="absolute bottom-1/4 -right-[10%] w-[400px] h-[400px] rounded-full opacity-15 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.3) 0%, transparent 60%)' }}
+        />
 
         <div className="mx-auto max-w-4xl px-6 relative z-10">
           <div className={`text-center mb-16 transition-all duration-700 ${outcomesVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'}`}>
@@ -513,18 +531,6 @@ export default function Home() {
                 </div>
               ))}
             </div>
-
-            <p className="text-[#6b7280] mb-10">
-              No pitch. No pressure. Just a conversation.
-            </p>
-
-            <button
-              onClick={() => navigate('/audit')}
-              className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)] hover:scale-[1.02]"
-            >
-              Book a Free Assessment
-              <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
-            </button>
           </div>
         </div>
       </section>
@@ -535,6 +541,16 @@ export default function Home() {
           ============================================ */}
       <section className="py-24 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Background glows */}
+        <div
+          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-20 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.25) 0%, transparent 60%)' }}
+        />
+        <div
+          className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-15 blur-3xl pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
+        />
 
         <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
           <p className="text-xl text-[#6b7280] mb-8">
