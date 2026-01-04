@@ -131,7 +131,7 @@ export default function Home() {
               </h1>
 
               <p className="text-xl text-[#9ca3af] mb-12 max-w-xl mx-auto">
-                We help your business capture every lead, automatically.
+                We help your business capture leads, automatically.
                 No more missed calls. No more forgotten follow-ups.
               </p>
 
@@ -178,6 +178,13 @@ export default function Home() {
           STAT — THE PROBLEM
           ============================================ */}
       <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
+        {/* Background mesh like hero */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
         {/* Animated rings */}
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
           <div
@@ -256,6 +263,14 @@ export default function Home() {
           ============================================ */}
       <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Background mesh like hero */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
 
         {/* Background glows */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] rounded-full opacity-20 pointer-events-none"
@@ -394,6 +409,14 @@ export default function Home() {
       <section ref={outcomesRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
+        {/* Background mesh like hero */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
+
         {/* Background glows */}
         <div
           className="absolute top-1/3 -left-[10%] w-[500px] h-[500px] rounded-full opacity-15 blur-3xl pointer-events-none"
@@ -455,8 +478,16 @@ export default function Home() {
       {/* ============================================
           CALCULATOR
           ============================================ */}
-      <section id="calculator" className="py-32 sm:py-40 relative">
+      <section id="calculator" className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Background mesh like hero */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
 
         <div className="absolute top-1/2 right-[30%] -translate-y-1/2 w-[500px] h-[500px] rounded-full opacity-20 blur-3xl pointer-events-none"
           style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, transparent 60%)' }}
@@ -497,6 +528,14 @@ export default function Home() {
       <section ref={ctaRef} className="py-32 sm:py-40 relative overflow-hidden">
         <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
 
+        {/* Background mesh like hero */}
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
+
         {/* Background glows */}
         <div
           className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full opacity-20 blur-3xl pointer-events-none"
@@ -531,38 +570,21 @@ export default function Home() {
                 </div>
               ))}
             </div>
+
+            {/* Final CTA - inline with Call section */}
+            <div className="mt-16 pt-10 border-t border-white/10">
+              <p className="text-xl text-[#6b7280] mb-6">
+                Ready to stop losing money to slow responses?
+              </p>
+              <button
+                onClick={() => navigate('/audit')}
+                className="group inline-flex items-center gap-3 px-10 py-5 bg-white text-[#030306] font-semibold rounded-full text-lg transition-all duration-300 hover:shadow-[0_0_60px_rgba(0,212,207,0.5)] hover:scale-[1.02]"
+              >
+                Book a Free Assessment
+                <ArrowRight className="w-5 h-5 transition-transform group-hover:translate-x-1" />
+              </button>
+            </div>
           </div>
-        </div>
-      </section>
-
-
-      {/* ============================================
-          FOOTER CTA
-          ============================================ */}
-      <section className="py-24 relative overflow-hidden">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
-
-        {/* Background glows */}
-        <div
-          className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[300px] rounded-full opacity-20 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.25) 0%, transparent 60%)' }}
-        />
-        <div
-          className="absolute top-1/2 left-1/3 -translate-y-1/2 w-[300px] h-[300px] rounded-full opacity-15 blur-3xl pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(124,114,255,0.2) 0%, transparent 60%)' }}
-        />
-
-        <div className="mx-auto max-w-3xl px-6 text-center relative z-10">
-          <p className="text-xl text-[#6b7280] mb-8">
-            Ready to stop losing money to slow responses?
-          </p>
-          <button
-            onClick={() => navigate('/audit')}
-            className="group inline-flex items-center gap-2 text-[#00d4cf] font-medium transition-colors hover:text-[#00e5df]"
-          >
-            Book a Free Assessment
-            <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
-          </button>
         </div>
       </section>
 
