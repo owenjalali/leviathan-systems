@@ -541,7 +541,7 @@ export default function Home() {
                 <span className="text-[#6b7280]">be costing you?</span>
               </h2>
               <p className="text-lg text-[#9ca3af] max-w-sm">
-                Most businesses lose thousands every month to missed calls and delayed followups. Let's see your number.
+                Most businesses lose thousands every month to missed calls and delayed follow-ups. Let's see your number.
               </p>
             </div>
 
