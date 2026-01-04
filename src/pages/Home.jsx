@@ -174,94 +174,6 @@ export default function Home() {
 
 
       {/* ============================================
-          STAT — THE PROBLEM
-          ============================================ */}
-      <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
-        {/* Subtle background accent */}
-        <div
-          className="absolute w-[800px] h-[800px] -top-[200px] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
-          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.06) 0%, rgba(0,212,207,0.02) 40%, transparent 70%)' }}
-        />
-        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
-          style={{
-            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
-            backgroundSize: '80px 80px'
-          }}
-        />
-        {/* Animated rings */}
-        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-          <div
-            className={`absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full border transition-all duration-1000 ${
-              statVisible ? 'border-[#00d4cf]/20 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
-            }`}
-            style={{ transitionDelay: '0.2s' }}
-          />
-          <div
-            className={`absolute w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] rounded-full border transition-all duration-1000 ${
-              statVisible ? 'border-[#00d4cf]/10 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
-            }`}
-            style={{ transitionDelay: '0.4s' }}
-          />
-          <div
-            className={`absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] rounded-full border transition-all duration-1000 ${
-              statVisible ? 'border-[#00d4cf]/5 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
-            }`}
-            style={{ transitionDelay: '0.6s' }}
-          />
-        </div>
-
-        {/* Center glow */}
-        <div
-          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full transition-opacity duration-1000 ${
-            statVisible ? 'opacity-100' : 'opacity-0'
-          }`}
-          style={{
-            background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, rgba(0,212,207,0.1) 40%, transparent 70%)',
-          }}
-        />
-
-        <div className="mx-auto max-w-5xl px-6 text-center relative z-10">
-          {/* Giant number */}
-          <div
-            className={`text-[8rem] sm:text-[12rem] lg:text-[18rem] font-bold leading-none mb-6 transition-all duration-1000 ${
-              statVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
-            }`}
-            style={{
-              fontVariantNumeric: 'tabular-nums',
-              letterSpacing: '-0.04em',
-            }}
-          >
-            <span
-              className="relative inline-block"
-              style={{
-                background: 'linear-gradient(135deg, #ffffff 0%, #00d4cf 100%)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-                backgroundClip: 'text',
-              }}
-            >
-              {statValue}%
-            </span>
-          </div>
-
-          <p className={`text-xl sm:text-2xl text-[#9ca3af] max-w-2xl mx-auto transition-all duration-700 ${
-            statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`} style={{ transitionDelay: '0.5s' }}>
-            of customers hire whoever responds first.
-          </p>
-
-          <p className={`text-lg text-[#6b7280] max-w-xl mx-auto mt-6 transition-all duration-700 ${
-            statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
-          }`} style={{ transitionDelay: '0.7s' }}>
-            When a lead calls and you're busy, they call your competitor.
-            <br />
-            When a form sits overnight, they've already booked elsewhere.
-          </p>
-        </div>
-      </section>
-
-
-      {/* ============================================
           HOW WE WORK — PARTNERSHIP FLOW
           ============================================ */}
       <section ref={howRef} className="py-32 sm:py-40 relative overflow-hidden">
@@ -505,6 +417,96 @@ export default function Home() {
               )
             })}
           </div>
+        </div>
+      </section>
+
+
+      {/* ============================================
+          STAT — THE PROBLEM
+          ============================================ */}
+      <section ref={statRef} className="py-40 sm:py-56 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-white/10 to-transparent" />
+
+        {/* Subtle background accent */}
+        <div
+          className="absolute w-[800px] h-[800px] -top-[200px] left-1/2 -translate-x-1/2 rounded-full pointer-events-none"
+          style={{ background: 'radial-gradient(circle, rgba(0,212,207,0.06) 0%, rgba(0,212,207,0.02) 40%, transparent 70%)' }}
+        />
+        <div className="absolute inset-0 opacity-[0.02] pointer-events-none"
+          style={{
+            backgroundImage: 'linear-gradient(rgba(255,255,255,0.5) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.5) 1px, transparent 1px)',
+            backgroundSize: '80px 80px'
+          }}
+        />
+        {/* Animated rings */}
+        <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+          <div
+            className={`absolute w-[300px] h-[300px] sm:w-[500px] sm:h-[500px] rounded-full border transition-all duration-1000 ${
+              statVisible ? 'border-[#00d4cf]/20 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
+            }`}
+            style={{ transitionDelay: '0.2s' }}
+          />
+          <div
+            className={`absolute w-[450px] h-[450px] sm:w-[700px] sm:h-[700px] rounded-full border transition-all duration-1000 ${
+              statVisible ? 'border-[#00d4cf]/10 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
+            }`}
+            style={{ transitionDelay: '0.4s' }}
+          />
+          <div
+            className={`absolute w-[600px] h-[600px] sm:w-[900px] sm:h-[900px] rounded-full border transition-all duration-1000 ${
+              statVisible ? 'border-[#00d4cf]/5 scale-100 opacity-100' : 'border-transparent scale-50 opacity-0'
+            }`}
+            style={{ transitionDelay: '0.6s' }}
+          />
+        </div>
+
+        {/* Center glow */}
+        <div
+          className={`absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[400px] h-[400px] rounded-full transition-opacity duration-1000 ${
+            statVisible ? 'opacity-100' : 'opacity-0'
+          }`}
+          style={{
+            background: 'radial-gradient(circle, rgba(0,212,207,0.3) 0%, rgba(0,212,207,0.1) 40%, transparent 70%)',
+          }}
+        />
+
+        <div className="mx-auto max-w-5xl px-6 text-center relative z-10">
+          {/* Giant number */}
+          <div
+            className={`text-[8rem] sm:text-[12rem] lg:text-[18rem] font-bold leading-none mb-6 transition-all duration-1000 ${
+              statVisible ? 'opacity-100 scale-100' : 'opacity-0 scale-90'
+            }`}
+            style={{
+              fontVariantNumeric: 'tabular-nums',
+              letterSpacing: '-0.04em',
+            }}
+          >
+            <span
+              className="relative inline-block"
+              style={{
+                background: 'linear-gradient(135deg, #ffffff 0%, #00d4cf 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundClip: 'text',
+              }}
+            >
+              {statValue}%
+            </span>
+          </div>
+
+          <p className={`text-xl sm:text-2xl text-[#9ca3af] max-w-2xl mx-auto transition-all duration-700 ${
+            statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ transitionDelay: '0.5s' }}>
+            of customers hire whoever responds first.
+          </p>
+
+          <p className={`text-lg text-[#6b7280] max-w-xl mx-auto mt-6 transition-all duration-700 ${
+            statVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'
+          }`} style={{ transitionDelay: '0.7s' }}>
+            When a lead calls and you're busy, they call your competitor.
+            <br />
+            When a form sits overnight, they've already booked elsewhere.
+          </p>
         </div>
       </section>
 
