@@ -82,12 +82,12 @@ Which phases cover which requirements.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| POLL-01 | Phase 1 | Pending |
-| POLL-02 | Phase 1 | Pending |
-| POLL-03 | Phase 1 | Pending |
-| POLL-04 | Phase 1 | Pending |
-| POLL-05 | Phase 1 | Pending |
-| ANIM-06 | Phase 1 | Pending |
+| POLL-01 | Phase 1 | Complete |
+| POLL-02 | Phase 1 | Complete |
+| POLL-03 | Phase 1 | Complete |
+| POLL-04 | Phase 1 | Complete |
+| POLL-05 | Phase 1 | Complete |
+| ANIM-06 | Phase 1 | Complete |
 | TERM-01 | Phase 2 | Pending |
 | TERM-02 | Phase 2 | Pending |
 | TERM-03 | Phase 2 | Pending |
@@ -120,4 +120,4 @@ Which phases cover which requirements.
 
 ---
 *Requirements defined: 2026-01-21*
-*Last updated: 2026-01-21 after initial definition*
+*Last updated: 2026-01-22 after Phase 1 completion*
