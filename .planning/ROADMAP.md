@@ -10,7 +10,7 @@
 | # | Phase | Goal | Requirements | Success Criteria | Status |
 |---|-------|------|--------------|------------------|--------|
 | 1 | Foundation | Polling hook and CSS animations | POLL-01-05, ANIM-06 | 6 | ✓ Complete |
-| 2 | Terminal UI | Live monitor terminal component | TERM-01-07, ANIM-01-05 | 5 | Pending |
+| 2 | Terminal UI | Live monitor terminal component | TERM-01-07, ANIM-01-05 | 5 | ✓ Complete |
 | 3 | Vapi Integration | Call button with SDK | VAPI-01-07 | 5 | Pending |
 | 4 | Assembly | Wire together and integrate | SECT-01-05 | 5 | Pending |
 
@@ -48,9 +48,15 @@ Plans:
 
 ---
 
-## Phase 2: Terminal UI
+## Phase 2: Terminal UI ✓
 
 **Goal:** Build the live monitor terminal with all animations
+**Status:** Complete (2026-01-22)
+
+**Plans:** 1 plan
+
+Plans:
+- [x] 02-01-PLAN.md — LiveMonitorTerminal component
 
 **Requirements:**
 - TERM-01: Terminal displays current status (Standby/Active Call/Captured)
