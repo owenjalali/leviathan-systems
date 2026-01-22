@@ -20,6 +20,11 @@
 
 **Goal:** Build the polling infrastructure and animation foundation
 
+**Plans:** 1 plan
+
+Plans:
+- [ ] 01-01-PLAN.md — useLiveMonitor hook + CSS keyframes
+
 **Requirements:**
 - POLL-01: System polls n8n endpoint every 1 second during active call
 - POLL-02: Polling starts when call begins
