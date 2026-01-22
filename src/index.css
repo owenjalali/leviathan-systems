@@ -390,3 +390,88 @@ select:focus-visible {
 .animate-progress-fill {
   animation: progress-fill 1.5s ease-out forwards;
 }
+
+/* ================================
+   LIVE DEMO ANIMATIONS
+   ================================ */
+
+@keyframes scan-line {
+  0% {
+    top: 0;
+    opacity: 0;
+  }
+  5% {
+    opacity: 0.6;
+  }
+  95% {
+    opacity: 0.6;
+  }
+  100% {
+    top: 100%;
+    opacity: 0;
+  }
+}
+
+@keyframes field-glow {
+  0% {
+    box-shadow: 0 0 0 rgba(0, 212, 207, 0);
+    background-color: transparent;
+  }
+  30% {
+    box-shadow: 0 0 20px rgba(0, 212, 207, 0.4);
+    background-color: rgba(0, 212, 207, 0.05);
+  }
+  100% {
+    box-shadow: 0 0 0 rgba(0, 212, 207, 0);
+    background-color: transparent;
+  }
+}
+
+@keyframes cursor-blink {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}
+
+@keyframes status-chip-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(0, 212, 207, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 8px rgba(0, 212, 207, 0);
+  }
+}
+
+@keyframes event-fade-in {
+  0% {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 3s linear infinite;
+}
+
+.animate-field-glow {
+  animation: field-glow 0.6s ease-out forwards;
+}
+
+.animate-cursor-blink {
+  animation: cursor-blink 0.8s step-end infinite;
+}
+
+.animate-status-chip-pulse {
+  animation: status-chip-pulse 2s ease-in-out infinite;
+}
+
+.animate-event-fade-in {
+  animation: event-fade-in 0.3s ease-out forwards;
+}
