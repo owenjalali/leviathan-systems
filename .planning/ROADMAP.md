@@ -9,14 +9,14 @@
 
 | # | Phase | Goal | Requirements | Success Criteria | Status |
 |---|-------|------|--------------|------------------|--------|
-| 1 | Foundation | Polling hook and CSS animations | POLL-01-05, ANIM-06 | 6 | ✓ Complete |
-| 2 | Terminal UI | Live monitor terminal component | TERM-01-07, ANIM-01-05 | 5 | ✓ Complete |
-| 3 | Vapi Integration | Call button with SDK | VAPI-01-07 | 5 | Pending |
+| 1 | Foundation | Polling hook and CSS animations | POLL-01-05, ANIM-06 | 6 | Complete |
+| 2 | Terminal UI | Live monitor terminal component | TERM-01-07, ANIM-01-05 | 5 | Complete |
+| 3 | Vapi Integration | Call button with SDK | VAPI-01-07 | 5 | Planned |
 | 4 | Assembly | Wire together and integrate | SECT-01-05 | 5 | Pending |
 
 ---
 
-## Phase 1: Foundation ✓
+## Phase 1: Foundation
 
 **Goal:** Build the polling infrastructure and animation foundation
 **Status:** Complete (2026-01-22)
@@ -24,7 +24,7 @@
 **Plans:** 1 plan
 
 Plans:
-- [x] 01-01-PLAN.md — useLiveMonitor hook + CSS keyframes
+- [x] 01-01-PLAN.md - useLiveMonitor hook + CSS keyframes
 
 **Requirements:**
 - POLL-01: System polls n8n endpoint every 1 second during active call
@@ -48,7 +48,7 @@ Plans:
 
 ---
 
-## Phase 2: Terminal UI ✓
+## Phase 2: Terminal UI
 
 **Goal:** Build the live monitor terminal with all animations
 **Status:** Complete (2026-01-22)
@@ -56,7 +56,7 @@ Plans:
 **Plans:** 1 plan
 
 Plans:
-- [x] 02-01-PLAN.md — LiveMonitorTerminal component
+- [x] 02-01-PLAN.md - LiveMonitorTerminal component
 
 **Requirements:**
 - TERM-01: Terminal displays current status (Standby/Active Call/Captured)
@@ -77,7 +77,7 @@ Plans:
 
 **Success Criteria:**
 1. Terminal renders with mock data (test without real call)
-2. Status transitions visually (Standby → Active → Captured)
+2. Status transitions visually (Standby -> Active -> Captured)
 3. Scan line animates during "active" state
 4. Fields glow when props change
 5. Typewriter effect works on summary text
@@ -87,6 +87,12 @@ Plans:
 ## Phase 3: Vapi Integration
 
 **Goal:** Build the call button with full Vapi SDK integration
+**Status:** Planned (2026-01-22)
+
+**Plans:** 1 plan
+
+Plans:
+- [ ] 03-01-PLAN.md - useVapiCall hook + VapiCallButton component
 
 **Requirements:**
 - VAPI-01: Vapi SDK loads in browser without blocking page render
@@ -98,6 +104,7 @@ Plans:
 - VAPI-07: Microphone permission errors are handled gracefully
 
 **Deliverables:**
+- `src/hooks/useVapiCall.js`
 - `src/components/VapiCallButton.jsx`
 - Install `@vapi-ai/web` package
 
@@ -130,7 +137,7 @@ Plans:
 2. Two columns render on desktop viewport
 3. Single column stacks on mobile viewport
 4. Starting a call triggers terminal to poll
-5. End-to-end flow works: click → call → data appears → call ends → control statement shows
+5. End-to-end flow works: click -> call -> data appears -> call ends -> control statement shows
 
 ---
 
@@ -138,11 +145,11 @@ Plans:
 
 ```
 Phase 1 (Foundation)
-    ↓
-Phase 2 (Terminal UI) ←──┐
-    ↓                    │
-Phase 3 (Vapi) ──────────┘
-    ↓
+    |
+Phase 2 (Terminal UI) <--+
+    |                    |
+Phase 3 (Vapi) ----------+
+    |
 Phase 4 (Assembly)
 ```
 
