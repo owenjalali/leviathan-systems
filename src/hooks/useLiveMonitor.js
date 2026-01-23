@@ -67,11 +67,23 @@ export function useLiveMonitor() {
     try {
       const response = await fetch(endpoint)
 
+      // 404 means no data yet - this is expected, not an error
+      if (response.status === 404) {
+        // Session not found yet, keep polling silently
+        return
+      }
+
       if (!response.ok) {
         throw new Error(`HTTP ${response.status}: ${response.statusText}`)
       }
 
       const result = await response.json()
+
+      // Check if response indicates no data (success: false)
+      if (result.success === false) {
+        // No data yet, keep polling silently
+        return
+      }
 
       // Only update state if still mounted
       if (!mountedRef.current) return
