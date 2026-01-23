@@ -475,3 +475,20 @@ select:focus-visible {
 .animate-event-fade-in {
   animation: event-fade-in 0.3s ease-out forwards;
 }
+
+/* ================================
+   VAPI CALL BUTTON ANIMATIONS
+   ================================ */
+
+@keyframes bar-idle {
+  0%, 100% {
+    transform: scaleY(0.15);
+  }
+  50% {
+    transform: scaleY(0.25);
+  }
+}
+
+.animate-bar-idle {
+  animation: bar-idle 1.2s ease-in-out infinite;
+}
