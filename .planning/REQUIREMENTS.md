@@ -9,40 +9,40 @@ Requirements for Live Demo Section. Each maps to roadmap phases.
 
 ### Vapi Integration
 
-- [ ] **VAPI-01**: Vapi SDK loads in browser without blocking page render
-- [ ] **VAPI-02**: User can start a demo call by clicking the call button
-- [ ] **VAPI-03**: User can end an active call
-- [ ] **VAPI-04**: System generates unique session ID for each call
-- [ ] **VAPI-05**: Session ID is passed to Vapi assistant via metadata
-- [ ] **VAPI-06**: Call status (active/ended) is tracked and displayed
-- [ ] **VAPI-07**: Microphone permission errors are handled gracefully
+- [x] **VAPI-01**: Vapi SDK loads in browser without blocking page render
+- [x] **VAPI-02**: User can start a demo call by clicking the call button
+- [x] **VAPI-03**: User can end an active call
+- [x] **VAPI-04**: System generates unique session ID for each call
+- [x] **VAPI-05**: Session ID is passed to Vapi assistant via metadata
+- [x] **VAPI-06**: Call status (active/ended) is tracked and displayed
+- [x] **VAPI-07**: Microphone permission errors are handled gracefully
 
 ### Live Monitor Terminal
 
-- [ ] **TERM-01**: Terminal displays current status (Standby/Active Call/Captured)
-- [ ] **TERM-02**: Terminal shows Issue field when captured
-- [ ] **TERM-03**: Terminal shows Urgency field when captured
-- [ ] **TERM-04**: Terminal shows Location field when captured
-- [ ] **TERM-05**: Terminal shows Intent field when captured
-- [ ] **TERM-06**: Terminal shows Final Summary after call ends
-- [ ] **TERM-07**: Control statement displays after call: "NO ACTIONS EXECUTED — OWNER APPROVAL REQUIRED"
+- [x] **TERM-01**: Terminal displays current status (Standby/Active Call/Captured)
+- [x] **TERM-02**: Terminal shows Issue field when captured
+- [x] **TERM-03**: Terminal shows Urgency field when captured
+- [x] **TERM-04**: Terminal shows Location field when captured
+- [x] **TERM-05**: Terminal shows Intent field when captured
+- [x] **TERM-06**: Terminal shows Final Summary after call ends
+- [x] **TERM-07**: Control statement displays after call: "NO ACTIONS EXECUTED — OWNER APPROVAL REQUIRED"
 
 ### Polling & Data Flow
 
-- [ ] **POLL-01**: System polls n8n endpoint every 1 second during active call
-- [ ] **POLL-02**: Polling starts when call begins
-- [ ] **POLL-03**: Polling continues 30 seconds after call ends (to catch final summary)
-- [ ] **POLL-04**: Polling stops cleanly without memory leaks
-- [ ] **POLL-05**: Network errors are handled gracefully
+- [x] **POLL-01**: System polls n8n endpoint every 1 second during active call
+- [x] **POLL-02**: Polling starts when call begins
+- [x] **POLL-03**: Polling continues 30 seconds after call ends (to catch final summary)
+- [x] **POLL-04**: Polling stops cleanly without memory leaks
+- [x] **POLL-05**: Network errors are handled gracefully
 
 ### Animations
 
-- [ ] **ANIM-01**: Scan line animation runs during active call
-- [ ] **ANIM-02**: Status chip pulses during active call
-- [ ] **ANIM-03**: Fields glow briefly when receiving new data
-- [ ] **ANIM-04**: Final summary appears with typewriter effect
-- [ ] **ANIM-05**: Event log (CAPTURE/CLASSIFY/QUEUE) fades in sequentially
-- [ ] **ANIM-06**: Animations respect prefers-reduced-motion
+- [x] **ANIM-01**: Scan line animation runs during active call
+- [x] **ANIM-02**: Status chip pulses during active call
+- [x] **ANIM-03**: Fields glow briefly when receiving new data
+- [x] **ANIM-04**: Final summary appears with typewriter effect
+- [x] **ANIM-05**: Event log (CAPTURE/CLASSIFY/QUEUE) fades in sequentially
+- [x] **ANIM-06**: Animations respect prefers-reduced-motion
 
 ### Section Layout
 
@@ -88,25 +88,25 @@ Which phases cover which requirements.
 | POLL-04 | Phase 1 | Complete |
 | POLL-05 | Phase 1 | Complete |
 | ANIM-06 | Phase 1 | Complete |
-| TERM-01 | Phase 2 | Pending |
-| TERM-02 | Phase 2 | Pending |
-| TERM-03 | Phase 2 | Pending |
-| TERM-04 | Phase 2 | Pending |
-| TERM-05 | Phase 2 | Pending |
-| TERM-06 | Phase 2 | Pending |
-| TERM-07 | Phase 2 | Pending |
-| ANIM-01 | Phase 2 | Pending |
-| ANIM-02 | Phase 2 | Pending |
-| ANIM-03 | Phase 2 | Pending |
-| ANIM-04 | Phase 2 | Pending |
-| ANIM-05 | Phase 2 | Pending |
-| VAPI-01 | Phase 3 | Pending |
-| VAPI-02 | Phase 3 | Pending |
-| VAPI-03 | Phase 3 | Pending |
-| VAPI-04 | Phase 3 | Pending |
-| VAPI-05 | Phase 3 | Pending |
-| VAPI-06 | Phase 3 | Pending |
-| VAPI-07 | Phase 3 | Pending |
+| TERM-01 | Phase 2 | Complete |
+| TERM-02 | Phase 2 | Complete |
+| TERM-03 | Phase 2 | Complete |
+| TERM-04 | Phase 2 | Complete |
+| TERM-05 | Phase 2 | Complete |
+| TERM-06 | Phase 2 | Complete |
+| TERM-07 | Phase 2 | Complete |
+| ANIM-01 | Phase 2 | Complete |
+| ANIM-02 | Phase 2 | Complete |
+| ANIM-03 | Phase 2 | Complete |
+| ANIM-04 | Phase 2 | Complete |
+| ANIM-05 | Phase 2 | Complete |
+| VAPI-01 | Phase 3 | Complete |
+| VAPI-02 | Phase 3 | Complete |
+| VAPI-03 | Phase 3 | Complete |
+| VAPI-04 | Phase 3 | Complete |
+| VAPI-05 | Phase 3 | Complete |
+| VAPI-06 | Phase 3 | Complete |
+| VAPI-07 | Phase 3 | Complete |
 | SECT-01 | Phase 4 | Pending |
 | SECT-02 | Phase 4 | Pending |
 | SECT-03 | Phase 4 | Pending |
@@ -120,4 +120,4 @@ Which phases cover which requirements.
 
 ---
 *Requirements defined: 2026-01-21*
-*Last updated: 2026-01-22 after Phase 1 completion*
+*Last updated: 2026-01-22 after Phase 3 completion*

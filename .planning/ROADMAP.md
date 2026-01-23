@@ -11,7 +11,7 @@
 |---|-------|------|--------------|------------------|--------|
 | 1 | Foundation | Polling hook and CSS animations | POLL-01-05, ANIM-06 | 6 | Complete |
 | 2 | Terminal UI | Live monitor terminal component | TERM-01-07, ANIM-01-05 | 5 | Complete |
-| 3 | Vapi Integration | Call button with SDK | VAPI-01-07 | 5 | Planned |
+| 3 | Vapi Integration | Call button with SDK | VAPI-01-07 | 5 | Complete |
 | 4 | Assembly | Wire together and integrate | SECT-01-05 | 5 | Pending |
 
 ---
@@ -87,12 +87,12 @@ Plans:
 ## Phase 3: Vapi Integration
 
 **Goal:** Build the call button with full Vapi SDK integration
-**Status:** Planned (2026-01-22)
+**Status:** Complete (2026-01-22)
 
 **Plans:** 1 plan
 
 Plans:
-- [ ] 03-01-PLAN.md - useVapiCall hook + VapiCallButton component
+- [x] 03-01-PLAN.md - useVapiCall hook + VapiCallButton component
 
 **Requirements:**
 - VAPI-01: Vapi SDK loads in browser without blocking page render
