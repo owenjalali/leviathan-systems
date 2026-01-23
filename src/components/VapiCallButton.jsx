@@ -107,7 +107,7 @@ function ErrorDisplay({ error, onRetry, onDismiss }) {
  * @param {string} className - Optional additional CSS classes
  */
 export function VapiCallButton({ onCallStart, onCallEnd, className = '' }) {
-  const { callStatus, volumeLevel, error, sessionId, startCall, stopCall, clearError } =
+  const { callStatus, volumeLevel, isSpeaking, error, sessionId, startCall, stopCall, clearError } =
     useVapiCall(VAPI_PUBLIC_KEY)
 
   const elapsedTime = useElapsedTime(callStatus === 'active')
@@ -202,17 +202,19 @@ export function VapiCallButton({ onCallStart, onCallEnd, className = '' }) {
             </div>
           </button>
 
-          {/* Talk indicator - shows when AI is not speaking */}
+          {/* Talk indicator - shows speaking states */}
           <div
             className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
-              volumeLevel < 0.1
-                ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)]'
-                : 'bg-white/5 text-[var(--color-text-muted)]'
+              isSpeaking
+                ? 'bg-green-500/20 text-green-400 shadow-[0_0_12px_rgba(34,197,94,0.4)]'
+                : volumeLevel < 0.1
+                  ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)]'
+                  : 'bg-white/5 text-[var(--color-text-muted)]'
             }`}
           >
-            <Mic className={`w-4 h-4 ${volumeLevel < 0.1 ? 'animate-pulse' : ''}`} />
+            <Mic className={`w-4 h-4 ${isSpeaking ? 'animate-pulse' : ''}`} />
             <span className="text-sm font-medium">
-              {volumeLevel < 0.1 ? 'Your turn to speak' : 'AI speaking...'}
+              {isSpeaking ? 'Listening...' : volumeLevel < 0.1 ? 'Your turn to speak' : 'AI speaking...'}
             </span>
           </div>
         </div>

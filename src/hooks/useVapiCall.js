@@ -21,6 +21,7 @@ export function useVapiCall(publicKey) {
   // State
   const [callStatus, setCallStatus] = useState('idle') // 'idle' | 'connecting' | 'active' | 'ending'
   const [volumeLevel, setVolumeLevel] = useState(0) // 0-1 float
+  const [isSpeaking, setIsSpeaking] = useState(false) // true when user is speaking
   const [error, setError] = useState(null)
 
   // Refs for cleanup and stale closure prevention
@@ -53,6 +54,7 @@ export function useVapiCall(publicKey) {
       if (!mountedRef.current) return
       setCallStatus('idle')
       setVolumeLevel(0)
+      setIsSpeaking(false)
       // Preserve sessionId for polling continuation
     })
 
@@ -61,6 +63,18 @@ export function useVapiCall(publicKey) {
       if (!mountedRef.current) return
       // volume is 0-1 float
       setVolumeLevel(volume)
+    })
+
+    // Speech start event - user started speaking
+    vapi.on('speech-start', () => {
+      if (!mountedRef.current) return
+      setIsSpeaking(true)
+    })
+
+    // Speech end event - user stopped speaking
+    vapi.on('speech-end', () => {
+      if (!mountedRef.current) return
+      setIsSpeaking(false)
     })
 
     // Error event - something went wrong
@@ -138,6 +152,7 @@ export function useVapiCall(publicKey) {
   return {
     callStatus,
     volumeLevel,
+    isSpeaking,
     error,
     sessionId: sessionIdRef.current,
     startCall,
