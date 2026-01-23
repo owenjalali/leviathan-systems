@@ -1,0 +1,63 @@
+{
+  "model": {
+    "tools": [
+      {
+        "type": "function",
+        "async": true,
+        "function": {
+          "name": "updateDemoMonitor",
+          "description": "Update the live monitor with caller information. Call this during the conversation as you gather details (name, location, issue). Call again at the end with final_summary.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "demo_session_id": {
+                "type": "string",
+                "description": "Unique session ID for this demo call (passed automatically by Vapi)"
+              },
+              "status": {
+                "type": "string",
+                "enum": ["active_call", "call_ended"],
+                "description": "Current call status"
+              },
+              "name": {
+                "type": "string",
+                "description": "Caller's name"
+              },
+              "location": {
+                "type": "string",
+                "description": "Caller's city or location"
+              },
+              "issue": {
+                "type": "string",
+                "description": "Brief description of the service issue or request"
+              },
+              "intent": {
+                "type": "string",
+                "enum": ["repair_request", "emergency", "estimate", "general_inquiry"],
+                "description": "Type of request"
+              },
+              "urgency": {
+                "type": "string",
+                "enum": ["emergency", "urgent", "routine"],
+                "description": "How urgent the issue is"
+              },
+              "callback_number": {
+                "type": "string",
+                "description": "Callback phone number"
+              },
+              "final_summary": {
+                "type": "string",
+                "description": "Complete summary of the call (only send at end of call)"
+              }
+            },
+            "required": ["demo_session_id"]
+          }
+        },
+        "server": {
+          "url": "https://systems.leviathan-systems.com/webhook/demo/update",
+          "timeoutSeconds": 20
+        }
+      }
+    ]
+  }
+}
