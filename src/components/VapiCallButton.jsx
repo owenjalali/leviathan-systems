@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { Phone, PhoneOff, Loader2 } from 'lucide-react'
+import { Phone, PhoneOff, Loader2, Mic } from 'lucide-react'
 import { useVapiCall } from '../hooks/useVapiCall'
 
 // Vapi credentials from PROJECT.md
@@ -187,19 +187,35 @@ export function VapiCallButton({ onCallStart, onCallEnd, className = '' }) {
       )}
 
       {callStatus === 'active' && (
-        <button
-          onClick={handleStopCall}
-          className="px-6 py-3 bg-[var(--color-danger)] text-white font-semibold rounded-lg
-                     hover:bg-[var(--color-danger)]/90 transition-all duration-200
-                     flex items-center gap-3"
-        >
-          <PhoneOff className="w-5 h-5" />
-          <span>End Call</span>
-          <div className="flex items-center gap-2 ml-2 pl-2 border-l border-white/20">
-            <AudioBars volumeLevel={volumeLevel} isActive={true} />
-            <span className="text-sm font-mono">{elapsedTime}</span>
+        <div className="flex flex-col items-center lg:items-start gap-3">
+          <button
+            onClick={handleStopCall}
+            className="px-6 py-3 bg-[var(--color-danger)] text-white font-semibold rounded-lg
+                       hover:bg-[var(--color-danger)]/90 transition-all duration-200
+                       flex items-center gap-3"
+          >
+            <PhoneOff className="w-5 h-5" />
+            <span>End Call</span>
+            <div className="flex items-center gap-2 ml-2 pl-2 border-l border-white/20">
+              <AudioBars volumeLevel={volumeLevel} isActive={true} />
+              <span className="text-sm font-mono">{elapsedTime}</span>
+            </div>
+          </button>
+
+          {/* Talk indicator - shows when AI is not speaking */}
+          <div
+            className={`flex items-center gap-2 px-3 py-1.5 rounded-full transition-all duration-300 ${
+              volumeLevel < 0.1
+                ? 'bg-[var(--color-accent)]/20 text-[var(--color-accent)]'
+                : 'bg-white/5 text-[var(--color-text-muted)]'
+            }`}
+          >
+            <Mic className={`w-4 h-4 ${volumeLevel < 0.1 ? 'animate-pulse' : ''}`} />
+            <span className="text-sm font-medium">
+              {volumeLevel < 0.1 ? 'Your turn to speak' : 'AI speaking...'}
+            </span>
           </div>
-        </button>
+        </div>
       )}
 
       {callStatus === 'ending' && (
