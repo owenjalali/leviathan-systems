@@ -12,7 +12,7 @@
 | 1 | Foundation | Polling hook and CSS animations | POLL-01-05, ANIM-06 | 6 | Complete |
 | 2 | Terminal UI | Live monitor terminal component | TERM-01-07, ANIM-01-05 | 5 | Complete |
 | 3 | Vapi Integration | Call button with SDK | VAPI-01-07 | 5 | Complete |
-| 4 | Assembly | Wire together and integrate | SECT-01-05 | 5 | Ready |
+| 4 | Assembly | Wire together and integrate | SECT-01-05 | 5 | Complete |
 
 ---
 
@@ -120,12 +120,12 @@ Plans:
 ## Phase 4: Assembly
 
 **Goal:** Wire components together and integrate into homepage
-**Status:** Ready (2026-01-22)
+**Status:** Complete (2026-01-22)
 
 **Plans:** 1 plan
 
 Plans:
-- [ ] 04-01-PLAN.md - DemoSection container + Home.jsx integration
+- [x] 04-01-PLAN.md - DemoSection container + Home.jsx integration
 
 **Requirements:**
 - SECT-01: Demo section renders after hero, before "How We Work"
@@ -174,4 +174,4 @@ Phase 2 and 3 can be worked in parallel after Phase 1 completes.
 
 ---
 *Roadmap created: 2026-01-21*
-*Last updated: 2026-01-22 - Phase 4 planned*
+*Last updated: 2026-01-22 — Milestone v1.0 complete*

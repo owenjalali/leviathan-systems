@@ -46,11 +46,11 @@ Requirements for Live Demo Section. Each maps to roadmap phases.
 
 ### Section Layout
 
-- [ ] **SECT-01**: Demo section renders after hero, before "How We Work"
-- [ ] **SECT-02**: Section has headline "See It Work"
-- [ ] **SECT-03**: Two-column layout on desktop (call button left, terminal right)
-- [ ] **SECT-04**: Single-column stack on mobile
-- [ ] **SECT-05**: Section matches existing design system (colors, spacing, borders)
+- [x] **SECT-01**: Demo section renders after hero, before "How We Work"
+- [x] **SECT-02**: Section has headline "See It Work"
+- [x] **SECT-03**: Two-column layout on desktop (call button left, terminal right)
+- [x] **SECT-04**: Single-column stack on mobile
+- [x] **SECT-05**: Section matches existing design system (colors, spacing, borders)
 
 ## Future Requirements
 
@@ -107,11 +107,11 @@ Which phases cover which requirements.
 | VAPI-05 | Phase 3 | Complete |
 | VAPI-06 | Phase 3 | Complete |
 | VAPI-07 | Phase 3 | Complete |
-| SECT-01 | Phase 4 | Pending |
-| SECT-02 | Phase 4 | Pending |
-| SECT-03 | Phase 4 | Pending |
-| SECT-04 | Phase 4 | Pending |
-| SECT-05 | Phase 4 | Pending |
+| SECT-01 | Phase 4 | Complete |
+| SECT-02 | Phase 4 | Complete |
+| SECT-03 | Phase 4 | Complete |
+| SECT-04 | Phase 4 | Complete |
+| SECT-05 | Phase 4 | Complete |
 
 **Coverage:**
 - v1.0 requirements: 26 total
@@ -120,4 +120,4 @@ Which phases cover which requirements.
 
 ---
 *Requirements defined: 2026-01-21*
-*Last updated: 2026-01-22 after Phase 3 completion*
+*Last updated: 2026-01-22 — All v1.0 requirements complete*
