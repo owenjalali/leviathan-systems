@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-21)
 ## Current Position
 
 Phase: 4 of 4 (Assembly)
-Plan: None (planning needed)
-Status: Ready to plan Phase 4
-Last activity: 2026-01-22 — Phase 3 verified and complete
+Plan: 1 of 1 complete
+Status: Phase 4 complete - Milestone v1.0 ready for human verification
+Last activity: 2026-01-22 — Completed 04-01-PLAN.md
 
-Progress: [#########-] 75% (Phase 3/4 complete)
+Progress: [##########] 100% (Phase 4/4 complete)
 
 ## Accumulated Context
 
@@ -35,6 +35,8 @@ Progress: [#########-] 75% (Phase 3/4 complete)
 | Audio bar visualization | CSS transforms with scaleY driven by volumeLevel | 03-01 |
 | Error display pattern | Inline with 7-second auto-dismiss and retry | 03-01 |
 | Session ID persistence | Preserved after call ends for polling | 03-01 |
+| State coordination | Parent-owned sessionId with child callbacks | 04-01 |
+| Terminal status computation | Dynamic getter from callStatus + data | 04-01 |
 
 ### Technical Context
 - Vapi credentials captured
@@ -47,6 +49,8 @@ Progress: [#########-] 75% (Phase 3/4 complete)
 - **useVapiCall hook ready** (src/hooks/useVapiCall.js)
 - **VapiCallButton ready** (src/components/VapiCallButton.jsx)
 - **Vapi SDK integrated** (@vapi-ai/web v2.5.2)
+- **DemoSection ready** (src/components/DemoSection.jsx)
+- **Homepage integrated** (src/pages/Home.jsx)
 
 ### Patterns Established
 - Ref-based interval cleanup
@@ -60,6 +64,7 @@ Progress: [#########-] 75% (Phase 3/4 complete)
 - Volume-level driven CSS transforms for audio
 - Inline timer hooks for real-time displays
 - Auto-dismissing error displays with retry
+- Parent-owned state with callback pattern for cross-component coordination
 
 ### Blockers
 (none)
@@ -76,11 +81,13 @@ Progress: [#########-] 75% (Phase 3/4 complete)
 | 2026-01-22 | Executed 03-01-PLAN.md | useVapiCall hook + VapiCallButton component |
 | 2026-01-22 | Phase 3 verified | 7/7 must-haves passed, human testing skipped |
 | 2026-01-22 | Phase 3 complete | Vapi SDK integrated, audio visualization ready |
+| 2026-01-22 | Executed 04-01-PLAN.md | DemoSection + Home.jsx integration |
+| 2026-01-22 | Phase 4 complete | Milestone v1.0 assembled, ready for human testing |
 
 ## Session Continuity
 
-Last session: 2026-01-22T21:40:00Z
-Stopped at: Completed 03-01-PLAN.md
+Last session: 2026-01-22T22:15:00Z
+Stopped at: Completed 04-01-PLAN.md (Milestone v1.0 complete)
 Resume file: None
 
 ---
