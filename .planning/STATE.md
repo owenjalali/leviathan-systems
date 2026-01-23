@@ -10,11 +10,11 @@ See: .planning/PROJECT.md (updated 2026-01-21)
 ## Current Position
 
 Phase: 3 of 4 (Vapi Integration)
-Plan: None (planning needed)
-Status: Ready to plan Phase 3
-Last activity: 2026-01-22 — Phase 2 complete
+Plan: 1 of 1 complete
+Status: Phase 3 complete
+Last activity: 2026-01-22 — Completed 03-01-PLAN.md
 
-Progress: [######----] 50% (Phase 2/4 complete)
+Progress: [#########-] 75% (Phase 3/4 complete)
 
 ## Accumulated Context
 
@@ -31,6 +31,10 @@ Progress: [######----] 50% (Phase 2/4 complete)
 | Terminal file structure | Single file for cohesion (subcomponents + hook) | 02-01 |
 | Animation reset | Dynamic key with Date.now() for retrigger | 02-01 |
 | Summary animation | summaryShownRef prevents re-animation | 02-01 |
+| Session ID generation | crypto.randomUUID() (native, no dependency) | 03-01 |
+| Audio bar visualization | CSS transforms with scaleY driven by volumeLevel | 03-01 |
+| Error display pattern | Inline with 7-second auto-dismiss and retry | 03-01 |
+| Session ID persistence | Preserved after call ends for polling | 03-01 |
 
 ### Technical Context
 - Vapi credentials captured
@@ -40,6 +44,9 @@ Progress: [######----] 50% (Phase 2/4 complete)
 - **useLiveMonitor hook ready** (src/hooks/useLiveMonitor.js)
 - **CSS animations ready** (5 keyframes in src/index.css)
 - **LiveMonitorTerminal ready** (src/components/LiveMonitorTerminal.jsx)
+- **useVapiCall hook ready** (src/hooks/useVapiCall.js)
+- **VapiCallButton ready** (src/components/VapiCallButton.jsx)
+- **Vapi SDK integrated** (@vapi-ai/web v2.5.2)
 
 ### Patterns Established
 - Ref-based interval cleanup
@@ -49,6 +56,10 @@ Progress: [######----] 50% (Phase 2/4 complete)
 - Typewriter animation with completion tracking
 - Staggered reveals with setTimeout
 - Animation reset via dynamic key
+- Event-driven SDK integration with useRef persistence
+- Volume-level driven CSS transforms for audio
+- Inline timer hooks for real-time displays
+- Auto-dismissing error displays with retry
 
 ### Blockers
 (none)
@@ -62,11 +73,13 @@ Progress: [######----] 50% (Phase 2/4 complete)
 | 2026-01-22 | Phase 1 verified | 6/6 must-haves passed |
 | 2026-01-22 | Executed 02-01-PLAN.md | LiveMonitorTerminal component (326 lines) |
 | 2026-01-22 | Phase 2 verified | 6/6 must-haves passed |
+| 2026-01-22 | Executed 03-01-PLAN.md | useVapiCall hook + VapiCallButton component |
+| 2026-01-22 | Phase 3 complete | Vapi SDK integrated, audio visualization ready |
 
 ## Session Continuity
 
-Last session: 2026-01-22T21:08:16Z
-Stopped at: Completed 02-01-PLAN.md
+Last session: 2026-01-22T21:40:00Z
+Stopped at: Completed 03-01-PLAN.md
 Resume file: None
 
 ---
