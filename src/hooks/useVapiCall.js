@@ -23,10 +23,10 @@ export function useVapiCall(publicKey) {
   const [volumeLevel, setVolumeLevel] = useState(0) // 0-1 float
   const [isSpeaking, setIsSpeaking] = useState(false) // true when user is speaking
   const [error, setError] = useState(null)
+  const [sessionId, setSessionId] = useState(null) // Current session ID
 
   // Refs for cleanup and stale closure prevention
   const vapiRef = useRef(null)
-  const sessionIdRef = useRef(null)
   const mountedRef = useRef(true)
 
   /**
@@ -106,8 +106,8 @@ export function useVapiCall(publicKey) {
     }
 
     // Generate unique session ID
-    const sessionId = crypto.randomUUID()
-    sessionIdRef.current = sessionId
+    const newSessionId = crypto.randomUUID()
+    setSessionId(newSessionId)
 
     // Set connecting state
     setCallStatus('connecting')
@@ -118,7 +118,7 @@ export function useVapiCall(publicKey) {
       // Start the call, passing session ID to assistant
       await vapiRef.current.start(assistantId, {
         variableValues: {
-          demo_session_id: sessionId,
+          demo_session_id: newSessionId,
           ...metadata
         }
       })
@@ -154,7 +154,7 @@ export function useVapiCall(publicKey) {
     volumeLevel,
     isSpeaking,
     error,
-    sessionId: sessionIdRef.current,
+    sessionId,
     startCall,
     stopCall,
     clearError

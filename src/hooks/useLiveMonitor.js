@@ -37,7 +37,7 @@ export function useLiveMonitor() {
     if (!prev || !current) return []
     if (!prev.data || !current.data) return []
 
-    const fields = ['issue', 'urgency', 'location', 'intent', 'summary', 'status']
+    const fields = ['issue', 'urgency', 'location_city', 'intent', 'final_summary', 'status']
     const changed = []
 
     for (const field of fields) {

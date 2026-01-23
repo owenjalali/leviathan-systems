@@ -50,7 +50,7 @@ const statusConfig = {
 const fieldConfig = [
   { key: 'issue', label: 'Issue', icon: AlertCircle },
   { key: 'urgency', label: 'Urgency', icon: Gauge },
-  { key: 'location', label: 'Location', icon: MapPin },
+  { key: 'location_city', label: 'Location', icon: MapPin },
   { key: 'intent', label: 'Intent', icon: Target },
 ]
 
@@ -146,25 +146,25 @@ export default function LiveMonitorTerminal({ data, isPolling, changedFields = [
   const summaryShownRef = useRef(false)
 
   // Typewriter for summary
-  const shouldTypewriteSummary = data?.data?.summary && !summaryShownRef.current
+  const shouldTypewriteSummary = data?.data?.final_summary && !summaryShownRef.current
   const { displayedText: summaryText, isComplete: summaryComplete } = useTypewriter(
-    shouldTypewriteSummary ? data?.data?.summary : (summaryShownRef.current ? data?.data?.summary : null),
+    shouldTypewriteSummary ? data?.data?.final_summary : (summaryShownRef.current ? data?.data?.final_summary : null),
     30
   )
 
   // Mark summary as shown when typewriter completes
   useEffect(() => {
-    if (summaryComplete && data?.data?.summary) {
+    if (summaryComplete && data?.data?.final_summary) {
       summaryShownRef.current = true
     }
-  }, [summaryComplete, data?.data?.summary])
+  }, [summaryComplete, data?.data?.final_summary])
 
   // Reset summary tracking when data clears
   useEffect(() => {
-    if (!data?.data?.summary) {
+    if (!data?.data?.final_summary) {
       summaryShownRef.current = false
     }
-  }, [data?.data?.summary])
+  }, [data?.data?.final_summary])
 
   // Typewriter for control statement (appears after summary and events)
   const showControl = status === 'captured' && summaryComplete && visibleEvents.length === events.length
@@ -259,7 +259,7 @@ export default function LiveMonitorTerminal({ data, isPolling, changedFields = [
         )}
 
         {/* Summary section - appears after call ends */}
-        {data?.data?.summary && (
+        {data?.data?.final_summary && (
           <div className="mt-4 p-4 rounded-lg border border-[#1a2332] bg-[#0d1320]">
             <div className="flex items-center gap-2 mb-2">
               <FileText className="w-3.5 h-3.5 flex-shrink-0 text-[#00d4cf]" />
@@ -268,7 +268,7 @@ export default function LiveMonitorTerminal({ data, isPolling, changedFields = [
               </span>
             </div>
             <p className="text-sm text-white font-mono leading-relaxed break-words">
-              {summaryShownRef.current ? data?.data?.summary : summaryText}
+              {summaryShownRef.current ? data?.data?.final_summary : summaryText}
               {!summaryShownRef.current && !summaryComplete && (
                 <span className="inline-block w-2 h-4 bg-[#00d4cf] ml-0.5 animate-cursor-blink" />
               )}

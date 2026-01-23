@@ -29,7 +29,7 @@ export function DemoSection() {
   const getTerminalStatus = () => {
     if (callStatus === 'active') return 'active'
     if (isPolling && !data?.data) return 'processing'
-    if (data?.data?.summary) return 'captured'
+    if (data?.data?.final_summary) return 'captured'
     return 'standby'
   }
 
