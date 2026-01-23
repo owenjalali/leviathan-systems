@@ -3,7 +3,7 @@ import { Phone, PhoneOff, Loader2, Mic } from 'lucide-react'
 import { useVapiCall } from '../hooks/useVapiCall'
 
 // Vapi credentials from PROJECT.md
-const VAPI_PUBLIC_KEY = 'b3364356-eb2d-47d3-a8e8-f638461a1a94'
+const VAPI_PUBLIC_KEY = '935fb085-0c34-4f20-82cf-76cff78f3934'
 const VAPI_ASSISTANT_ID = '955decb7-0492-40c9-b788-0b0e16f73a0a'
 
 /**
