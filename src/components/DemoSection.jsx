@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { VapiCallButton } from './VapiCallButton'
 import LiveMonitorTerminal from './LiveMonitorTerminal'
 import { useLiveMonitor } from '../hooks/useLiveMonitor'
@@ -19,6 +19,11 @@ export function DemoSection() {
   // Live monitor hook for polling
   const { data, isPolling, changedFields, startPolling } = useLiveMonitor()
 
+  // Log data updates
+  useEffect(() => {
+    console.log('[DemoSection] data updated:', data)
+  }, [data])
+
   /**
    * Compute terminal status based on call state and data
    * - active: Call is in progress
@@ -27,16 +32,20 @@ export function DemoSection() {
    * - standby: Default/idle state
    */
   const getTerminalStatus = () => {
-    if (callStatus === 'active') return 'active'
-    if (isPolling && !data?.data) return 'processing'
-    if (data?.data?.final_summary) return 'captured'
-    return 'standby'
+    const status = callStatus === 'active' ? 'active'
+      : isPolling && !data?.data ? 'processing'
+      : data?.data?.final_summary ? 'captured'
+      : 'standby'
+
+    console.log('[DemoSection] Terminal status:', status, { callStatus, isPolling, hasData: !!data?.data, hasSummary: !!data?.data?.final_summary })
+    return status
   }
 
   /**
    * Handle call start - receives sessionId from VapiCallButton
    */
   const handleCallStart = (newSessionId) => {
+    console.log('[DemoSection] handleCallStart called with sessionId:', newSessionId)
     setSessionId(newSessionId)
     setCallStatus('active')
     startPolling(newSessionId)
@@ -46,6 +55,7 @@ export function DemoSection() {
    * Handle call end - DO NOT reset sessionId (terminal needs it for polling)
    */
   const handleCallEnd = () => {
+    console.log('[DemoSection] handleCallEnd called')
     setCallStatus('idle')
     // Intentionally NOT resetting sessionId - terminal continues polling
   }

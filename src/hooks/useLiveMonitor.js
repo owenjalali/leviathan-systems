@@ -60,15 +60,21 @@ export function useLiveMonitor() {
    */
   const fetchData = async () => {
     const sessionId = sessionIdRef.current
-    if (!sessionId) return
+    if (!sessionId) {
+      console.warn('[useLiveMonitor] fetchData called without sessionId')
+      return
+    }
 
     const endpoint = `https://systems.leviathan-systems.com/webhook/demo/latest?demo_session_id=${sessionId}`
+    console.log('[useLiveMonitor] Fetching from:', endpoint)
 
     try {
       const response = await fetch(endpoint)
+      console.log('[useLiveMonitor] Response status:', response.status)
 
       // 404 means no data yet - this is expected, not an error
       if (response.status === 404) {
+        console.log('[useLiveMonitor] 404 - Session not found yet, continuing to poll')
         // Session not found yet, keep polling silently
         return
       }
@@ -78,9 +84,11 @@ export function useLiveMonitor() {
       }
 
       const result = await response.json()
+      console.log('[useLiveMonitor] Response data:', result)
 
       // Check if response indicates no data (success: false)
       if (result.success === false) {
+        console.log('[useLiveMonitor] No data yet (success: false), continuing to poll')
         // No data yet, keep polling silently
         return
       }
@@ -90,14 +98,17 @@ export function useLiveMonitor() {
 
       // Detect changed fields before updating
       const changed = detectChangedFields(prevDataRef.current, result)
+      console.log('[useLiveMonitor] Changed fields detected:', changed)
 
       // Update refs and state
       prevDataRef.current = result
       setData(result)
       setChangedFields(changed)
       setError(null) // Clear any previous error on success
+      console.log('[useLiveMonitor] Data state updated')
 
     } catch (err) {
+      console.error('[useLiveMonitor] Fetch error:', err)
       // Only update state if still mounted
       if (!mountedRef.current) return
 
@@ -113,9 +124,11 @@ export function useLiveMonitor() {
    */
   const startPolling = (sessionId) => {
     if (!sessionId) {
-      console.warn('useLiveMonitor: Cannot start polling without sessionId')
+      console.warn('[useLiveMonitor] Cannot start polling without sessionId')
       return
     }
+
+    console.log('[useLiveMonitor] startPolling called with sessionId:', sessionId)
 
     // Store session ID in ref to avoid stale closures
     sessionIdRef.current = sessionId

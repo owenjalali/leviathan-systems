@@ -45,6 +45,7 @@ export function useVapiCall(publicKey) {
     // Call start event - call is now active
     vapi.on('call-start', () => {
       if (!mountedRef.current) return
+      console.log('[useVapiCall] call-start event received')
       setCallStatus('active')
       setError(null) // Clear any previous error
     })
@@ -52,6 +53,7 @@ export function useVapiCall(publicKey) {
     // Call end event - call has ended
     vapi.on('call-end', () => {
       if (!mountedRef.current) return
+      console.log('[useVapiCall] call-end event received')
       setCallStatus('idle')
       setVolumeLevel(0)
       setIsSpeaking(false)
@@ -101,12 +103,13 @@ export function useVapiCall(publicKey) {
    */
   const startCall = useCallback(async (assistantId, metadata = {}) => {
     if (!vapiRef.current) {
-      console.error('useVapiCall: Vapi instance not initialized')
+      console.error('[useVapiCall] Vapi instance not initialized')
       return
     }
 
     // Generate unique session ID
     const newSessionId = crypto.randomUUID()
+    console.log('[useVapiCall] Generated sessionId:', newSessionId)
     setSessionId(newSessionId)
 
     // Set connecting state
@@ -115,15 +118,19 @@ export function useVapiCall(publicKey) {
     setVolumeLevel(0)
 
     try {
+      const variableValues = {
+        demo_session_id: newSessionId,
+        ...metadata
+      }
+      console.log('[useVapiCall] Starting call with variableValues:', variableValues)
+
       // Start the call, passing session ID to assistant
       await vapiRef.current.start(assistantId, {
-        variableValues: {
-          demo_session_id: newSessionId,
-          ...metadata
-        }
+        variableValues
       })
       // Note: call-start event will transition to 'active' state
     } catch (err) {
+      console.error('[useVapiCall] Error starting call:', err)
       if (!mountedRef.current) return
       setError(err)
       setCallStatus('idle')
