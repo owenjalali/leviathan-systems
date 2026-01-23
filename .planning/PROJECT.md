@@ -8,6 +8,12 @@ Marketing website for Leviathan Systems, an automation company that builds reven
 
 Demonstrate that Leviathan captures and organizes leads instantly — while keeping the owner in control.
 
+## Current Milestone: v1.1 Bug Fix
+
+**Goal:** Fix live monitor panel - ensure real-time data updates from Vapi calls display correctly in LiveMonitorTerminal
+
+**Issue:** Vapi calling works, but LiveMonitorTerminal side panel not updating with call data. Likely n8n webhook integration issue.
+
 ## Current State
 
 **Shipped:** v1.0 Live Demo Section (2026-01-22)
@@ -40,7 +46,7 @@ Demonstrate that Leviathan captures and organizes leads instantly — while keep
 
 ### Active
 
-(None — run `/gsd:new-milestone` to define next milestone requirements)
+- [ ] **BUG-01**: Live monitor panel updates correctly with data from Vapi calls
 
 ### Out of Scope
 
@@ -92,4 +98,4 @@ Demonstrate that Leviathan captures and organizes leads instantly — while keep
 | "See It Work" headline | User's choice from options | ✓ Good — clear and direct |
 
 ---
-*Last updated: 2026-01-22 after v1.0 milestone*
+*Last updated: 2026-01-23 after starting v1.1 maintenance milestone*
