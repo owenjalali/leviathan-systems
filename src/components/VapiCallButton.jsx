@@ -3,8 +3,8 @@ import { Phone, PhoneOff, Loader2 } from 'lucide-react'
 import { useVapiCall } from '../hooks/useVapiCall'
 
 // Vapi credentials from PROJECT.md
-const VAPI_PUBLIC_KEY = 'f76c6e6b-83ec-46f5-9a8c-8d1ea5ce770d'
-const VAPI_ASSISTANT_ID = 'c2a02a7c-73f6-4fc3-915c-78f14a58c866'
+const VAPI_PUBLIC_KEY = 'b3364356-eb2d-47d3-a8e8-f638461a1a94'
+const VAPI_ASSISTANT_ID = '955decb7-0492-40c9-b788-0b0e16f73a0a'
 
 /**
  * AudioBars - Equalizer-style audio visualization
