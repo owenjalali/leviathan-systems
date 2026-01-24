@@ -1,0 +1,485 @@
+{
+  "updatedAt": "2026-01-22T00:13:29.909Z",
+  "createdAt": "2026-01-21T20:35:51.263Z",
+  "id": "j9rZc4wG93GydjFF",
+  "name": "Leviathan Demo: Cleanup (Hourly)",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "rule": {
+          "interval": [
+            {
+              "field": "hours"
+            }
+          ]
+        }
+      },
+      "id": "schedule-trigger",
+      "name": "Hourly Cleanup Trigger",
+      "type": "n8n-nodes-base.scheduleTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        0,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "keys",
+        "keyPattern": "leviathan:demo:*"
+      },
+      "id": "redis-keys",
+      "name": "Find Demo Sessions",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        224,
+        0
+      ],
+      "credentials": {
+        "redis": {
+          "id": "lsEDDWlEEgHbDnjF",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst now = new Date();\nconst TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 7200000 ms\n\nconst expiredSessions = [];\nconst activeSessions = [];\n\nfor (const item of items) {\n  const keys = item.json;\n  \n  if (!keys || typeof keys !== 'object') {\n    continue;\n  }\n  \n  for (const [key, value] of Object.entries(keys)) {\n    if (!key.startsWith('leviathan:demo:')) {\n      continue;\n    }\n    \n    try {\n      const sessionData = typeof value === 'string' ? JSON.parse(value) : value;\n      const lastUpdate = new Date(sessionData.last_update_ts);\n      const age = now - lastUpdate;\n      \n      if (age > TWO_HOURS_MS) {\n        expiredSessions.push({\n          key: key,\n          demo_session_id: sessionData.demo_session_id,\n          last_update_ts: sessionData.last_update_ts,\n          age_hours: (age / (1000 * 60 * 60)).toFixed(2)\n        });\n      } else {\n        activeSessions.push({\n          key: key,\n          demo_session_id: sessionData.demo_session_id,\n          status: sessionData.status,\n          age_minutes: (age / (1000 * 60)).toFixed(2)\n        });\n      }\n    } catch (e) {\n      expiredSessions.push({\n        key: key,\n        error: 'Could not parse session data',\n        raw: String(value).substring(0, 100)\n      });\n    }\n  }\n}\n\nreturn [{\n  json: {\n    timestamp: now.toISOString(),\n    summary: {\n      total_found: expiredSessions.length + activeSessions.length,\n      expired_count: expiredSessions.length,\n      active_count: activeSessions.length\n    },\n    expired_sessions: expiredSessions,\n    active_sessions: activeSessions\n  }\n}];"
+      },
+      "id": "filter-expired",
+      "name": "Filter Expired Sessions",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-has-expired",
+              "leftValue": "={{ $json.summary.expired_count }}",
+              "rightValue": 0,
+              "operator": {
+                "type": "number",
+                "operation": "gt"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-cleanup-needed",
+      "name": "Cleanup Needed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        672,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst expiredSessions = items[0].json.expired_sessions || [];\n\nreturn expiredSessions.map(session => ({\n  json: {\n    key: session.key,\n    demo_session_id: session.demo_session_id\n  }\n}));"
+      },
+      "id": "prepare-deletes",
+      "name": "Prepare Delete Operations",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "delete",
+        "key": "={{ $json.key }}"
+      },
+      "id": "redis-delete",
+      "name": "Delete Expired Key",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        1104,
+        -96
+      ],
+      "credentials": {
+        "redis": {
+          "id": "lsEDDWlEEgHbDnjF",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst deletedCount = items.length;\n\nconsole.log(`[Leviathan Cleanup] Deleted ${deletedCount} expired demo sessions at ${new Date().toISOString()}`);\n\nreturn [{\n  json: {\n    cleanup_completed: true,\n    deleted_count: deletedCount,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "log-results",
+      "name": "Log Cleanup Results",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1328,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst summary = items[0].json.summary;\n\nconsole.log(`[Leviathan Cleanup] No expired sessions. Active: ${summary.active_count} at ${new Date().toISOString()}`);\n\nreturn [{\n  json: {\n    cleanup_completed: true,\n    deleted_count: 0,\n    active_count: summary.active_count,\n    timestamp: new Date().toISOString()\n  }\n}];"
+      },
+      "id": "log-no-cleanup",
+      "name": "Log No Cleanup",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        880,
+        112
+      ]
+    }
+  ],
+  "connections": {
+    "Hourly Cleanup Trigger": {
+      "main": [
+        [
+          {
+            "node": "Find Demo Sessions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Find Demo Sessions": {
+      "main": [
+        [
+          {
+            "node": "Filter Expired Sessions",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Expired Sessions": {
+      "main": [
+        [
+          {
+            "node": "Cleanup Needed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Cleanup Needed?": {
+      "main": [
+        [
+          {
+            "node": "Prepare Delete Operations",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Log No Cleanup",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prepare Delete Operations": {
+      "main": [
+        [
+          {
+            "node": "Delete Expired Key",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Delete Expired Key": {
+      "main": [
+        [
+          {
+            "node": "Log Cleanup Results",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": {
+    "node:Hourly Cleanup Trigger": {
+      "recurrenceRules": []
+    }
+  },
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "6015d4b2-34fa-405b-8bd9-23e0535c23e3",
+  "activeVersionId": "6015d4b2-34fa-405b-8bd9-23e0535c23e3",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-01-21T20:35:51.265Z",
+      "createdAt": "2026-01-21T20:35:51.265Z",
+      "role": "workflow:owner",
+      "workflowId": "j9rZc4wG93GydjFF",
+      "projectId": "I2kZNQjJCPHeZCnl"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-01-22T00:13:35.000Z",
+    "createdAt": "2026-01-22T00:13:29.910Z",
+    "versionId": "6015d4b2-34fa-405b-8bd9-23e0535c23e3",
+    "workflowId": "j9rZc4wG93GydjFF",
+    "nodes": [
+      {
+        "parameters": {
+          "rule": {
+            "interval": [
+              {
+                "field": "hours"
+              }
+            ]
+          }
+        },
+        "id": "schedule-trigger",
+        "name": "Hourly Cleanup Trigger",
+        "type": "n8n-nodes-base.scheduleTrigger",
+        "typeVersion": 1.2,
+        "position": [
+          0,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "keys",
+          "keyPattern": "leviathan:demo:*"
+        },
+        "id": "redis-keys",
+        "name": "Find Demo Sessions",
+        "type": "n8n-nodes-base.redis",
+        "typeVersion": 1,
+        "position": [
+          224,
+          0
+        ],
+        "credentials": {
+          "redis": {
+            "id": "lsEDDWlEEgHbDnjF",
+            "name": "Redis account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst now = new Date();\nconst TWO_HOURS_MS = 2 * 60 * 60 * 1000; // 7200000 ms\n\nconst expiredSessions = [];\nconst activeSessions = [];\n\nfor (const item of items) {\n  const keys = item.json;\n  \n  if (!keys || typeof keys !== 'object') {\n    continue;\n  }\n  \n  for (const [key, value] of Object.entries(keys)) {\n    if (!key.startsWith('leviathan:demo:')) {\n      continue;\n    }\n    \n    try {\n      const sessionData = typeof value === 'string' ? JSON.parse(value) : value;\n      const lastUpdate = new Date(sessionData.last_update_ts);\n      const age = now - lastUpdate;\n      \n      if (age > TWO_HOURS_MS) {\n        expiredSessions.push({\n          key: key,\n          demo_session_id: sessionData.demo_session_id,\n          last_update_ts: sessionData.last_update_ts,\n          age_hours: (age / (1000 * 60 * 60)).toFixed(2)\n        });\n      } else {\n        activeSessions.push({\n          key: key,\n          demo_session_id: sessionData.demo_session_id,\n          status: sessionData.status,\n          age_minutes: (age / (1000 * 60)).toFixed(2)\n        });\n      }\n    } catch (e) {\n      expiredSessions.push({\n        key: key,\n        error: 'Could not parse session data',\n        raw: String(value).substring(0, 100)\n      });\n    }\n  }\n}\n\nreturn [{\n  json: {\n    timestamp: now.toISOString(),\n    summary: {\n      total_found: expiredSessions.length + activeSessions.length,\n      expired_count: expiredSessions.length,\n      active_count: activeSessions.length\n    },\n    expired_sessions: expiredSessions,\n    active_sessions: activeSessions\n  }\n}];"
+        },
+        "id": "filter-expired",
+        "name": "Filter Expired Sessions",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "condition-has-expired",
+                "leftValue": "={{ $json.summary.expired_count }}",
+                "rightValue": 0,
+                "operator": {
+                  "type": "number",
+                  "operation": "gt"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "check-cleanup-needed",
+        "name": "Cleanup Needed?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          672,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst expiredSessions = items[0].json.expired_sessions || [];\n\nreturn expiredSessions.map(session => ({\n  json: {\n    key: session.key,\n    demo_session_id: session.demo_session_id\n  }\n}));"
+        },
+        "id": "prepare-deletes",
+        "name": "Prepare Delete Operations",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          -96
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "delete",
+          "key": "={{ $json.key }}"
+        },
+        "id": "redis-delete",
+        "name": "Delete Expired Key",
+        "type": "n8n-nodes-base.redis",
+        "typeVersion": 1,
+        "position": [
+          1104,
+          -96
+        ],
+        "credentials": {
+          "redis": {
+            "id": "lsEDDWlEEgHbDnjF",
+            "name": "Redis account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst deletedCount = items.length;\n\nconsole.log(`[Leviathan Cleanup] Deleted ${deletedCount} expired demo sessions at ${new Date().toISOString()}`);\n\nreturn [{\n  json: {\n    cleanup_completed: true,\n    deleted_count: deletedCount,\n    timestamp: new Date().toISOString()\n  }\n}];"
+        },
+        "id": "log-results",
+        "name": "Log Cleanup Results",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          1328,
+          -96
+        ]
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst summary = items[0].json.summary;\n\nconsole.log(`[Leviathan Cleanup] No expired sessions. Active: ${summary.active_count} at ${new Date().toISOString()}`);\n\nreturn [{\n  json: {\n    cleanup_completed: true,\n    deleted_count: 0,\n    active_count: summary.active_count,\n    timestamp: new Date().toISOString()\n  }\n}];"
+        },
+        "id": "log-no-cleanup",
+        "name": "Log No Cleanup",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          880,
+          112
+        ]
+      }
+    ],
+    "connections": {
+      "Hourly Cleanup Trigger": {
+        "main": [
+          [
+            {
+              "node": "Find Demo Sessions",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Find Demo Sessions": {
+        "main": [
+          [
+            {
+              "node": "Filter Expired Sessions",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Filter Expired Sessions": {
+        "main": [
+          [
+            {
+              "node": "Cleanup Needed?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Cleanup Needed?": {
+        "main": [
+          [
+            {
+              "node": "Prepare Delete Operations",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Log No Cleanup",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Prepare Delete Operations": {
+        "main": [
+          [
+            {
+              "node": "Delete Expired Key",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Delete Expired Key": {
+        "main": [
+          [
+            {
+              "node": "Log Cleanup Results",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Owen Jalali",
+    "name": "Version 6015d4b2",
+    "description": "",
+    "autosaved": false
+  },
+  "tags": []
+}

@@ -1,0 +1,437 @@
+{
+  "updatedAt": "2026-01-23T23:26:21.069Z",
+  "createdAt": "2026-01-21T20:34:53.352Z",
+  "id": "dJw2CRneGH11VzhF",
+  "name": "Leviathan Demo: Intake Update (POST)",
+  "active": true,
+  "isArchived": false,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "demo/update",
+        "authentication": "none",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "webhook-trigger",
+      "name": "POST /demo/update",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        0,
+        0
+      ],
+      "webhookId": "demo-update",
+      "credentials": {
+        "httpHeaderAuth": {
+          "id": "ZA1G8OX2FS1MrJkW",
+          "name": "Header Auth account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const items = $input.all();\nconst rawBody = items[0].json.body || items[0].json;\nlet body, toolCallId = null;\n\n// Check if this is Vapi tool-calls format\nif (rawBody.message && rawBody.message.type === 'tool-calls' && rawBody.message.toolCalls) {\n  const toolCall = rawBody.message.toolCalls[0];\n  toolCallId = toolCall.id;\n  body = toolCall.function.arguments;\n} else {\n  // Direct format\n  body = rawBody;\n}\n\n// Required field validation\nif (!body.demo_session_id) {\n  return [{ json: { valid: false, error: 'Missing required field: demo_session_id', statusCode: 400, toolCallId } }];\n}\n\n// UUID format validation\nconst uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\nif (!uuidRegex.test(body.demo_session_id)) {\n  return [{ json: { valid: false, error: 'Invalid demo_session_id format: must be UUID', statusCode: 400, toolCallId } }];\n}\n\n// Enum validation\nconst validStatuses = ['active_call', 'call_ended'];\nconst validIntents = ['repair_request', 'emergency', 'estimate', 'general_inquiry'];\nconst validUrgencies = ['emergency', 'urgent', 'routine'];\n\nif (body.status && !validStatuses.includes(body.status)) {\n  return [{ json: { valid: false, error: `Invalid status: must be one of ${validStatuses.join(', ')}`, statusCode: 400, toolCallId } }];\n}\nif (body.intent && !validIntents.includes(body.intent)) {\n  return [{ json: { valid: false, error: `Invalid intent: must be one of ${validIntents.join(', ')}`, statusCode: 400, toolCallId } }];\n}\nif (body.urgency && !validUrgencies.includes(body.urgency)) {\n  return [{ json: { valid: false, error: `Invalid urgency: must be one of ${validUrgencies.join(', ')}`, statusCode: 400, toolCallId } }];\n}\n\n// Normalize and return\nreturn [{\n  json: {\n    valid: true,\n    toolCallId,\n    data: {\n      demo_session_id: body.demo_session_id,\n      status: body.status || 'active_call',\n      name: body.name || null,\n      location_city: body.location || body.location_city || null,\n      issue: body.issue || null,\n      intent: body.intent || 'general_inquiry',\n      urgency: body.urgency || 'routine',\n      callback_number: body.callback_number || null,\n      last_update_ts: new Date().toISOString(),\n      final_summary: body.final_summary || body.summary || null,\n      control_statement: 'No actions taken without owner approval.'\n    }\n  }\n}];"
+      },
+      "id": "validate-fields",
+      "name": "Validate Required Fields",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        224,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict"
+          },
+          "conditions": [
+            {
+              "id": "condition-valid",
+              "leftValue": "={{ $json.valid }}",
+              "rightValue": true,
+              "operator": {
+                "type": "boolean",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "check-validation",
+      "name": "Validation Passed?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        448,
+        0
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "set",
+        "key": "=leviathan:demo:{{ $json.data.demo_session_id }}",
+        "value": "={{ JSON.stringify($json.data) }}",
+        "keyType": "string",
+        "expire": true,
+        "ttl": 7200
+      },
+      "id": "redis-set",
+      "name": "Store in Redis",
+      "type": "n8n-nodes-base.redis",
+      "typeVersion": 1,
+      "position": [
+        672,
+        -96
+      ],
+      "credentials": {
+        "redis": {
+          "id": "lsEDDWlEEgHbDnjF",
+          "name": "Redis account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ $node['Validate Required Fields'].json.toolCallId ? JSON.stringify({ results: [{ toolCallId: $node['Validate Required Fields'].json.toolCallId, result: 'Data saved successfully' }] }) : JSON.stringify({ success: true, demo_session_id: $node['Validate Required Fields'].json.data.demo_session_id, message: 'Update received', timestamp: $now.toISO() }) }}",
+        "options": {
+          "responseCode": 200,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "success-response",
+      "name": "Return Success",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        880,
+        -96
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify({ success: false, error: $json.error }) }}",
+        "options": {
+          "responseCode": 400,
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "application/json"
+              }
+            ]
+          }
+        }
+      },
+      "id": "error-response",
+      "name": "Return Error",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        672,
+        112
+      ]
+    }
+  ],
+  "connections": {
+    "POST /demo/update": {
+      "main": [
+        [
+          {
+            "node": "Validate Required Fields",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Required Fields": {
+      "main": [
+        [
+          {
+            "node": "Validation Passed?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validation Passed?": {
+      "main": [
+        [
+          {
+            "node": "Store in Redis",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Return Error",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Store in Redis": {
+      "main": [
+        [
+          {
+            "node": "Return Success",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "staticData": null,
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "pinData": {},
+  "versionId": "578717c4-3a4d-4033-9dc9-ce5e9e76e411",
+  "activeVersionId": "578717c4-3a4d-4033-9dc9-ce5e9e76e411",
+  "triggerCount": 1,
+  "shared": [
+    {
+      "updatedAt": "2026-01-21T20:34:53.356Z",
+      "createdAt": "2026-01-21T20:34:53.356Z",
+      "role": "workflow:owner",
+      "workflowId": "dJw2CRneGH11VzhF",
+      "projectId": "I2kZNQjJCPHeZCnl"
+    }
+  ],
+  "activeVersion": {
+    "updatedAt": "2026-01-23T23:26:21.070Z",
+    "createdAt": "2026-01-23T23:26:21.070Z",
+    "versionId": "578717c4-3a4d-4033-9dc9-ce5e9e76e411",
+    "workflowId": "dJw2CRneGH11VzhF",
+    "nodes": [
+      {
+        "parameters": {
+          "httpMethod": "POST",
+          "path": "demo/update",
+          "authentication": "none",
+          "responseMode": "responseNode",
+          "options": {}
+        },
+        "id": "webhook-trigger",
+        "name": "POST /demo/update",
+        "type": "n8n-nodes-base.webhook",
+        "typeVersion": 2,
+        "position": [
+          0,
+          0
+        ],
+        "webhookId": "demo-update",
+        "credentials": {
+          "httpHeaderAuth": {
+            "id": "ZA1G8OX2FS1MrJkW",
+            "name": "Header Auth account 2"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "jsCode": "const items = $input.all();\nconst rawBody = items[0].json.body || items[0].json;\nlet body, toolCallId = null;\n\n// Check if this is Vapi tool-calls format\nif (rawBody.message && rawBody.message.type === 'tool-calls' && rawBody.message.toolCalls) {\n  const toolCall = rawBody.message.toolCalls[0];\n  toolCallId = toolCall.id;\n  body = toolCall.function.arguments;\n} else {\n  // Direct format\n  body = rawBody;\n}\n\n// Required field validation\nif (!body.demo_session_id) {\n  return [{ json: { valid: false, error: 'Missing required field: demo_session_id', statusCode: 400, toolCallId } }];\n}\n\n// UUID format validation\nconst uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;\nif (!uuidRegex.test(body.demo_session_id)) {\n  return [{ json: { valid: false, error: 'Invalid demo_session_id format: must be UUID', statusCode: 400, toolCallId } }];\n}\n\n// Enum validation\nconst validStatuses = ['active_call', 'call_ended'];\nconst validIntents = ['repair_request', 'emergency', 'estimate', 'general_inquiry'];\nconst validUrgencies = ['emergency', 'urgent', 'routine'];\n\nif (body.status && !validStatuses.includes(body.status)) {\n  return [{ json: { valid: false, error: `Invalid status: must be one of ${validStatuses.join(', ')}`, statusCode: 400, toolCallId } }];\n}\nif (body.intent && !validIntents.includes(body.intent)) {\n  return [{ json: { valid: false, error: `Invalid intent: must be one of ${validIntents.join(', ')}`, statusCode: 400, toolCallId } }];\n}\nif (body.urgency && !validUrgencies.includes(body.urgency)) {\n  return [{ json: { valid: false, error: `Invalid urgency: must be one of ${validUrgencies.join(', ')}`, statusCode: 400, toolCallId } }];\n}\n\n// Normalize and return\nreturn [{\n  json: {\n    valid: true,\n    toolCallId,\n    data: {\n      demo_session_id: body.demo_session_id,\n      status: body.status || 'active_call',\n      name: body.name || null,\n      location_city: body.location || body.location_city || null,\n      issue: body.issue || null,\n      intent: body.intent || 'general_inquiry',\n      urgency: body.urgency || 'routine',\n      callback_number: body.callback_number || null,\n      last_update_ts: new Date().toISOString(),\n      final_summary: body.final_summary || body.summary || null,\n      control_statement: 'No actions taken without owner approval.'\n    }\n  }\n}];"
+        },
+        "id": "validate-fields",
+        "name": "Validate Required Fields",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          224,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "strict"
+            },
+            "conditions": [
+              {
+                "id": "condition-valid",
+                "leftValue": "={{ $json.valid }}",
+                "rightValue": true,
+                "operator": {
+                  "type": "boolean",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        },
+        "id": "check-validation",
+        "name": "Validation Passed?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          448,
+          0
+        ]
+      },
+      {
+        "parameters": {
+          "operation": "set",
+          "key": "=leviathan:demo:{{ $json.data.demo_session_id }}",
+          "value": "={{ JSON.stringify($json.data) }}",
+          "keyType": "string",
+          "expire": true,
+          "ttl": 7200
+        },
+        "id": "redis-set",
+        "name": "Store in Redis",
+        "type": "n8n-nodes-base.redis",
+        "typeVersion": 1,
+        "position": [
+          672,
+          -96
+        ],
+        "credentials": {
+          "redis": {
+            "id": "lsEDDWlEEgHbDnjF",
+            "name": "Redis account"
+          }
+        }
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ $node['Validate Required Fields'].json.toolCallId ? JSON.stringify({ results: [{ toolCallId: $node['Validate Required Fields'].json.toolCallId, result: 'Data saved successfully' }] }) : JSON.stringify({ success: true, demo_session_id: $node['Validate Required Fields'].json.data.demo_session_id, message: 'Update received', timestamp: $now.toISO() }) }}",
+          "options": {
+            "responseCode": 200,
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          }
+        },
+        "id": "success-response",
+        "name": "Return Success",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          880,
+          -96
+        ]
+      },
+      {
+        "parameters": {
+          "respondWith": "json",
+          "responseBody": "={{ JSON.stringify({ success: false, error: $json.error }) }}",
+          "options": {
+            "responseCode": 400,
+            "responseHeaders": {
+              "entries": [
+                {
+                  "name": "Content-Type",
+                  "value": "application/json"
+                }
+              ]
+            }
+          }
+        },
+        "id": "error-response",
+        "name": "Return Error",
+        "type": "n8n-nodes-base.respondToWebhook",
+        "typeVersion": 1,
+        "position": [
+          672,
+          112
+        ]
+      }
+    ],
+    "connections": {
+      "POST /demo/update": {
+        "main": [
+          [
+            {
+              "node": "Validate Required Fields",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validate Required Fields": {
+        "main": [
+          [
+            {
+              "node": "Validation Passed?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Validation Passed?": {
+        "main": [
+          [
+            {
+              "node": "Store in Redis",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Return Error",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Store in Redis": {
+        "main": [
+          [
+            {
+              "node": "Return Success",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      }
+    },
+    "authors": "Owen Jalali",
+    "name": null,
+    "description": null,
+    "autosaved": false
+  },
+  "tags": []
+}
