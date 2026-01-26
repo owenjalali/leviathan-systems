@@ -1,7 +1,6 @@
 import { useNavigate } from 'react-router-dom'
 import { ArrowRight, Phone, MessageSquare, Clock, Check, Users, Calendar, Shield, Eye } from 'lucide-react'
 import LossCalculator from '../components/LossCalculator'
-import { DemoSection } from '../components/DemoSection'
 import { useScrollAnimation } from '../hooks/useScrollAnimation'
 import { useEffect, useState, useRef } from 'react'
 
@@ -173,10 +172,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ============================================
-          DEMO SECTION — SEE IT WORK
-          ============================================ */}
-      <DemoSection />
 
       {/* ============================================
           HOW WE WORK — PARTNERSHIP FLOW
