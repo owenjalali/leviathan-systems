@@ -1,101 +1,107 @@
-# Leviathan Systems Website
+# Leviathan Systems — Website Redesign
 
 ## What This Is
 
-Marketing website for Leviathan Systems, an automation company that builds revenue-critical systems for service businesses. The site positions Leviathan as infrastructure (not a marketing agency or chatbot company), targeting skeptical trades business owners who fear losing control. Features an interactive demo where visitors can experience the AI receptionist in action.
+A complete website redesign for Leviathan Systems, repositioning from an "AI receptionist" demo site to an AI consulting agency that builds business infrastructure. The current site (Vapi call demo, loss calculator, chatbot-adjacent messaging) no longer matches the business doctrine. Everything gets rebuilt — the content, the design, the structure, the demos — except the Audit page form logic, Begin page, and Book page.
 
 ## Core Value
 
-Demonstrate that Leviathan captures and organizes leads instantly — while keeping the owner in control.
-
-## Current Milestone: v1.1 Bug Fix
-
-**Goal:** Fix live monitor panel - ensure real-time data updates from Vapi calls display correctly in LiveMonitorTerminal
-
-**Issue:** Vapi calling works, but LiveMonitorTerminal side panel not updating with call data. Likely n8n webhook integration issue.
-
-## Current State
-
-**Shipped:** v1.0 Live Demo Section (2026-01-22)
-- Interactive demo with real Vapi AI receptionist
-- Live Monitor Terminal with real-time field updates
-- Premium animations (scan line, pulse, glow, typewriter)
-- Trust messaging (owner approval required, no auto-actions)
-
-**Codebase:** 5,509 lines JavaScript/JSX
-**Tech stack:** React 18 + Vite, Tailwind CSS v4, React Router DOM v7, Vapi SDK
+The website must communicate what Leviathan Systems actually does — builds automated infrastructure for service businesses — through clear copy, authoritative design, and a compelling interactive demo that shows the system in action. Content drives everything; design serves the message.
 
 ## Requirements
 
 ### Validated
 
-- ✓ Hero section with value proposition — v0
-- ✓ "How We Work" partnership flow — v0
-- ✓ "What Changes" before/after comparison — v0
-- ✓ 78% stat section (animated) — v0
-- ✓ Loss Calculator component — v0
-- ✓ Final CTA section — v0
-- ✓ Responsive design (mobile-first) — v0
-- ✓ Dark theme with cyan/purple accents — v0
-- ✓ Vapi web-call button with real AI receptionist — v1.0
-- ✓ Live Monitor Terminal with real-time updates — v1.0
-- ✓ Polling hook for n8n webhook data — v1.0
-- ✓ Premium animations (scan line, field glow, typewriter) — v1.0
-- ✓ Trust/control messaging throughout — v1.0
-- ✓ Section placement after hero, before "How We Work" — v1.0
+- ✓ Audit page multi-step form with Formspree submission (xbdrwznd) — existing, protected
+- ✓ Audit page Calendly integration (leviathanaidev) — existing, protected
+- ✓ Begin page booking flow — existing, protected
+- ✓ Book page Calendly embed — existing, protected
+- ✓ React 18 + Vite + Tailwind CSS v4 stack — existing
+- ✓ React Router DOM v7 routing — existing
+- ✓ Vercel deployment — existing
+- ✓ Dark theme design direction — existing
 
 ### Active
 
-- [ ] **BUG-01**: Live monitor panel updates correctly with data from Vapi calls
+- [ ] All homepage copy (hero, problem, reframe, solution, demo scripts, testimonials, CTA)
+- [ ] About page copy (positioning, philosophy, three pillars)
+- [ ] Design system (tokens, typography scale, spacing, borders, color palette)
+- [ ] Shared UI primitives (SectionWrapper, GlowOrb, AnimatedText, GridOverlay)
+- [ ] Homepage sections (Hero, Problem, Reframe, Solution, Testimonials, CTA)
+- [ ] About page build
+- [ ] MainLayout update (nav, footer)
+- [ ] Audit page visual refresh (CSS-only — colors, typography, spacing)
+- [ ] Demo Part I: Customer Experience (auto-fill form, SMS phone mockup)
+- [ ] Demo Part II: System Logic (GSAP ScrollTrigger, node graph, SVG animations)
+- [ ] Demo Part III: Owner Dashboard (three-rail layout, animated counters)
+- [ ] Responsive design (320px → 1536px)
+- [ ] Accessibility (prefers-reduced-motion → static states)
+- [ ] Performance optimization (lazy loading, GPU transforms)
+- [ ] SEO (meta tags, OG tags)
+- [ ] Old code removal (Vapi, calculator, old components/hooks)
 
 ### Out of Scope
 
-- Mock/simulation mode — Real integration only, no fake demos
-- Charts or ROI metrics in demo — Keep it grounded, no fake numbers
-- "Booked" or "Scheduled" messaging — Never imply actions were taken
-- Mobile Vapi integration — Focus on desktop web-call first
+- Audit.jsx form logic changes — protected, working, must not break
+- Begin.jsx logic changes — protected
+- Book.jsx logic changes — protected
+- Backend/API development — frontend redesign only
+- CMS or content management — static content in code
+- User accounts or authentication — not applicable
+- E-commerce or payments — not applicable
+- Blog or content publishing — not in scope for v1
 
 ## Context
 
-**Technical environment:**
-- React 18 + Vite
-- Tailwind CSS v4 (using @tailwindcss/vite plugin)
-- React Router DOM v7
-- Vapi SDK (@vapi-ai/web)
-- Deployed on Vercel
+**Business positioning:** Leviathan Systems is an automation company that builds revenue-critical systems for service businesses. Core belief: time leakage equals revenue leakage. The company designs and implements automated systems that handle inbound demand end-to-end — respond instantly, qualify leads, route correctly, book appointments.
 
-**Design system:**
-- Background: #030306 (very dark)
-- Accent primary: #00d4cf (cyan)
-- Accent secondary: #7c72ff (purple)
-- Cards: bg-[#0a0f1a] with border-[#1a2332]
-- Animations: fade-in-up, pulse-glow, float, scan-line, field-glow, typewriter
+**Current site problems:**
+- "AI receptionist" framing is wrong — the company builds infrastructure, not chatbots
+- Vapi call demo doesn't represent the actual product
+- Loss calculator was a gimmick, not a conversion tool
+- 78% stat and chatbot messaging don't match the doctrine
+- Design is functional but not premium enough for the positioning
 
-**Key components (v1.0):**
-- `useLiveMonitor` — Polling hook for n8n webhook data
-- `useVapiCall` — Vapi SDK integration hook
-- `LiveMonitorTerminal` — Real-time field display with animations
-- `VapiCallButton` — Call control with audio visualization
-- `DemoSection` — Container component for demo experience
+**Design direction studied from:**
+- Linear — near-black bg, Inter font, enterprise minimalism, gradient text
+- Stripe — modular cards, concrete metrics, progressive disclosure
+- Vercel — dark theme, card-based features, minimalist clarity
+- Kavalsia — teal on black, bold headings, aggressive modern tech
+- Notion — bento card grid, negative space, clean CTAs
+- GitHub — themed sections, gradient overlays, content hierarchy
 
-**Integration endpoints:**
-- POST: `https://systems.leviathan-systems.com/webhook/demo/update`
-- GET: `https://systems.leviathan-systems.com/webhook/demo/latest?demo_session_id={id}`
+**Target aesthetic:** Very dark background (near-black), teal/cyan accent, Inter font family, cards with subtle borders and restrained glassmorphism, lots of breathing room, animations that feel inevitable not decorative. Premium, calm, authoritative.
+
+**Homepage flow:**
+Hero → Problem → Reframe → Solution → Demo Part I → Demo Part II → Demo Part III → Testimonials → Final CTA
+
+**Brand voice:** Calm, authoritative, restrained. Outcome-focused not feature-focused. No tech jargon. No urgency tactics.
+
+**Existing dependencies to remove:** @vapi-ai/web
+**New dependencies to add:** gsap (free tier, for ScrollTrigger and timeline orchestration)
 
 ## Constraints
 
-- **Protected pages**: Audit.jsx, Begin.jsx, Book.jsx — DO NOT MODIFY
-- **Git workflow**: Feature branch required, merge to master after approval
-- **Trust first**: All messaging must emphasize owner control
+- **Tech stack**: React 18 + Vite + Tailwind CSS v4 — no framework changes
+- **Protected pages**: Audit.jsx, Begin.jsx, Book.jsx — zero form logic changes
+- **Integrations**: Formspree (xbdrwznd) and Calendly (leviathanaidev) must continue working
+- **Deployment**: Vercel — `npm run build` must succeed
+- **Animation library**: GSAP free tier only (no paid plugins)
+- **Performance**: Lighthouse > 90
+- **Accessibility**: prefers-reduced-motion must show static states
+- **Responsive**: 320px to 1536px
 
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
 |----------|-----------|---------|
-| Real Vapi integration only | User wants authentic demo, no mocks | ✓ Good — authentic experience |
-| Cyan accent for active states | Matches existing design system | ✓ Good — consistent visuals |
-| Polling (not WebSocket) | Simpler, n8n endpoint already built | ✓ Good — reliable, easy to debug |
-| "See It Work" headline | User's choice from options | ✓ Good — clear and direct |
+| Reposition from "AI receptionist" to "infrastructure" | Business doctrine changed — company builds systems, not chatbots | — Pending |
+| Remove Vapi call demo entirely | Doesn't represent actual product offering | — Pending |
+| Remove loss calculator | Gimmick, not a conversion tool | — Pending |
+| Use GSAP for demos | ScrollTrigger needed for scroll-scrubbed animation, timeline for orchestration | — Pending |
+| 5-phase divide and conquer | User-specified: (1) Text, (2) Design, (3) Structure, (4) Demos, (5) Polish | — Pending |
+| Content-first approach | Nail every word of copy before touching design or code | — Pending |
+| Discussion before each phase | Deep one-on-one via /gsd:discuss-phase before any phase work | — Pending |
 
 ---
-*Last updated: 2026-01-23 after starting v1.1 maintenance milestone*
+*Last updated: 2026-02-10 after initialization*
