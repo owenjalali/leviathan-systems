@@ -1,199 +1,253 @@
 # Codebase Concerns
 
-**Analysis Date:** 2026-01-23
+**Analysis Date:** 2026-02-09
 
-## Tech Debt
+## Security Issues
 
-**Hardcoded API Credentials in Source:**
-- Issue: Vapi public key and assistant ID are hardcoded directly in `src/components/VapiCallButton.jsx` lines 6-7
-- Files: `src/components/VapiCallButton.jsx`
-- Impact: Cannot change credentials without code deployment. Credentials exposed in client-side bundle. No environment-based configuration (dev/staging/prod).
-- Fix approach: Move to environment variables (`VITE_VAPI_PUBLIC_KEY`, `VITE_VAPI_ASSISTANT_ID`), add `.env.example` template, update deployment config
+**Hardcoded API Credentials:**
+- Issue: Vapi public key and assistant ID are hardcoded in source code
+- Files: `src/components/VapiCallButton.jsx` (lines 6-7)
+  - `VAPI_PUBLIC_KEY = '935fb085-0c34-4f20-82cf-76cff78f3934'`
+  - `VAPI_ASSISTANT_ID = '955decb7-0492-40c9-b788-0b0e16f73a0a'`
+- Impact: Credentials are exposed in version control and public codebase. While these are "public" keys per Vapi's design, storing them hardcoded violates secure configuration best practices. If API key permission changes, it's difficult to rotate.
+- Fix approach: Move credentials to environment variables (`.env.local` for development, process.env for production via Vercel). Use `import.meta.env.VITE_*` for Vite environment variables.
 
-**Duplicated Form Logic:**
-- Issue: `src/pages/Audit.jsx` (690 lines) and `src/pages/Begin.jsx` (757 lines) contain near-identical form validation, state management, and submission logic
-- Files: `src/pages/Audit.jsx`, `src/pages/Begin.jsx`
-- Impact: Bug fixes and feature changes require dual maintenance. Form field additions need to be synchronized manually. Increases testing surface.
-- Fix approach: Extract shared form logic into custom hooks (`useFormValidation`, `useFormSubmission`). Create reusable form field components. Share validation schemas.
-
-**Unused Page File:**
-- Issue: `src/pages/Home-redesign.jsx` (790 lines) exists but is not imported or routed in `src/App.jsx`
-- Files: `src/pages/Home-redesign.jsx`
-- Impact: Dead code increases bundle size. Contains complex Leviathan SVG animation that may be intended for future use. Unclear if this is WIP or abandoned.
-- Fix approach: Delete if abandoned, or document if it's WIP. If keeping, move to `/drafts` folder outside src.
-
-**Protected Pages Directive Not Enforced:**
-- Issue: `CLAUDE.md` declares three pages as "protected" (Audit.jsx, Begin.jsx, Book.jsx) but no technical enforcement exists
-- Files: `src/pages/Audit.jsx`, `src/pages/Begin.jsx`, `src/pages/Book.jsx`
-- Impact: Convention-only protection. No pre-commit hooks, no file watchers. Easy to accidentally modify.
-- Fix approach: Add ESLint plugin to detect changes to protected files, or implement pre-commit git hook to warn/block changes
-
-**Missing Test Infrastructure:**
-- Issue: No test files exist despite having 22 source files. No test runner configuration detected.
-- Files: All `src/**/*.{jsx,js}` files
-- Impact: No automated verification of component behavior. Hooks like `useLiveMonitor.js` and `useVapiCall.js` have complex state management but no tests. Refactoring is risky.
-- Fix approach: Install Vitest, create test setup, prioritize testing hooks and form validation logic first
-
-## Known Bugs
-
-**Route Mismatch:**
-- Symptoms: `src/App.jsx` redirects `/begin` to `/audit` and `/services` to `/`, but `src/pages/Begin.jsx` and navigation links may reference old routes
-- Files: `src/App.jsx`, `src/layouts/MainLayout.jsx`
-- Trigger: Users following old bookmarks or links will be redirected, potentially causing confusion
-- Workaround: Redirects handle this, but user experience is degraded
-
-**Polling Continues After Component Unmount:**
-- Symptoms: `useLiveMonitor.js` uses `mountedRef` to prevent state updates after unmount, but interval cleanup only happens in useEffect cleanup
-- Files: `src/hooks/useLiveMonitor.js` lines 152-163
-- Trigger: If `stopPolling()` is not called before unmount, interval continues making network requests
-- Workaround: Properly call `stopPolling()` in parent component cleanup
-
-## Security Considerations
-
-**Client-Side API Keys:**
-- Risk: Vapi public key is exposed in client bundle, allowing anyone to inspect and potentially abuse the key
-- Files: `src/components/VapiCallButton.jsx`
-- Current mitigation: Key is labeled "public" suggesting it's intended for client use. Vapi likely has rate limiting and domain restrictions.
-- Recommendations: Verify Vapi dashboard has domain whitelist configured. Consider backend proxy for sensitive operations.
-
-**No Rate Limiting on Form Submissions:**
-- Risk: Formspree endpoint in `src/pages/Audit.jsx` and `src/pages/Begin.jsx` has no client-side rate limiting
-- Files: `src/pages/Audit.jsx`, `src/pages/Begin.jsx`
-- Current mitigation: Formspree likely has backend rate limiting. Submit button shows loading state.
-- Recommendations: Add client-side debouncing and prevent rapid resubmission. Track submission attempts in localStorage.
-
-**External Polling Endpoint Hardcoded:**
-- Risk: Live monitor polls `https://systems.leviathan-systems.com/webhook/demo/latest` with session IDs in query params
-- Files: `src/hooks/useLiveMonitor.js` line 65
-- Current mitigation: Session IDs are UUIDs (hard to guess). 404 responses are handled gracefully.
-- Recommendations: Move endpoint URL to environment variable. Consider adding authentication header if endpoint exposes sensitive data.
-
-**No Input Sanitization on Display:**
-- Risk: Data from external API (`useLiveMonitor`) is rendered directly in `LiveMonitorTerminal.jsx` without sanitization
-- Files: `src/components/LiveMonitorTerminal.jsx` lines 254, 271
-- Current mitigation: React automatically escapes JSX content. Fields are text-only.
-- Recommendations: Current approach is safe for text. If rich content is added, implement DOMPurify.
-
-## Performance Bottlenecks
-
-**Aggressive Polling Interval:**
-- Problem: `useLiveMonitor.js` polls every 1 second during active calls
-- Files: `src/hooks/useLiveMonitor.js` line 136
-- Cause: Real-time updates require frequent checks, but 1s may be excessive for most use cases
-- Improvement path: Implement exponential backoff (1s → 2s → 5s) when no changes detected. Use WebSocket for true real-time updates.
-
-**Large Page Components:**
-- Problem: `Home-redesign.jsx` (790 lines), `Begin.jsx` (757 lines), `Audit.jsx` (690 lines) are monolithic
-- Files: `src/pages/Home-redesign.jsx`, `src/pages/Begin.jsx`, `src/pages/Audit.jsx`
-- Cause: No component decomposition. Inline form validation, state management, and UI all in single file.
-- Improvement path: Extract form sections into separate components. Move validation logic to separate functions/hooks. Use React.lazy for code splitting on route level.
-
-**Leviathan SVG Complexity:**
-- Problem: `Home-redesign.jsx` contains 250+ line SVG with multiple animated elements, gradients, and filters
-- Files: `src/pages/Home-redesign.jsx` lines 26-273
-- Cause: Complex multi-headed Leviathan creature rendered inline with elaborate animations
-- Improvement path: Extract to separate SVG file, optimize with SVGO, consider sprite sheet for animation frames
-
-## Fragile Areas
-
-**Live Demo Integration:**
-- Files: `src/components/DemoSection.jsx`, `src/hooks/useLiveMonitor.js`, `src/hooks/useVapiCall.js`, `src/components/LiveMonitorTerminal.jsx`
-- Why fragile: Tight coupling between Vapi call state, polling state, and UI state. Three separate state machines must stay synchronized (callStatus, polling status, terminal status).
-- Safe modification: Any changes to call lifecycle should update all three components in tandem. Test with actual Vapi calls, not just mocks.
-- Test coverage: Zero
-
-**Form Submission Flow:**
-- Files: `src/pages/Audit.jsx` lines 140-190, `src/pages/Begin.jsx` lines 150-200
-- Why fragile: Multi-step form with session storage, Formspree submission, Calendly integration, and error handling. Many external dependencies.
-- Safe modification: Test thoroughly with actual Formspree endpoint. Verify session storage persistence across page reloads. Check Calendly embed loads correctly.
-- Test coverage: Zero
-
-**Navigation State:**
-- Files: `src/layouts/MainLayout.jsx` lines 8-130
-- Why fragile: Mobile menu state, scroll detection, route highlighting, and logo logic all in one component. useEffect hooks depend on location changes.
-- Safe modification: Test mobile menu open/close on route changes. Verify scroll-based styling updates correctly.
-- Test coverage: Zero
-
-## Scaling Limits
-
-**Client-Side Polling:**
-- Current capacity: Single user polling at 1s interval is fine
-- Limit: If multiple browser tabs open or many concurrent users, each polls independently. N users = N requests/second to n8n endpoint.
-- Scaling path: Backend should implement WebSocket pub/sub. Use shared worker to deduplicate polling across browser tabs.
-
-**Session Storage for Form State:**
-- Current capacity: Works for single-page calculator → form flow
-- Limit: Session storage cleared on tab close. No persistence across devices. Calculator results lost if user returns via different session.
-- Scaling path: Move to backend session management or localStorage with expiration. Use URL parameters for cross-device sharing.
-
-## Dependencies at Risk
-
-**React Router v7:**
-- Risk: Recently upgraded to v7 based on package.json, which has significant API changes from v6
-- Files: `package.json` line 17, `src/App.jsx`, `src/layouts/MainLayout.jsx`
-- Impact: If docs examples are v6-based, copy-pasting code may cause runtime errors
-- Migration plan: None needed currently, but document that project uses v7 API
-
-**Vite v7:**
-- Risk: Bleeding edge version (7.2.4) may have undiscovered bugs
-- Files: `package.json` line 30, `vite.config.js`
-- Impact: Build errors or HMR issues possible. Community support may lag.
-- Migration plan: Can downgrade to Vite v5 (stable LTS) if issues arise
-
-**Tailwind CSS v4:**
-- Risk: Using beta version (4.1.18) with new Vite plugin approach
-- Files: `package.json` lines 21, 29, `src/index.css` line 1
-- Impact: Breaking changes possible before stable release. Plugin API may change.
-- Migration plan: Lock version until v4 reaches stable. Can fall back to v3 with PostCSS approach.
-
-## Missing Critical Features
-
-**Error Boundary:**
-- Problem: No React error boundaries implemented
-- Blocks: If any component throws during render, entire app crashes with blank screen
-- Priority: High
-
-**Loading States:**
-- Problem: No global loading indicator for route transitions
-- Blocks: User sees blank screen briefly when navigating between heavy pages
-- Priority: Medium
-
-**Analytics/Monitoring:**
-- Problem: No error tracking (Sentry) or analytics (GA, Plausible) detected
-- Blocks: Cannot measure conversion funnel, cannot debug production errors
-- Priority: High for production deployment
-
-**Environment Variable Validation:**
-- Problem: No runtime check that required env vars are present
-- Blocks: App may fail silently if Vapi key is missing or malformed
-- Priority: Medium
-
-## Test Coverage Gaps
-
-**Form Validation Logic:**
-- What's not tested: Email validation, URL validation, multi-select field logic, conditional field visibility
-- Files: `src/pages/Audit.jsx` lines 96-133, `src/pages/Begin.jsx` lines 100-150
-- Risk: Validation bugs allow invalid submissions or block valid ones
-- Priority: High
-
-**Custom Hooks:**
-- What's not tested: `useLiveMonitor.js` polling lifecycle, state transitions, error handling. `useVapiCall.js` SDK integration, event handlers.
-- Files: `src/hooks/useLiveMonitor.js`, `src/hooks/useVapiCall.js`, `src/hooks/useScrollAnimation.js`
-- Risk: State management bugs cause UI to hang or show stale data
-- Priority: High
-
-**Animation Timing:**
-- What's not tested: Scroll-based animations, typewriter effects, status transitions in LiveMonitorTerminal
-- Files: `src/hooks/useScrollAnimation.js`, `src/components/LiveMonitorTerminal.jsx` lines 69-97
-- Risk: Race conditions cause animations to skip or repeat unexpectedly
-- Priority: Low
-
-**Redirect Logic:**
-- What's not tested: Route redirects in App.jsx correctly preserve query parameters and handle edge cases
-- Files: `src/App.jsx` lines 16-17
-- Risk: Users lose state or get stuck in redirect loops
-- Priority: Medium
+**Missing Environment Configuration:**
+- Issue: No `.env.example` or documented environment variables
+- Files: Project root
+- Impact: New developers won't know what environment variables are required. Production deployment may fail without proper env var setup.
+- Fix approach: Create `.env.example` with placeholder values for `VITE_VAPI_PUBLIC_KEY`, `VITE_VAPI_ASSISTANT_ID`, and any other external APIs.
 
 ---
 
-*Concerns audit: 2026-01-23*
+## Performance Concerns
+
+**Excessive Console Logging in Production:**
+- Issue: Verbose console logs throughout app remain active in production
+- Files:
+  - `src/hooks/useLiveMonitor.js` (14 console.log/warn/error calls)
+  - `src/hooks/useVapiCall.js` (3 console calls)
+  - `src/components/DemoSection.jsx` (4 console.log calls)
+- Impact: Console spam reduces performance slightly; verbose logs expose internal architecture to users and competitors. Logs are not captured or monitored anywhere.
+- Fix approach: Use conditional logging based on environment (e.g., `if (import.meta.env.DEV)`) or implement a logging service that doesn't output to browser console in production.
+
+**Polling Without Backoff Strategy:**
+- Issue: `useLiveMonitor` polls n8n endpoint every 1 second with no exponential backoff or rate limiting
+- Files: `src/hooks/useLiveMonitor.js` (line 149)
+- Impact: If n8n webhook is slow or overwhelmed, constant polling at 1s interval will create load. No jitter means all clients hammer the endpoint simultaneously.
+- Fix approach: Implement exponential backoff for failed requests, add jitter to polling interval, or implement server-side rate limiting headers detection.
+
+**LiveMonitorTerminal Typewriter Animation Performance:**
+- Issue: Typewriter effect uses `setInterval` with string slicing at every character (30ms default)
+- Files: `src/components/LiveMonitorTerminal.jsx` (lines 105-121)
+- Impact: High frequency re-renders with substring operations. For long summary text, this causes unnecessary DOM updates and CPU usage.
+- Fix approach: Use `requestAnimationFrame` instead of `setInterval` for smoother animation with frame-sync performance.
+
+---
+
+## Fragile Areas
+
+**Complex State Management in LiveMonitorTerminal:**
+- Files: `src/components/LiveMonitorTerminal.jsx` (355 lines)
+- Why fragile: Multiple interdependent state flows:
+  - Summary typewriter state depends on `data?.data?.final_summary` and `summaryShownRef`
+  - Event visibility depends on `status === 'captured'` and `visibleEvents` array
+  - Control statement visibility depends on `summaryComplete && visibleEvents.length === events.length`
+  - Changes to data flow or visibility logic easily break animation timing
+- Safe modification: Changes to animation logic must verify all three completion conditions (summary, events, control). Consider extracting animation orchestration to separate custom hook.
+- Test coverage: No tests exist for animation state transitions. Risk of flashing/stuttering on edge cases.
+
+**Polling and Call State Coupling:**
+- Files: `src/components/DemoSection.jsx`, `src/hooks/useLiveMonitor.js`, `src/components/VapiCallButton.jsx`
+- Why fragile: Session ID and polling state must sync perfectly:
+  - Session ID created on call start (`useVapiCall` hook)
+  - Must be passed to polling hook (`useLiveMonitor`) via parent component
+  - Polling continues after call ends, preserving session ID
+  - If call ends before polling stops, stale requests occur; if polling stops too early, data loss
+- Safe modification: Changes to call lifecycle must update `DemoSection` to ensure polling cleanup aligns with call termination.
+- Test coverage: No integration tests for call-to-polling flow. Risk: session ID timing mismatches go undetected.
+
+**Form Validation and Navigation:**
+- Files: `src/pages/Audit.jsx` (690 lines)
+- Why fragile: Complex multi-step form with calculator result passing via `sessionStorage`:
+  - Calculator results passed via `sessionStorage` from `Home.jsx` → `Audit.jsx`
+  - Form state persists via local component state (no persistence)
+  - Validation errors require scrollIntoView targeting specific DOM elements
+  - Step navigation tightly coupled to form validation
+- Safe modification: Avoid changing validation logic without testing all step transitions. Store results in React Context instead of sessionStorage for reliability.
+- Test coverage: No tests for form flow or sessionStorage data handling.
+
+---
+
+## Missing Error Handling
+
+**Unhandled Network Failures in Polling:**
+- Issue: `useLiveMonitor` hook handles 404 and errors gracefully, but parent components don't indicate polling failure to user
+- Files: `src/hooks/useLiveMonitor.js` (lines 110-118), `src/components/DemoSection.jsx`
+- Impact: If n8n endpoint is down, user sees "System Ready" terminal state forever. No indication that data capture failed.
+- Fix approach: Pass error state through to `DemoSection` and `LiveMonitorTerminal` to show "Connection Lost" or "Unable to fetch data" message.
+
+**Vapi Call Errors Auto-Dismiss:**
+- Issue: Error display auto-dismisses after 7 seconds regardless of error severity
+- Files: `src/components/VapiCallButton.jsx` (lines 72-78)
+- Impact: Critical errors (network failure, permission denied) disappear before user can take action. Only "Retry" button visible during error window.
+- Fix approach: Keep errors visible until dismissed by user or call is retried. Differentiate error types (temporary vs permanent) with different auto-dismiss timings.
+
+---
+
+## Data Integrity Risks
+
+**Calculator Results Lost on Page Refresh:**
+- Issue: `LossCalculator` passes results via callback to parent, then via `sessionStorage` to `Audit` page
+- Files: `src/pages/Home.jsx` (line 80), `src/pages/Audit.jsx` (lines 44-49)
+- Impact: If user refreshes `Audit` page, calculator results disappear. No validation that results exist before using them.
+- Fix approach: Store results in React Context or URL query params. Add fallback UI if results missing.
+
+**No Input Validation on N8N Response:**
+- Issue: `useLiveMonitor` hook uses response data without schema validation
+- Files: `src/hooks/useLiveMonitor.js` (lines 86-106)
+- Impact: If n8n webhook returns malformed data, `changedFields` detection breaks. UI may crash if expected fields missing.
+- Fix approach: Validate response schema with Zod or similar. Provide type-safe data extraction with defaults.
+
+---
+
+## Test Coverage Gaps
+
+**No Unit Tests Exist:**
+- Impact: Critical hooks and components lack test coverage
+- Untested areas:
+  - `useLiveMonitor.js` - Polling logic, changed field detection, error handling
+  - `useVapiCall.js` - Vapi SDK lifecycle, session ID generation, event handling
+  - `LiveMonitorTerminal.jsx` - Typewriter animation timing, event visibility, status transitions
+  - `LossCalculator.jsx` - Calculation accuracy, validation logic, result generation
+
+**No Integration Tests:**
+- Impact: Multi-component flows untested
+- Gaps:
+  - Call start → polling flow → data display
+  - Calculator form → session storage → Audit page
+  - Form validation with calculator results
+
+**No E2E Tests:**
+- Impact: User journeys from Home to Audit to form submission untested
+- Risk: Formspree integration, Calendly embedding, and booking flows could break silently
+
+---
+
+## Dependencies at Risk
+
+**React 19.2.0:**
+- Status: Latest major version with potential breaking changes
+- Risk: Component lifecycle hooks may behave differently than React 18. `useEffect` cleanup timing changed.
+- Mitigation: Monitor for issues with concurrent rendering and cleanup order.
+
+**React Router v7:**
+- Status: Recent major version upgrade
+- Risk: Navigation behavior and hook APIs differ from v6. `useNavigate` behavior may change.
+- Mitigation: Document any router-specific configurations. Test navigation flows thoroughly.
+
+**Vapi SDK (@vapi-ai/web v2.5.2):**
+- Status: External dependency, version may be outdated
+- Risk: API changes, security patches, bug fixes
+- Mitigation: Monitor Vapi changelog. Lock version in package-lock.json (already done). Set up automated dependency updates.
+
+**No Typescript Despite Complex State:**
+- Risk: Without type checking, component prop contracts are implicit. Easy to pass wrong types to components.
+- Impact: Runtime errors in production when props are unexpected.
+- Fix approach: Migrate to TypeScript or add JSDoc type annotations for critical components.
+
+---
+
+## Deployment & Configuration Issues
+
+**No Build Output Optimization:**
+- Issue: Vite configuration is minimal
+- Files: `vite.config.js`
+- Impact: No code splitting, no asset optimization, no environment-specific builds
+- Fix approach: Add build configuration for production: code splitting, asset compression, source maps for staging only.
+
+**Tailwind v4 Verification Script Unused:**
+- Issue: `verify:tailwind` script in package.json exists but not documented or run in CI
+- Files: `package.json` (line 11), `scripts/verify-tailwind-v4.mjs`
+- Impact: Tailwind configuration drift goes undetected. Build may fail in CI if verification not run.
+- Fix approach: Add pre-build hook or CI step to run verification automatically.
+
+**No Pre-commit Hooks:**
+- Issue: Code can be committed without linting
+- Impact: Console logs, debugging code, style issues slip into production
+- Fix approach: Add husky with pre-commit lint-staged hooks.
+
+---
+
+## Code Quality Issues
+
+**Unused State and Refs:**
+- Files: `src/components/VapiCallButton.jsx` - `isSpeaking` state generated but never used (lines 24)
+- Impact: Dead code adds confusion. Suggests incomplete feature or oversight.
+- Fix approach: Remove unused `isSpeaking` from hook or implement talk-detection UI.
+
+**Magic Numbers Throughout:**
+- Animation delays: 3000ms, 400ms, 100ms, 2000ms hardcoded throughout
+- Polling interval: 1000ms hardcoded in `useLiveMonitor`
+- Decay rate thresholds: 5, 15, 60, 240, 1440 minutes in `LossCalculator`
+- Impact: Difficult to adjust timing globally. No single source of truth for animation/polling constants.
+- Fix approach: Extract to constants file: `src/config/timing.js` with POLLING_INTERVAL, ANIMATION_DELAYS, etc.
+
+**Parallel State Updates:**
+- Files: `src/pages/Home.jsx` - Multiple `useState` calls managing related animation states (lines 15-19)
+- Impact: Difficult to reason about state synchronization. Could lead to inconsistent UI state.
+- Fix approach: Consider `useReducer` for coordinated animation state.
+
+---
+
+## Known Browser/Platform Issues
+
+**No Mobile Testing Documentation:**
+- Components use responsive classes, but no documented mobile testing procedure
+- Risk: Responsive behavior breaks on new screen sizes
+- Fix approach: Document mobile viewport breakpoints used. Add mobile testing to QA checklist.
+
+**No Accessibility Audit:**
+- Alert: Components have interactive elements but no ARIA labels or role attributes
+- Impact: Screen reader users cannot navigate form or call button
+- Files: `src/components/VapiCallButton.jsx`, `src/pages/Audit.jsx`
+- Fix approach: Add `aria-label`, `aria-describedby`, `role` attributes. Test with screen readers.
+
+---
+
+## Production Readiness Gaps
+
+**No Error Boundary:**
+- Issue: No React Error Boundary component exists
+- Impact: Single component crash crashes entire app
+- Fix approach: Add Error Boundary wrapper in `MainLayout.jsx` with fallback UI.
+
+**No Rate Limiting Awareness:**
+- Vapi API calls and n8n polling have no rate limit detection
+- Risk: High call volume could trigger rate limiting silently
+- Fix approach: Parse rate limit headers from responses and backoff accordingly.
+
+**No Monitoring/Analytics:**
+- No tracking of call success/failure rates, polling errors, or user interactions
+- Impact: Production issues go undetected until user reports
+- Fix approach: Integrate Sentry for error tracking. Add analytics for call completion rates.
+
+---
+
+## Scalability Concerns
+
+**Polling at 1s Interval Doesn't Scale:**
+- Each active demo call polls n8n every 1 second
+- If 10 concurrent demo calls → 10 requests/second to n8n webhook
+- If 100 concurrent → 100 requests/second
+- Impact: n8n webhook becomes bottleneck at scale
+- Fix approach: Implement WebSocket or Server-Sent Events (SSE) instead of polling. Implement client-side rate limiting with request coalescing.
+
+**Live Monitor Component Re-renders on Every Interval:**
+- Issue: Typewriter effect triggers re-render every 30ms
+- Impact: 200+ re-renders per second for visible component tree
+- Fix approach: Memoize sub-components with `React.memo`. Use `useCallback` for event handlers.
+
+---
+
+*Concerns audit: 2026-02-09*

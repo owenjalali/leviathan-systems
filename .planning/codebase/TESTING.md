@@ -1,302 +1,366 @@
 # Testing Patterns
 
-**Analysis Date:** 2026-01-23
+**Analysis Date:** 2026-02-09
 
-## Test Framework
+## Test Framework Status
 
 **Runner:**
-- Not detected - no test framework currently configured
+- No test runner currently configured
+- No `jest.config.js`, `vitest.config.js`, or `package.json` test scripts
+- No test files present in `src/` directory
 
 **Assertion Library:**
-- Not detected
+- None configured
 
-**Run Commands:**
-- No test scripts in `package.json`
-- No test configuration files found
-
-**Status:**
-This codebase does not currently have a testing infrastructure. The following sections describe recommended patterns for when testing is implemented.
+**Test Commands:**
+- Currently: `npm run lint` (only linting available)
+- No test execution commands available
 
 ## Test File Organization
 
-**Location:**
-- Not applicable - no test files found
+**Current State:**
+- No test files found in codebase (`*.test.*` or `*.spec.*`)
+- No dedicated test directory structure (e.g., `src/__tests__/`, `tests/`)
+- Would follow co-location pattern if implemented (tests next to component files)
 
-**Naming:**
-- Expected pattern: `*.test.jsx` or `*.spec.jsx` (based on common React practices)
-
-**Structure:**
-- Not applicable - no existing test directory structure
-
-**Recommendation:**
-When implementing tests, consider co-locating test files with source files:
+**Recommended Location Pattern:**
 ```
 src/
 ├── components/
 │   ├── VapiCallButton.jsx
-│   └── VapiCallButton.test.jsx
+│   ├── VapiCallButton.test.jsx      ← Test co-located
+│   ├── LossCalculator.jsx
+│   └── LossCalculator.test.jsx
 ├── hooks/
 │   ├── useVapiCall.js
-│   └── useVapiCall.test.js
+│   ├── useVapiCall.test.js          ← Test co-located
+│   ├── useLiveMonitor.js
+│   └── useLiveMonitor.test.js
+└── pages/
+    ├── Home.jsx
+    └── Home.test.jsx
 ```
 
-Or using a separate test directory that mirrors source structure:
-```
-src/
-├── components/
-│   └── VapiCallButton.jsx
-tests/
-├── components/
-│   └── VapiCallButton.test.jsx
-```
+**Recommended Naming:**
+- `ComponentName.test.jsx` for component tests
+- `hookName.test.js` for hook tests
 
-## Test Structure
+## Testing Approach (Recommended)
 
-**Suite Organization:**
-Not applicable - no tests currently exist
+Based on codebase patterns, recommended approach would be:
 
-**Recommended Pattern for React Components:**
+**Framework Recommendation:**
+- Vitest (aligns with Vite setup, modern, fast)
+- React Testing Library (for component testing, aligns with modern React practices)
+
+**Setup Example (if implementing):**
 ```javascript
-import { render, screen, fireEvent } from '@testing-library/react'
-import { VapiCallButton } from '../components/VapiCallButton'
-
-describe('VapiCallButton', () => {
-  describe('idle state', () => {
-    it('should render start call button', () => {
-      // test
-    })
-  })
-
-  describe('active call', () => {
-    it('should show end call button', () => {
-      // test
-    })
-  })
-})
-```
-
-**Recommended Pattern for Hooks:**
-```javascript
-import { renderHook, act } from '@testing-library/react'
-import { useVapiCall } from '../hooks/useVapiCall'
-
-describe('useVapiCall', () => {
-  it('should initialize with idle status', () => {
-    const { result } = renderHook(() => useVapiCall(PUBLIC_KEY))
-    expect(result.current.callStatus).toBe('idle')
-  })
-})
-```
-
-## Mocking
-
-**Framework:**
-Not detected - no mocking library configured
-
-**Recommendation:**
-Given the codebase relies on external services (Vapi SDK, n8n webhooks), implement mocking for:
-- Vapi SDK (`@vapi-ai/web`) in `src/hooks/useVapiCall.js`
-- Fetch requests in `src/hooks/useLiveMonitor.js`
-- Browser APIs (`IntersectionObserver`, `window.scrollTo`)
-
-**Suggested Mocking Pattern:**
-```javascript
-// Mock Vapi SDK
-jest.mock('@vapi-ai/web', () => {
-  return jest.fn().mockImplementation(() => ({
-    start: jest.fn(),
-    stop: jest.fn(),
-    on: jest.fn()
-  }))
-})
-
-// Mock fetch for polling hook
-global.fetch = jest.fn(() =>
-  Promise.resolve({
-    ok: true,
-    status: 200,
-    json: () => Promise.resolve({ success: true, data: {} })
-  })
-)
-```
-
-## Fixtures and Factories
-
-**Test Data:**
-Not applicable - no fixtures currently exist
-
-**Recommendation:**
-Create test fixtures for:
-- Vapi SDK event payloads
-- API responses from n8n webhook
-- Demo session data structure
-
-**Suggested Location:**
-- `tests/fixtures/vapiEvents.js`
-- `tests/fixtures/liveMonitorData.js`
-
-**Example Fixture:**
-```javascript
-// tests/fixtures/liveMonitorData.js
-export const mockDemoData = {
-  success: true,
-  data: {
-    issue: 'Water leak in basement',
-    urgency: 'high',
-    location_city: 'Boston',
-    intent: 'repair',
-    final_summary: 'Customer needs emergency plumbing service'
-  }
-}
-```
-
-## Coverage
-
-**Requirements:**
-- No coverage targets currently enforced
-
-**Recommendation:**
-Set coverage thresholds in test config:
-- Branches: 70%
-- Functions: 80%
-- Lines: 80%
-- Statements: 80%
-
-**View Coverage:**
-When implemented, typical command would be:
-```bash
-npm test -- --coverage
-```
-
-## Test Types
-
-**Unit Tests:**
-Recommended focus areas:
-- Custom hooks (`src/hooks/useVapiCall.js`, `src/hooks/useLiveMonitor.js`)
-- Utility functions (field change detection, typewriter effect logic)
-- Component state transitions
-
-**Integration Tests:**
-Recommended focus areas:
-- Vapi SDK integration in `VapiCallButton`
-- Live monitor polling and data updates
-- Form submission flows in `Audit.jsx`
-
-**E2E Tests:**
-Not applicable currently
-
-**Recommendation:**
-Consider Playwright or Cypress for E2E tests covering:
-- Calculator → Audit flow
-- Demo call → Live monitor visualization
-- Mobile navigation menu
-
-## Common Patterns
-
-**Async Testing:**
-Not applicable - no tests currently exist
-
-**Recommended Pattern:**
-```javascript
-it('should fetch demo data', async () => {
-  const { result } = renderHook(() => useLiveMonitor())
-
-  await act(async () => {
-    result.current.startPolling('test-session-id')
-  })
-
-  await waitFor(() => {
-    expect(result.current.data).toBeDefined()
-  })
-})
-```
-
-**Error Testing:**
-Not applicable - no tests currently exist
-
-**Recommended Pattern:**
-```javascript
-it('should handle fetch errors gracefully', async () => {
-  global.fetch.mockRejectedValueOnce(new Error('Network error'))
-
-  const { result } = renderHook(() => useLiveMonitor())
-
-  await act(async () => {
-    result.current.startPolling('test-session-id')
-  })
-
-  expect(result.current.error).toBeTruthy()
-})
-```
-
-## Priority Testing Areas
-
-Based on codebase complexity and critical paths, prioritize testing for:
-
-**High Priority:**
-1. `src/hooks/useVapiCall.js` - Core call functionality, state machine logic
-2. `src/hooks/useLiveMonitor.js` - Polling logic, change detection, error handling
-3. `src/components/VapiCallButton.jsx` - User interaction, state transitions, callbacks
-
-**Medium Priority:**
-4. `src/components/LiveMonitorTerminal.jsx` - Data display, typewriter effects, animations
-5. `src/pages/Audit.jsx` - Form validation, submission (currently protected from modification)
-6. `src/components/LossCalculator.jsx` - Calculator logic, data validation
-
-**Lower Priority:**
-7. Layout components (`src/layouts/MainLayout.jsx`)
-8. Static pages (`src/pages/About.jsx`)
-9. Routing configuration (`src/App.jsx`)
-
-## Test Infrastructure Setup
-
-**Recommended Stack:**
-- **Test Runner:** Vitest (fastest for Vite projects)
-- **React Testing:** `@testing-library/react` + `@testing-library/react-hooks`
-- **User Events:** `@testing-library/user-event`
-- **Assertions:** Vitest built-in or `@testing-library/jest-dom`
-- **Mocking:** Vitest built-in mocking utilities
-
-**Installation:**
-```bash
-npm install -D vitest @testing-library/react @testing-library/react-hooks @testing-library/jest-dom @testing-library/user-event jsdom
-```
-
-**Recommended Config (`vitest.config.js`):**
-```javascript
+// vitest.config.js
 import { defineConfig } from 'vitest/config'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
   plugins: [react()],
   test: {
-    globals: true,
     environment: 'jsdom',
-    setupFiles: './tests/setup.js',
-    coverage: {
-      provider: 'v8',
-      reporter: ['text', 'json', 'html'],
-      exclude: [
-        'node_modules/',
-        'dist/',
-        '**/*.config.js'
-      ]
-    }
-  }
+    setupFiles: [],
+  },
 })
 ```
 
-**Recommended Scripts (`package.json`):**
-```json
-{
-  "scripts": {
-    "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage"
-  }
-}
+## Component Testing Patterns (If Implemented)
+
+**Structure Pattern:**
+```javascript
+// Example: VapiCallButton.test.jsx
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { render, screen, fireEvent, waitFor } from '@testing-library/react'
+import { VapiCallButton } from './VapiCallButton'
+
+describe('VapiCallButton', () => {
+  it('should render start call button when idle', () => {
+    // Test implementation
+  })
+
+  it('should call onCallStart when call starts', async () => {
+    // Test implementation
+  })
+})
+```
+
+## Hook Testing Patterns (If Implemented)
+
+**Structure Pattern:**
+```javascript
+// Example: useVapiCall.test.js
+import { describe, it, expect, beforeEach, vi } from 'vitest'
+import { renderHook, act } from '@testing-library/react'
+import { useVapiCall } from './useVapiCall'
+
+describe('useVapiCall', () => {
+  const mockPublicKey = 'test-key'
+
+  it('should initialize with idle status', () => {
+    const { result } = renderHook(() => useVapiCall(mockPublicKey))
+    expect(result.current.callStatus).toBe('idle')
+  })
+
+  it('should handle call start transitions', async () => {
+    const { result } = renderHook(() => useVapiCall(mockPublicKey))
+    // Test implementation
+  })
+})
+```
+
+## Mocking Patterns (For Future Implementation)
+
+**What to Mock:**
+- External APIs (Vapi SDK methods, n8n webhooks)
+- Browser APIs (IntersectionObserver, requestAnimationFrame)
+- Timers (setInterval, setTimeout)
+- Router navigation (`useNavigate`)
+
+**What NOT to Mock:**
+- React hooks (`useState`, `useEffect`, `useRef`)
+- React utilities (`useScrollAnimation`, custom hooks logic itself)
+- Component output (unless testing integration points)
+
+**Mock Examples (Recommended Pattern):**
+
+```javascript
+// Mock Vapi SDK
+vi.mock('@vapi-ai/web', () => ({
+  default: vi.fn(() => ({
+    on: vi.fn(),
+    start: vi.fn(),
+    stop: vi.fn(),
+  }))
+}))
+
+// Mock IntersectionObserver (used extensively in codebase)
+global.IntersectionObserver = vi.fn(() => ({
+  observe: vi.fn(),
+  unobserve: vi.fn(),
+  disconnect: vi.fn(),
+}))
+
+// Mock fetch for useLiveMonitor
+global.fetch = vi.fn()
+```
+
+## Test Types
+
+**Unit Tests:**
+- Scope: Individual functions, hooks, components in isolation
+- Approach: Test inputs and outputs
+- Examples to test:
+  - `useVapiCall`: State transitions, error handling, cleanup
+  - `useLiveMonitor`: Polling logic, data change detection, fetch error handling
+  - `useScrollAnimation`: Intersection observer setup, ref assignment, visibility toggle
+  - Utility functions: `getDecayRate`, `formatCurrency`, `detectChangedFields`
+  - Sub-components: `AudioBars`, `ErrorDisplay`, `AnimatedNumber`
+
+**Integration Tests:**
+- Scope: Component + hooks working together
+- Approach: Test user interactions and state flow
+- Examples to test:
+  - `VapiCallButton` + `useVapiCall`: Start call → show connecting → show active → end call flow
+  - `LossCalculator` with form validation and result display
+  - `Home` page with scroll animations and calculator submission
+
+**E2E Tests:**
+- Current: Not used
+- Could test: Full user journeys (landing page → calculator → booking page)
+- Recommended tool: Playwright or Cypress
+
+## Async Testing Patterns (Recommended)
+
+**Async Component/Hook Testing:**
+```javascript
+// Testing async state updates in hooks
+it('should handle async call start', async () => {
+  const { result } = renderHook(() => useVapiCall(mockPublicKey))
+
+  await act(async () => {
+    await result.current.startCall('assistant-id')
+  })
+
+  expect(result.current.callStatus).toBe('connecting')
+})
+
+// Testing component effects after user interaction
+it('should display error after failed call', async () => {
+  render(<VapiCallButton onCallStart={vi.fn()} onCallEnd={vi.fn()} />)
+  const button = screen.getByText('Start Demo Call')
+
+  fireEvent.click(button)
+
+  await waitFor(() => {
+    expect(screen.getByText(/Call failed/i)).toBeInTheDocument()
+  })
+})
+```
+
+## Error Testing Patterns (Recommended)
+
+**Error Handling in Hooks:**
+```javascript
+// Test error state and clearError function
+it('should clear error when clearError is called', async () => {
+  const { result } = renderHook(() => useVapiCall(mockPublicKey))
+
+  // Trigger error somehow
+  act(() => {
+    // Error occurs
+  })
+
+  expect(result.current.error).toBeDefined()
+
+  act(() => {
+    result.current.clearError()
+  })
+
+  expect(result.current.error).toBeNull()
+})
+```
+
+**Error Display in Components:**
+```javascript
+// Test error UI appears and auto-dismisses
+it('should auto-dismiss error after 7 seconds', async () => {
+  vi.useFakeTimers()
+  render(<ErrorDisplay
+    error={new Error('Test error')}
+    onRetry={vi.fn()}
+    onDismiss={vi.fn()}
+  />)
+
+  expect(screen.getByText(/Call failed/i)).toBeInTheDocument()
+
+  vi.advanceTimersByTime(7000)
+
+  await waitFor(() => {
+    expect(screen.queryByText(/Call failed/i)).not.toBeInTheDocument()
+  })
+
+  vi.useRealTimers()
+})
+```
+
+## Code Patterns to Test
+
+**Validation Logic** (from `LossCalculator.jsx`):
+```javascript
+// Test the validate function
+it('should mark required fields with errors', () => {
+  const { getByText } = render(<LossCalculator />)
+  fireEvent.click(getByText('Talk to us about fixing this'))
+  // Check that error states are set
+})
+```
+
+**Animation State** (from `Home.jsx`):
+```javascript
+// Test animated counter reaches target
+it('should animate stat value to 78', async () => {
+  vi.useFakeTimers()
+  render(<Home />)
+
+  // Wait for intersection observer to trigger
+  vi.advanceTimersByTime(2000)
+
+  expect(screen.getByText('78')).toBeInTheDocument()
+})
+```
+
+**Polling Logic** (from `useLiveMonitor.js`):
+```javascript
+// Test polling starts and stops correctly
+it('should poll endpoint at regular intervals', async () => {
+  vi.useFakeTimers()
+  const mockFetch = vi.fn().mockResolvedValue({
+    status: 200,
+    json: async () => ({ success: true, data: { issue: 'test' } })
+  })
+  global.fetch = mockFetch
+
+  const { result } = renderHook(() => useLiveMonitor())
+
+  act(() => {
+    result.current.startPolling('session-123')
+  })
+
+  vi.advanceTimersByTime(500) // First poll
+
+  expect(mockFetch).toHaveBeenCalledWith(
+    expect.stringContaining('demo_session_id=session-123')
+  )
+})
+```
+
+## Coverage Goals
+
+**Requirements:** Not enforced
+
+**View Coverage (if implemented):**
+```bash
+npm run test:coverage
+```
+
+## Test Organization Example
+
+For a hook like `useVapiCall.js`, test file structure:
+
+```javascript
+// src/hooks/useVapiCall.test.js
+
+import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest'
+import { renderHook, act } from '@testing-library/react'
+import { useVapiCall } from './useVapiCall'
+
+describe('useVapiCall', () => {
+  let mockVapi
+
+  beforeEach(() => {
+    // Setup mocks
+  })
+
+  afterEach(() => {
+    vi.clearAllMocks()
+  })
+
+  describe('initialization', () => {
+    it('should initialize with correct default state')
+    it('should warn if no public key provided')
+  })
+
+  describe('startCall', () => {
+    it('should transition to connecting state')
+    it('should generate and pass session ID')
+    it('should handle Vapi SDK errors')
+  })
+
+  describe('stopCall', () => {
+    it('should transition to ending state')
+    it('should stop the Vapi instance')
+  })
+
+  describe('event listeners', () => {
+    it('should handle call-start event')
+    it('should handle call-end event')
+    it('should handle volume-level event')
+    it('should handle error event')
+  })
+
+  describe('cleanup', () => {
+    it('should stop Vapi on unmount')
+    it('should prevent state updates after unmount')
+  })
+})
 ```
 
 ---
 
-*Testing analysis: 2026-01-23*
+*Testing analysis: 2026-02-09*
+
+**Note:** This codebase currently has no test infrastructure. These patterns document how tests would be structured if implemented, based on the existing codebase patterns and React best practices suitable for the technology stack.

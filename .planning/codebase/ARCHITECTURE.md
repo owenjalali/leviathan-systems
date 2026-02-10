@@ -1,158 +1,150 @@
 # Architecture
 
-**Analysis Date:** 2026-01-23
+**Analysis Date:** 2026-02-09
 
 ## Pattern Overview
 
-**Overall:** Single Page Application (SPA) with Client-Side Routing
+**Overall:** Component-driven SPA with React Router, centered on page routes and reusable UI components.
 
 **Key Characteristics:**
-- React-based frontend with declarative component architecture
-- Client-side routing via React Router DOM v7
-- State management using React hooks (useState, useEffect, useRef, custom hooks)
-- Event-driven integration with external services (Vapi voice SDK, n8n webhooks, Calendly, Formspree)
-- Real-time data polling for demo interactions
+- Client-side routing using React Router DOM v7
+- Layered component architecture (Pages → Components → Hooks → CSS)
+- Integration-heavy: Vapi (voice calls), n8n webhooks (live data polling), Formspree (form submissions)
+- Minimal state management: Local component state and sessionStorage for cross-page data
+- Tailwind CSS for styling, custom CSS animations for motion effects
 
 ## Layers
 
-**Presentation Layer:**
-- Purpose: Renders UI, handles user interaction, manages visual state
-- Location: `src/pages/`, `src/components/`
-- Contains: Page components, reusable UI components, animations, form handling
-- Depends on: Hooks layer, assets, routing
-- Used by: Layout layer
+**Pages:**
+- Purpose: Route-level components representing distinct user journeys
+- Location: `./src/pages/`
+- Contains: Home, About, Audit (booking form), Begin (legacy), Book, Contact, Services (legacy versions)
+- Depends on: Components, hooks, layouts
+- Used by: App.jsx router
 
-**Layout Layer:**
-- Purpose: Provides consistent page structure (header, footer, navigation)
-- Location: `src/layouts/MainLayout.jsx`
-- Contains: Navigation, footer, logo, mobile menu, scroll behavior
-- Depends on: Routing (Outlet), ScrollToTop component, assets
-- Used by: All pages via React Router
+**Components:**
+- Purpose: Reusable UI building blocks and feature sections
+- Location: `./src/components/`
+- Contains: DemoSection, LiveMonitorTerminal, VapiCallButton, LossCalculator, SystemDiagram, AnimatedStats, ScrollToTop
+- Depends on: Hooks, Lucide icons, Tailwind
+- Used by: Pages and other components
 
-**Hooks Layer:**
-- Purpose: Encapsulates stateful logic, side effects, and external service integration
-- Location: `src/hooks/`
-- Contains: Custom hooks for animations, voice calls, live monitoring
-- Depends on: React core hooks, external SDKs (@vapi-ai/web)
-- Used by: Components, pages
+**Hooks:**
+- Purpose: Custom React hooks for side effects and state management
+- Location: `./src/hooks/`
+- Contains: useLiveMonitor (polling n8n webhook), useVapiCall (Vapi integration), useScrollAnimation (intersection observer)
+- Depends on: React core APIs
+- Used by: Components and pages
 
-**Integration Layer:**
-- Purpose: Connects to external services and APIs
-- Location: Embedded in hooks (`src/hooks/useVapiCall.js`, `src/hooks/useLiveMonitor.js`) and form handlers (`src/pages/Audit.jsx`)
-- Contains: Vapi SDK integration, n8n polling, Formspree submission, Calendly embedding
-- Depends on: Browser APIs (fetch, crypto.randomUUID), external SDKs
-- Used by: Demo section, audit form
+**Layouts:**
+- Purpose: Page wrapper with navigation and footer
+- Location: `./src/layouts/`
+- Contains: MainLayout (fixed header with logo, nav links, footer)
+- Depends on: React Router, Lucide icons
+- Used by: App.jsx as route wrapper
 
-**Routing Layer:**
-- Purpose: Maps URLs to page components, handles navigation
-- Location: `src/App.jsx`
-- Contains: Route definitions, redirects, layout nesting
-- Depends on: React Router DOM, page components, MainLayout
-- Used by: Application entry point
+**Styling:**
+- Purpose: Theme, animations, and global styles
+- Location: `./src/index.css`
+- Contains: CSS custom properties, animations (fade-in-up, bar-idle), Tailwind directives
+- Used by: All components via Tailwind classes
 
 ## Data Flow
 
-**Page Navigation Flow:**
+**Booking Journey (Most Complex):**
 
-1. User clicks navigation link or enters URL
-2. React Router matches route in `src/App.jsx`
-3. MainLayout renders with navigation/footer wrapper
-4. Page component renders via `<Outlet />` in MainLayout
-5. Page mounts, runs useEffect hooks, loads data if needed
+1. **Home.jsx** → User sees loss calculator
+2. **LossCalculator.jsx** → User inputs business metrics, results stored in sessionStorage
+3. **Home.jsx** → CTA button navigates to `/audit`
+4. **Audit.jsx** → Multi-step form retrieves calculator results from sessionStorage, collects business info
+5. **Audit.jsx** → Form submission to Formspree endpoint, creates Calendly booking
+
+**Live Demo Flow (Call + Data Monitoring):**
+
+1. **Home.jsx** → DemoSection displayed with call button
+2. **DemoSection.jsx** → User clicks VapiCallButton
+3. **VapiCallButton.jsx** → useVapiCall hook initiates Vapi call, returns sessionId
+4. **DemoSection.jsx** → sessionId passed to useLiveMonitor hook, polling starts
+5. **useLiveMonitor.js** → Polls `https://systems.leviathan-systems.com/webhook/demo/latest?demo_session_id=[sessionId]` every 1s
+6. **LiveMonitorTerminal.jsx** → Receives data and displays with typewriter animations
 
 **State Management:**
-- Local component state via useState for UI state (forms, toggles, visibility)
-- useRef for DOM references, interval IDs, preventing stale closures
-- Session storage for passing calculator results between pages
-- No global state management (Redux/Context) - state lifted to parent components when shared
 
-**Voice Call Demo Flow:**
-
-1. User clicks "Start Demo Call" in VapiCallButton component (`src/components/VapiCallButton.jsx`)
-2. useVapiCall hook generates unique sessionId, starts Vapi SDK call (`src/hooks/useVapiCall.js`)
-3. Vapi SDK fires 'call-start' event, hook updates callStatus to 'active'
-4. DemoSection receives sessionId via onCallStart callback (`src/components/DemoSection.jsx`)
-5. DemoSection starts polling via useLiveMonitor hook (`src/hooks/useLiveMonitor.js`)
-6. useLiveMonitor polls n8n endpoint every 1 second with sessionId
-7. LiveMonitorTerminal displays data as it arrives, highlights changed fields (`src/components/LiveMonitorTerminal.jsx`)
-8. User ends call, VapiCallButton fires 'call-end' event, polling continues until data complete
-
-**Audit Form Flow:**
-
-1. User fills form on Audit page (`src/pages/Audit.jsx`)
-2. Calculator results loaded from sessionStorage (if arriving from Home page)
-3. Form validation runs on submit, errors displayed inline
-4. Valid form generates sessionId, submits to Formspree endpoint
-5. On success, step advances to 2, Calendly widget embedded with sessionId in UTM params
-6. User books appointment, Calendly webhook matches sessionId to form data
+- **sessionStorage**: Cross-page data (calculator results, session IDs for demos)
+- **Local component state**: UI state (form fields, validation errors, animation flags, visibility states)
+- **Refs**: Timing-sensitive data (polling intervals, intersection observer state, animation progress)
+- **URL params/location**: Current route, redirects (old routes redirect to new ones)
 
 ## Key Abstractions
 
-**Custom Hooks:**
-- Purpose: Encapsulate reusable stateful logic and side effects
-- Examples: `src/hooks/useVapiCall.js`, `src/hooks/useLiveMonitor.js`, `src/hooks/useScrollAnimation.js`
-- Pattern: Return state and control functions, manage cleanup via useEffect
+**useLiveMonitor Hook:**
+- Purpose: Abstracts n8n webhook polling logic
+- Examples: `./src/hooks/useLiveMonitor.js`
+- Pattern: Polling interval managed internally, field change detection, handles 404 silently (data not ready yet)
 
-**Page Components:**
-- Purpose: Top-level views for each route
-- Examples: `src/pages/Home.jsx`, `src/pages/Audit.jsx`, `src/pages/About.jsx`
-- Pattern: Import reusable components, manage page-level state, handle navigation
+**useScrollAnimation Hook:**
+- Purpose: Trigger component animations when scrolled into viewport
+- Examples: `./src/hooks/useScrollAnimation.js`
+- Pattern: IntersectionObserver wrapper, returns ref and visibility boolean for conditional rendering/CSS
 
-**Reusable Components:**
-- Purpose: Self-contained UI elements used across multiple pages
-- Examples: `src/components/VapiCallButton.jsx`, `src/components/LossCalculator.jsx`, `src/components/ScrollToTop.jsx`
-- Pattern: Props-based configuration, callbacks for parent communication, internal state for UI concerns
+**useVapiCall Hook:**
+- Purpose: Manages Vapi voice call lifecycle
+- Examples: `./src/hooks/useVapiCall.js`
+- Pattern: Call state machine (idle → connecting → active → ended), volume level tracking, session ID generation
 
-**Layout Components:**
-- Purpose: Provide consistent structure across all pages
-- Examples: `src/layouts/MainLayout.jsx`
-- Pattern: Wraps children via React Router Outlet, manages navigation state
+**DemoSection Component:**
+- Purpose: Coordinates live demo call and data display
+- Examples: `./src/components/DemoSection.jsx`
+- Pattern: Container component managing communication between VapiCallButton and LiveMonitorTerminal
+
+**Form Components:**
+- Purpose: Multi-step forms with validation and submission
+- Examples: `./src/pages/Audit.jsx`
+- Pattern: Step-based navigation, field-level validation with error scrolling, Formspree submission
 
 ## Entry Points
 
-**Application Entry:**
-- Location: `src/main.jsx`
-- Triggers: Browser loads index.html, script tag executes
-- Responsibilities: Mounts React app to #root div, wraps with StrictMode, imports CSS
+**App.jsx:**
+- Location: `./src/App.jsx`
+- Triggers: Application startup (mounted in `main.jsx`)
+- Responsibilities: BrowserRouter setup, route definitions, MainLayout wrapper
 
-**Routing Entry:**
-- Location: `src/App.jsx`
-- Triggers: Mounted by main.jsx
-- Responsibilities: Defines route structure, wraps routes with BrowserRouter, applies MainLayout to all routes
+**main.jsx:**
+- Location: `./src/main.jsx`
+- Triggers: Module load via Vite
+- Responsibilities: React root creation, App component render
 
-**HTML Entry:**
-- Location: `index.html`
-- Triggers: Initial HTTP request
-- Responsibilities: Loads fonts (Inter), Calendly widget script, defines root mounting point, imports main.jsx
+**Home.jsx:**
+- Location: `./src/pages/Home.jsx`
+- Triggers: User navigates to `/`
+- Responsibilities: Landing page, hero section, problem/solution framing, loss calculator showcase, demo section, CTA to booking
+
+**Audit.jsx:**
+- Location: `./src/pages/Audit.jsx`
+- Triggers: User navigates to `/audit`
+- Responsibilities: Multi-step booking form, business assessment, Formspree submission, Calendly integration
 
 ## Error Handling
 
-**Strategy:** Localized error handling at integration boundaries, graceful degradation with user feedback
+**Strategy:** Silent failures with fallback states
 
 **Patterns:**
-- **Voice calls**: Error state in useVapiCall hook, displayed via ErrorDisplay component with retry button, auto-dismiss after 7s
-- **Live polling**: Catch fetch errors, preserve last known data, continue polling (transient failures), 404 treated as "no data yet" not error
-- **Form submission**: Validation errors displayed inline with field-specific messages, submission errors shown in dedicated error box above submit button
-- **Scroll behavior**: IntersectionObserver errors silently ignored, animation simply doesn't trigger
+
+- **Network errors**: useLiveMonitor catches fetch errors, logs to console, keeps last known data state
+- **Form validation**: Field-level error state, scrolls to first error on submit attempt
+- **Missing data**: Poll continues on 404 (session not created yet), shows "standby" terminal state
+- **Vapi failures**: useVapiCall catches call initiation errors, shows error toast/message
 
 ## Cross-Cutting Concerns
 
-**Logging:** Browser console.log/warn/error for development debugging. No structured logging framework detected.
+**Logging:** Console-based, prefixed with component/hook name (`[useLiveMonitor]`, `[DemoSection]`)
 
-**Validation:**
-- Form validation in Audit page: Required field checks, email/website format validation, conditional validation for "Other" fields
-- Validation errors stored in component state, displayed inline with field highlighting
+**Validation:** Form validation in Audit.jsx with regex patterns for URL fields, required field checks
 
-**Authentication:** None. This is a public marketing site with no login or user accounts.
+**Authentication:** None at application level (Calendly/Formspree handle auth)
 
-**Analytics/Tracking:** No analytics framework detected. Session IDs used for matching form submissions to Calendly bookings.
-
-**Performance:**
-- Intersection Observer API for scroll animations (lazy triggering)
-- Debounced/throttled scroll listeners in MainLayout
-- React.StrictMode enabled for development checks
-- Vite production build with tree-shaking and minification
+**Performance:** Lazy evaluation in calculations (LossCalculator), IntersectionObserver for scroll animations, polling interval throttling (1s minimum)
 
 ---
 
-*Architecture analysis: 2026-01-23*
+*Architecture analysis: 2026-02-09*
