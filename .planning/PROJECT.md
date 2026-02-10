@@ -23,22 +23,27 @@ The website must communicate what Leviathan Systems actually does — builds aut
 
 ### Active
 
-- [ ] All homepage copy (hero, problem, reframe, solution, demo scripts, testimonials, CTA)
-- [ ] About page copy (positioning, philosophy, three pillars)
-- [ ] Design system (tokens, typography scale, spacing, borders, color palette)
+- [ ] All homepage copy (hero, problem, reframe, demo scripts, testimonials, CTA)
+- [ ] Design system using 21st.dev saved components (heroes, CTAs, testimonials, scroll animations, buttons)
 - [ ] Shared UI primitives (SectionWrapper, GlowOrb, AnimatedText, GridOverlay)
-- [ ] Homepage sections (Hero, Problem, Reframe, Solution, Testimonials, CTA)
-- [ ] About page build
+- [ ] Homepage sections (Hero, Problem, Reframe, Testimonials, CTA)
 - [ ] MainLayout update (nav, footer)
 - [ ] Audit page visual refresh (CSS-only — colors, typography, spacing)
-- [ ] Demo Part I: Customer Experience (auto-fill form, SMS phone mockup)
-- [ ] Demo Part II: System Logic (GSAP ScrollTrigger, node graph, SVG animations)
-- [ ] Demo Part III: Owner Dashboard (three-rail layout, animated counters)
+- [ ] Three-part cohesive demo (one demo, three perspectives):
+  - Demo Part I: Customer Experience (auto-fill form, SMS phone mockup)
+  - Demo Part II: System Logic (GSAP ScrollTrigger, node graph, SVG animations)
+  - Demo Part III: Owner Dashboard (three-rail layout, animated counters)
 - [ ] Responsive design (320px → 1536px)
 - [ ] Accessibility (prefers-reduced-motion → static states)
 - [ ] Performance optimization (lazy loading, GPU transforms)
 - [ ] SEO (meta tags, OG tags)
 - [ ] Old code removal (Vapi, calculator, old components/hooks)
+
+### Deferred (Discuss Later)
+
+- "What we do" / Services section — difference between concept vs. what we provide needs resolution
+- About page — separate destination for philosophy/team/mission, coming later
+- Solution section — may merge with or become "what we do", needs discussion
 
 ### Out of Scope
 
@@ -49,7 +54,9 @@ The website must communicate what Leviathan Systems actually does — builds aut
 - CMS or content management — static content in code
 - User accounts or authentication — not applicable
 - E-commerce or payments — not applicable
-- Blog or content publishing — not in scope for v1
+- Blog or content publishing — not applicable
+- Chat widget / chatbot — contradicts "infrastructure not chatbot" positioning
+- Pricing page — consulting, not SaaS; custom scoping via audit
 
 ## Context
 
@@ -72,8 +79,10 @@ The website must communicate what Leviathan Systems actually does — builds aut
 
 **Target aesthetic:** Very dark background (near-black), teal/cyan accent, Inter font family, cards with subtle borders and restrained glassmorphism, lots of breathing room, animations that feel inevitable not decorative. Premium, calm, authoritative.
 
-**Homepage flow:**
-Hero → Problem → Reframe → Solution → Demo Part I → Demo Part II → Demo Part III → Testimonials → Final CTA
+**Homepage flow (confirmed):**
+Hero → Problem → Reframe → [TBD: Solution/"What We Do" — discuss later] → Demo (3-part cohesive: Customer → System Logic → Owner Dashboard) → Testimonials → Final CTA
+
+**Key narrative insight (confirmed):** The Problem → Reframe flow is critical. Reframe shifts blame from the business owner to the absence of infrastructure. "It's not you, it's missing infrastructure." This is the positioning play that makes Leviathan's offering feel inevitable, not optional.
 
 **Brand voice:** Calm, authoritative, restrained. Outcome-focused not feature-focused. No tech jargon. No urgency tactics.
 
@@ -102,6 +111,12 @@ Hero → Problem → Reframe → Solution → Demo Part I → Demo Part II → D
 | 5-phase divide and conquer | User-specified: (1) Text, (2) Design, (3) Structure, (4) Demos, (5) Polish | — Pending |
 | Content-first approach | Nail every word of copy before touching design or code | — Pending |
 | Discussion before each phase | Deep one-on-one via /gsd:discuss-phase before any phase work | — Pending |
+| 21st.dev MCP for design components | User has saved heroes, CTAs, testimonials, buttons, scroll animations — use as design foundation to avoid "vibe-coded" look | — Pending |
+| Three-part demo is ONE cohesive demo | Three perspectives of the same system (customer, logic, owner) — non-negotiable | — Pending |
+| Problem → Reframe confirmed | "It's not you, it's missing infrastructure" — critical positioning play | — Pending |
+| About page deferred | Coming later — philosophy/team/mission, not part of initial homepage redesign | — Pending |
+| "What we do" section TBD | Concept vs. services distinction needs more discussion | — Pending |
+| Execution model: Claude plans, Codex executes | Plans must be extremely detailed for Codex handoff | — Pending |
 
 ---
-*Last updated: 2026-02-10 after initialization*
+*Last updated: 2026-02-10 after questioning refinement*
