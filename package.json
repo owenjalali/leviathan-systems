@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "verify:tailwind": "node scripts/verify-tailwind-v4.mjs"
   },
   "dependencies": {
     "@vapi-ai/web": "^2.5.2",
