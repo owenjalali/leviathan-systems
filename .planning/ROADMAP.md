@@ -6,50 +6,22 @@
 
 ---
 
-## Phase 1: Content & Cleanup — COMPLETE
-**Goal:** Nail every word of copy and clean the codebase.
+## Completed Work (Phases 1-3)
 
-**What was built:**
-- Content constants files (`home.js`, `demo-data.js`) with all finalized copy
-- Old components/hooks/pages removed (Vapi, calculator, old demos)
-- `@vapi-ai/web` removed, `gsap` + `@gsap/react` installed
-- `index.css` cleaned of unused animations
+All content, design system, and homepage assembly work is done. Details archived in `.planning/completed/`.
 
-**Completed:** 2026-02-10
+**Phase 1 — Content & Cleanup:** Finalized all copy (`home.js`, `demo-data.js`), removed old components/hooks/pages (Vapi, calculator, old demos), swapped `@vapi-ai/web` for `gsap` + `@gsap/react`, cleaned `index.css`.
 
----
+**Phase 2 — Design System & Components:** Built design tokens (CSS variables), self-hosted Inter variable font. Created UI components: SectionWrapper, BackgroundPaths, BackgroundBeams, GlassButton, CpuArchitecture, BentoGrid, FeatureCard, Timeline, MarqueeTrack, TestimonialCard, PulseBeams. Navbar with scroll-aware behavior. Footer.
 
-## Phase 2: Design System & Components — COMPLETE
-**Goal:** Build the visual language using 21st.dev saved components as foundation.
+**Phase 3 — Homepage Assembly & Polish:** Assembled full homepage flow: Hero, Problem (bento grid), Reframe (CPU diagram), Demo intro, Pillars (doctrine-aligned), Testimonials, FAQ (6 accordion items), CTA. Iterated on: glass buttons, pillar naming/illustrations, FAQ doctrine alignment, mobile responsiveness, CPU visual visibility.
 
-**What was built:**
-- Design tokens (CSS variables)
-- Self-hosted Inter variable font
-- UI components: SectionWrapper, BackgroundPaths, BackgroundBeams, GradientButton, ShimmerButton, GlassButton, CpuArchitecture, BentoGrid, FeatureCard, Timeline, MarqueeTrack, TestimonialCard, PulseBeams
-- Navbar with scroll-aware behavior
-- Footer
-
-**Completed:** 2026-02-11
-
----
-
-## Phase 3: Homepage Assembly & Polish — COMPLETE
-**Goal:** Assemble the full homepage, iterate on visual quality based on user feedback.
-
-**What was built:**
-- Full homepage: Hero → Problem → Reframe → Demo → Pillars → Testimonials → FAQ → CTA
-- GlassButton replacing spinning GradientButton (hero + CTA)
-- Problem section redesigned as 5-card bento grid
-- Pillar SVG illustrations blended seamlessly (no borders)
-- FAQ accordion section added (6 doctrine-aligned questions)
-- CPU Architecture visual made visible on mobile
-- All sections mobile-responsive
-
-**Completed:** 2026-02-11
+**21 of 32 requirements complete.**
 
 ---
 
 ## Phase 4: Interactive Demos — NEXT
+
 **Goal:** Build the three-part cohesive demo — the centerpiece of the site.
 
 **Requirements:** DEMO-01 through DEMO-05
@@ -82,17 +54,18 @@
 ---
 
 ## Phase 5: Polish & Ship
+
 **Goal:** Production-ready. Every pixel, every device, every edge case.
 
 **Requirements:** POLISH-01 through POLISH-06
 
 **What gets built/verified:**
-- Responsive QA across full range (320px → 1536px)
+- Responsive QA across full range (320px to 1536px)
 - Accessibility audit (prefers-reduced-motion, contrast, focus states)
 - Performance optimization (lazy loading demos, Lighthouse > 90)
 - SEO meta tags and OG tags
 - Build verification
-- End-to-end Audit page test (form → Formspree → Calendly)
+- End-to-end Audit page test (form to Formspree to Calendly)
 
 **Success criteria:**
 1. Lighthouse performance > 90
@@ -108,14 +81,10 @@
 ## Phase Dependencies
 
 ```
-Phase 1 (Content & Cleanup) ........... COMPLETE
-  ↓
-Phase 2 (Design System) ............... COMPLETE
-  ↓
-Phase 3 (Homepage Assembly) ........... COMPLETE
-  ↓
-Phase 4 (Interactive Demos) ........... NEXT
-  ↓
+Phases 1-3 (Content, Design, Homepage) ..... COMPLETE
+  |
+Phase 4 (Interactive Demos) ................ NEXT
+  |
 Phase 5 (Polish & Ship)
 ```
 

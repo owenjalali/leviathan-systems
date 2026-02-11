@@ -2,92 +2,28 @@
 
 ## What This Is
 
-A complete website redesign for Leviathan Systems, repositioning from an "AI receptionist" demo site to an AI consulting agency that builds business infrastructure. The current site (Vapi call demo, loss calculator, chatbot-adjacent messaging) no longer matches the business doctrine. Everything gets rebuilt — the content, the design, the structure, the demos — except the Audit page form logic, Begin page, and Book page.
+A complete website redesign for Leviathan Systems, repositioning from an "AI receptionist" demo site to an AI consulting agency that builds custom AI systems for businesses. The old site (Vapi call demo, loss calculator, chatbot-adjacent messaging) no longer matches the business doctrine. Everything has been rebuilt — content, design, structure — except the protected Audit/Begin/Book pages.
 
 ## Core Value
 
-The website must communicate what Leviathan Systems actually does — builds automated infrastructure for service businesses — through clear copy, authoritative design, and a compelling interactive demo that shows the system in action. Content drives everything; design serves the message.
+The website communicates what Leviathan Systems actually does — builds custom AI systems tailored to each business — through clear copy, authoritative design, and a compelling interactive demo that shows the system in action. Content drives everything; design serves the message.
 
-## Requirements
+## Current Status
 
-### Validated
+**Phases 1-3: COMPLETE** — Content finalized, design system built, full homepage assembled and polished (Hero, Problem bento grid, Reframe + CPU, Pillars, Testimonials, FAQ, CTA). All sections mobile-responsive. Doctrine-aligned.
 
-- ✓ Audit page multi-step form with Formspree submission (xbdrwznd) — existing, protected
-- ✓ Audit page Calendly integration (leviathanaidev) — existing, protected
-- ✓ Begin page booking flow — existing, protected
-- ✓ Book page Calendly embed — existing, protected
-- ✓ React 18 + Vite + Tailwind CSS v4 stack — existing
-- ✓ React Router DOM v7 routing — existing
-- ✓ Vercel deployment — existing
-- ✓ Dark theme design direction — existing
+**Phase 4: Interactive Demos — NEXT** — The three-part cohesive demo is the centerpiece. Customer Experience, System Logic, and Owner Dashboard as one continuous experience.
 
-### Active
-
-- [ ] All homepage copy (hero, problem, reframe, demo scripts, testimonials, CTA)
-- [ ] Design system using 21st.dev saved components (heroes, CTAs, testimonials, scroll animations, buttons)
-- [ ] Shared UI primitives (SectionWrapper, GlowOrb, AnimatedText, GridOverlay)
-- [ ] Homepage sections (Hero, Problem, Reframe, Testimonials, CTA)
-- [ ] MainLayout update (nav, footer)
-- [ ] Audit page visual refresh (CSS-only — colors, typography, spacing)
-- [ ] Three-part cohesive demo (one demo, three perspectives):
-  - Demo Part I: Customer Experience (auto-fill form, SMS phone mockup)
-  - Demo Part II: System Logic (GSAP ScrollTrigger, node graph, SVG animations)
-  - Demo Part III: Owner Dashboard (three-rail layout, animated counters)
-- [ ] Responsive design (320px → 1536px)
-- [ ] Accessibility (prefers-reduced-motion → static states)
-- [ ] Performance optimization (lazy loading, GPU transforms)
-- [ ] SEO (meta tags, OG tags)
-- [ ] Old code removal (Vapi, calculator, old components/hooks)
-
-### Deferred (Discuss Later)
-
-- "What we do" / Services section — difference between concept vs. what we provide needs resolution
-- About page — separate destination for philosophy/team/mission, coming later
-- Solution section — may merge with or become "what we do", needs discussion
-
-### Out of Scope
-
-- Audit.jsx form logic changes — protected, working, must not break
-- Begin.jsx logic changes — protected
-- Book.jsx logic changes — protected
-- Backend/API development — frontend redesign only
-- CMS or content management — static content in code
-- User accounts or authentication — not applicable
-- E-commerce or payments — not applicable
-- Blog or content publishing — not applicable
-- Chat widget / chatbot — contradicts "infrastructure not chatbot" positioning
-- Pricing page — consulting, not SaaS; custom scoping via audit
+**Phase 5: Polish & Ship** — Final QA, accessibility, performance, SEO.
 
 ## Context
 
-**Business positioning:** Leviathan Systems is an automation company that builds revenue-critical systems for service businesses. Core belief: time leakage equals revenue leakage. The company designs and implements automated systems that handle inbound demand end-to-end — respond instantly, qualify leads, route correctly, book appointments.
-
-**Current site problems:**
-- "AI receptionist" framing is wrong — the company builds infrastructure, not chatbots
-- Vapi call demo doesn't represent the actual product
-- Loss calculator was a gimmick, not a conversion tool
-- 78% stat and chatbot messaging don't match the doctrine
-- Design is functional but not premium enough for the positioning
-
-**Design direction studied from:**
-- Linear — near-black bg, Inter font, enterprise minimalism, gradient text
-- Stripe — modular cards, concrete metrics, progressive disclosure
-- Vercel — dark theme, card-based features, minimalist clarity
-- Kavalsia — teal on black, bold headings, aggressive modern tech
-- Notion — bento card grid, negative space, clean CTAs
-- GitHub — themed sections, gradient overlays, content hierarchy
+**Business positioning:** Leviathan Systems is an AI consulting agency that builds custom AI systems for service businesses. We identify bottlenecks, design tailored solutions, and deploy systems that handle work autonomously while humans stay informed. We don't sell tools or chatbots. We deliver outcomes: speed, reliability, consistency, and captured revenue.
 
 **Target aesthetic:** Very dark background (near-black), teal/cyan accent, Inter font family, cards with subtle borders and restrained glassmorphism, lots of breathing room, animations that feel inevitable not decorative. Premium, calm, authoritative.
 
-**Homepage flow (confirmed):**
-Hero → Problem → Reframe → [TBD: Solution/"What We Do" — discuss later] → Demo (3-part cohesive: Customer → System Logic → Owner Dashboard) → Testimonials → Final CTA
-
-**Key narrative insight (confirmed):** The Problem → Reframe flow is critical. Reframe shifts blame from the business owner to the absence of infrastructure. "It's not you, it's missing infrastructure." This is the positioning play that makes Leviathan's offering feel inevitable, not optional.
-
-**Brand voice:** Calm, authoritative, restrained. Outcome-focused not feature-focused. No tech jargon. No urgency tactics.
-
-**Existing dependencies to remove:** @vapi-ai/web
-**New dependencies to add:** gsap (free tier, for ScrollTrigger and timeline orchestration)
+**Homepage flow:**
+Hero → Problem → Reframe → Demo (3-part) → Pillars → Testimonials → FAQ → CTA
 
 ## Constraints
 
@@ -102,21 +38,36 @@ Hero → Problem → Reframe → [TBD: Solution/"What We Do" — discuss later] 
 
 ## Key Decisions
 
-| Decision | Rationale | Outcome |
-|----------|-----------|---------|
-| Reposition from "AI receptionist" to "infrastructure" | Business doctrine changed — company builds systems, not chatbots | — Pending |
-| Remove Vapi call demo entirely | Doesn't represent actual product offering | — Pending |
-| Remove loss calculator | Gimmick, not a conversion tool | — Pending |
-| Use GSAP for demos | ScrollTrigger needed for scroll-scrubbed animation, timeline for orchestration | — Pending |
-| 5-phase divide and conquer | User-specified: (1) Text, (2) Design, (3) Structure, (4) Demos, (5) Polish | — Pending |
-| Content-first approach | Nail every word of copy before touching design or code | — Pending |
-| Discussion before each phase | Deep one-on-one via /gsd:discuss-phase before any phase work | — Pending |
-| 21st.dev MCP for design components | User has saved heroes, CTAs, testimonials, buttons, scroll animations — use as design foundation to avoid "vibe-coded" look | — Pending |
-| Three-part demo is ONE cohesive demo | Three perspectives of the same system (customer, logic, owner) — non-negotiable | — Pending |
-| Problem → Reframe confirmed | "It's not you, it's missing infrastructure" — critical positioning play | — Pending |
-| About page deferred | Coming later — philosophy/team/mission, not part of initial homepage redesign | — Pending |
-| "What we do" section TBD | Concept vs. services distinction needs more discussion | — Pending |
-| Execution model: Claude plans, Codex executes | Plans must be extremely detailed for Codex handoff | — Pending |
+| Decision | Rationale | Status |
+|----------|-----------|--------|
+| Reposition from "AI receptionist" to "infrastructure/systems" | Business doctrine changed — company builds systems, not chatbots | DONE |
+| Remove Vapi call demo entirely | Doesn't represent actual product offering | DONE |
+| Remove loss calculator | Gimmick, not a conversion tool | DONE |
+| Use GSAP for demos | ScrollTrigger needed for scroll-scrubbed animation | DECIDED |
+| 5-phase divide and conquer | Content → Design → Homepage → Demos → Polish | DONE (phases 1-3) |
+| Content-first approach | Nail every word of copy before touching design or code | DONE |
+| 21st.dev MCP for design components | Saved components as design foundation | DONE |
+| Three-part demo is ONE cohesive demo | Three perspectives of the same system — non-negotiable | DECIDED |
+| Problem → Reframe narrative flow | "It's not you, it's missing infrastructure" — critical positioning | DONE |
+| GlassButton over GradientButton | Frosted glass aesthetic, premium feel — user explicitly requested | DONE |
+| Pillar 1 = Bottleneck Mapping | Not "Revenue Capture" — maps bottlenecks, applies systems | DONE |
+| FAQ doctrine-aligned | AI consulting agency language, varied vocabulary, not lead-gen focused | DONE |
+| About page deferred | Coming later — not part of initial redesign | DEFERRED |
+| "What we do" section TBD | Concept vs. services distinction needs discussion | DEFERRED |
+
+## Deferred
+
+- "What we do" / Services section — concept vs. services distinction needs resolution
+- About page — philosophy, team, mission (separate destination)
+- Solution section — may merge with "what we do"
+
+## Out of Scope
+
+- Audit.jsx / Begin.jsx / Book.jsx form logic — protected, working
+- Backend/API development — frontend redesign only
+- CMS or content management — static content in code
+- Chat widget / chatbot — contradicts positioning
+- Pricing page — consulting, not SaaS
 
 ---
-*Last updated: 2026-02-10 after questioning refinement*
+*Last updated: 2026-02-11*

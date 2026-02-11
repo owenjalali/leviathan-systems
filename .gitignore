@@ -22,3 +22,16 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Screenshot debris from review sessions
+*.png
+!src/**/*.png
+!public/**/*.png
+
+# Stray Windows null file
+nul
+
+# AI tool infrastructure
+.agent/
+.gemini/
+.gsd/

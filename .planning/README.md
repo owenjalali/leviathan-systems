@@ -6,18 +6,18 @@
 |------|-----------|
 | [PROJECT.md](PROJECT.md) | Project overview, constraints, key decisions |
 | [ROADMAP.md](ROADMAP.md) | Phase roadmap with success criteria |
-| [REQUIREMENTS.md](REQUIREMENTS.md) | All requirements (COPY, DESGN, HOME, DEMO, etc.) |
+| [REQUIREMENTS.md](REQUIREMENTS.md) | All requirements with traceability |
 | [REDESIGN-PROMPT.md](REDESIGN-PROMPT.md) | Original redesign brief |
 
 ## Phases
 
-| Phase | Folder | Status |
-|-------|--------|--------|
-| **1. Content & Cleanup** | [phases/phase-1-content/](phases/phase-1-content/) | COMPLETE |
-| **2. Design System & Components** | [phases/phase-2-design/](phases/phase-2-design/) | COMPLETE |
-| **3. Homepage Assembly & Polish** | [phases/phase-3-homepage/](phases/phase-3-homepage/) | COMPLETE |
+| Phase | Location | Status |
+|-------|----------|--------|
+| **1. Content & Cleanup** | [completed/phase-1-content/](completed/phase-1-content/) | COMPLETE |
+| **2. Design System & Components** | [completed/phase-2-design/](completed/phase-2-design/) | COMPLETE |
+| **3. Homepage Assembly & Polish** | [completed/phase-3-homepage/](completed/phase-3-homepage/) | COMPLETE |
 | **4. Interactive Demos** | [phases/phase-4-demos/](phases/phase-4-demos/) | NEXT |
-| **5. Polish & Ship** | [phases/phase-5-polish/](phases/phase-5-polish/) | — |
+| **5. Polish & Ship** | — | Pending |
 
 ## Research
 
@@ -35,10 +35,10 @@
 
 ### How This Works
 
-Each phase gets its own folder under `phases/`. When you start a phase:
-1. Discuss → decisions go in `phases/phase-N/DECISIONS.md`
-2. Plan → execution plan goes in `phases/phase-N/PLAN.md`
-3. Execute → work happens, code ships
-4. Verify → check against success criteria
+Each phase gets its own folder. When you start a phase:
+1. Discuss — decisions go in `DECISIONS.md`
+2. Plan — execution plan goes in `PLAN.md`
+3. Execute — work happens, code ships
+4. Verify — check against success criteria
 
-Phase 1's `CONTENT-SPEC.md` is the copy backbone. Phase 2's components are the design foundation. Phase 3 assembled the full homepage. Phase 4 (demos) is next.
+Completed phases are archived under `completed/`. Phase 4 (demos) is next.
