@@ -2,15 +2,33 @@
  * NodeGraph — Top-down flow diagram component
  * Renders nodes vertically and connection paths for system logic visualization.
  * Used in Demo Part II to show automation decision tree.
+ * Responsive: tighter layout on mobile so nodes stay readable.
  */
 
+import { useState, useEffect, useRef } from 'react'
+
 export default function NodeGraph({ nodes, connections }) {
-    const NODE_WIDTH = 200
-    const NODE_HEIGHT = 68
-    const LEVEL_SPACING = 130
-    const BRANCH_OFFSET = 220
-    const CENTER_X = 500
-    const PADDING_TOP = 50
+    const containerRef = useRef(null)
+    const [isMobile, setIsMobile] = useState(false)
+
+    useEffect(() => {
+        const check = () => {
+            setIsMobile(window.innerWidth < 640)
+        }
+        check()
+        window.addEventListener('resize', check)
+        return () => window.removeEventListener('resize', check)
+    }, [])
+
+    // Responsive layout constants
+    const NODE_WIDTH = isMobile ? 120 : 200
+    const NODE_HEIGHT = isMobile ? 48 : 68
+    const LEVEL_SPACING = isMobile ? 90 : 130
+    const BRANCH_OFFSET = isMobile ? 100 : 220
+    const CENTER_X = isMobile ? 200 : 500
+    const PADDING_TOP = isMobile ? 30 : 50
+    const FONT_SIZE = isMobile ? 13 : 17
+    const CORNER_RADIUS = isMobile ? 10 : 14
 
     // Compute node positions — top-down layout
     const nodePositions = nodes.map((node) => {
@@ -51,9 +69,10 @@ export default function NodeGraph({ nodes, connections }) {
 
     return (
         <svg
+            ref={containerRef}
             viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
             className="w-full max-w-5xl mx-auto"
-            style={{ minHeight: '600px' }}
+            style={{ minHeight: isMobile ? '500px' : '600px' }}
         >
             <title>System Logic Flow</title>
 
@@ -64,7 +83,7 @@ export default function NodeGraph({ nodes, connections }) {
                     className="connection-path"
                     d={conn.d}
                     stroke="var(--accent, #d4af37)"
-                    strokeWidth={2}
+                    strokeWidth={isMobile ? 1.5 : 2}
                     fill="none"
                 />
             ))}
@@ -77,7 +96,7 @@ export default function NodeGraph({ nodes, connections }) {
                         y={node.y}
                         width={NODE_WIDTH}
                         height={NODE_HEIGHT}
-                        rx={14}
+                        rx={CORNER_RADIUS}
                         fill="var(--bg-secondary, #1a1a1a)"
                         stroke="var(--border, #333)"
                         strokeWidth={1.5}
@@ -88,7 +107,7 @@ export default function NodeGraph({ nodes, connections }) {
                         textAnchor="middle"
                         dominantBaseline="middle"
                         fill="var(--text-primary, #ffffff)"
-                        fontSize="17"
+                        fontSize={FONT_SIZE}
                         fontWeight="500"
                     >
                         {node.label}
