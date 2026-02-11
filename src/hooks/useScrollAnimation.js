@@ -1,63 +1,30 @@
-import { useEffect, useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 
+/**
+ * IntersectionObserver hook — returns [ref, isVisible].
+ * Used by Audit.jsx for hero entrance animation.
+ */
 export function useScrollAnimation(threshold = 0.1) {
   const ref = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
+  const [visible, setVisible] = useState(false)
 
   useEffect(() => {
+    const el = ref.current
+    if (!el) return
+
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.unobserve(entry.target)
+          setVisible(true)
+          observer.unobserve(el)
         }
       },
       { threshold }
     )
 
-    const currentRef = ref.current
-    if (currentRef) {
-      observer.observe(currentRef)
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
-    }
+    observer.observe(el)
+    return () => observer.disconnect()
   }, [threshold])
 
-  return [ref, isVisible]
-}
-
-export function useStaggeredAnimation(itemCount, baseDelay = 100) {
-  const ref = useRef(null)
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setIsVisible(true)
-          observer.unobserve(entry.target)
-        }
-      },
-      { threshold: 0.1 }
-    )
-
-    const currentRef = ref.current
-    if (currentRef) {
-      observer.observe(currentRef)
-    }
-
-    return () => {
-      if (currentRef) {
-        observer.unobserve(currentRef)
-      }
-    }
-  }, [])
-
-  const getDelay = (index) => `${index * baseDelay}ms`
-
-  return [ref, isVisible, getDelay]
+  return [ref, visible]
 }

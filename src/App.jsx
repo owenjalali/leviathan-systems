@@ -14,7 +14,6 @@ function App() {
           <Route path="audit" element={<Audit />} />
           {/* Redirect old routes */}
           <Route path="begin" element={<Navigate to="/audit" replace />} />
-          <Route path="services" element={<Navigate to="/" replace />} />
         </Route>
       </Routes>
     </BrowserRouter>

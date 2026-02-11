@@ -1,13 +1,49 @@
-@config "../tailwind.config.js";
-@source not "../skills/**";
 @import "tailwindcss";
+@source not "../skills/**";
 
 /* ================================
-   LEVIATHAN SYSTEMS — CLEAN DESIGN SYSTEM
-   Calculator-first. Conversion-focused.
+   LEVIATHAN SYSTEMS — DESIGN SYSTEM
+   Phase 2: Premium, intentional, no dead code.
+   ================================ */
+
+/* ================================
+   SELF-HOSTED INTER VARIABLE
+   ================================ */
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./assets/fonts/InterVariable.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
+/* ================================
+   DESIGN TOKENS
    ================================ */
 
 :root {
+  /* Backgrounds */
+  --bg-primary: #0a0a0f;
+  --bg-secondary: #111118;
+  --bg-elevated: #1a1a24;
+
+  /* Accent */
+  --accent: #14b8a6;
+  --accent-glow: rgba(20, 184, 166, 0.15);
+  --accent-hover: #0d9488;
+
+  /* Text */
+  --text-primary: #f0f0f0;
+  --text-secondary: #a0a0b0;
+  --text-muted: #666680;
+
+  /* Surface */
+  --border: rgba(255, 255, 255, 0.06);
+  --border-hover: rgba(255, 255, 255, 0.12);
+  --glass: rgba(255, 255, 255, 0.03);
+
+  /* Legacy — used by Audit page */
   --color-bg: #030306;
   --color-bg-elevated: #0a0f1a;
   --color-border: #1a2332;
@@ -23,35 +59,14 @@
 }
 
 /* ================================
-   BASE STYLES
+   BASE
    ================================ */
 
 html {
   scroll-behavior: smooth;
-  background: #030306;
-}
-
-body {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background: var(--color-bg);
-  color: var(--color-text-primary);
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-weight: 700;
-  letter-spacing: -0.025em;
-}
-
-/* ================================
-   SCROLLBAR — Minimal
-   ================================ */
-
-html {
+  background: var(--bg-primary);
   scrollbar-width: thin;
-  scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
 }
 
 html::-webkit-scrollbar {
@@ -63,16 +78,65 @@ html::-webkit-scrollbar-track {
 }
 
 html::-webkit-scrollbar-thumb {
-  background-color: rgba(255, 255, 255, 0.2);
+  background-color: rgba(255, 255, 255, 0.15);
   border-radius: 3px;
 }
 
 html::-webkit-scrollbar-thumb:hover {
-  background-color: rgba(255, 255, 255, 0.3);
+  background-color: rgba(255, 255, 255, 0.25);
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 1.0625rem; /* 17px — Linear-inspired generous body */
+  line-height: 1.6;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text-primary);
 }
 
 /* ================================
-   COUNTRY DROPDOWN (White UI)
+   SELECTION & FOCUS
+   ================================ */
+
+::selection {
+  background: rgba(20, 184, 166, 0.3);
+  color: #ffffff;
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* ================================
+   REDUCED MOTION
+   ================================ */
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ================================
+   AUDIT PAGE DEPENDENCIES
+   (country dropdown, form selects, Calendly)
    ================================ */
 
 .country-dropdown,
@@ -106,10 +170,6 @@ html::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.6);
 }
 
-/* ================================
-   FORM SELECT STYLING
-   ================================ */
-
 select {
   appearance: none;
   background-image: none;
@@ -121,376 +181,174 @@ select option {
   padding: 12px;
 }
 
-/* ================================
-   CALENDLY EMBED
-   ================================ */
-
 .calendly-inline-widget {
   border-radius: 12px;
   overflow: hidden;
 }
 
 /* ================================
-   REDUCED MOTION
+   MARQUEE (testimonials)
    ================================ */
 
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
-  html {
-    scroll-behavior: auto;
-  }
-}
-
-/* ================================
-   FOCUS STATES — Accessibility
-   ================================ */
-
-:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-button:focus-visible,
-a:focus-visible,
-input:focus-visible,
-select:focus-visible {
-  outline: 2px solid var(--color-accent);
-  outline-offset: 2px;
-}
-
-/* ================================
-   SELECTION
-   ================================ */
-
-::selection {
-  background: rgba(0, 212, 207, 0.3);
-  color: #ffffff;
-}
-
-/* ================================
-   ANIMATIONS — Premium motion
-   ================================ */
-
-@keyframes fade-in {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-}
-
-@keyframes fade-in-up {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes scroll-hint {
-  0%, 100% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  50% {
-    opacity: 0.5;
-    transform: translateY(4px);
-  }
-}
-
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(2deg);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    opacity: 0.4;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.6;
-    transform: scale(1.05);
-  }
-}
-
-.animate-fade-in {
-  animation: fade-in 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.animate-fade-in-up {
-  opacity: 0;
-  animation: fade-in-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-
-.animate-scroll-hint {
-  animation: scroll-hint 2s ease-in-out infinite;
-}
-
-.animate-float {
-  animation: float 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
-}
-
-/* Animation delays */
-.animation-delay-100 {
-  animation-delay: 0.1s;
-}
-
-.animation-delay-200 {
-  animation-delay: 0.2s;
-}
-
-.animation-delay-300 {
-  animation-delay: 0.3s;
-}
-
-.animation-delay-400 {
-  animation-delay: 0.4s;
-}
-
-.animation-delay-500 {
-  animation-delay: 0.5s;
-}
-
-.animation-delay-600 {
-  animation-delay: 0.6s;
-}
-
-/* ================================
-   FLOW ANIMATIONS — System visualization
-   ================================ */
-
-@keyframes flow-pulse {
-  0%, 100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  50% {
-    opacity: 0.8;
-    transform: scale(1.05);
-  }
-}
-
-@keyframes flow-glow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(0, 212, 207, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 40px rgba(0, 212, 207, 0.6);
-  }
-}
-
-.flow-active {
-  animation: flow-pulse 2s ease-in-out infinite;
-}
-
-.flow-glow {
-  animation: flow-glow 2s ease-in-out infinite;
-}
-
-@keyframes ripple {
+@keyframes marquee {
   0% {
-    transform: scale(1);
-    opacity: 1;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-@keyframes pulse-ring {
-  0%, 100% {
-    transform: scale(1.2);
-    opacity: 0.3;
-  }
-  50% {
-    transform: scale(1.4);
-    opacity: 0.1;
-  }
-}
-
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-@keyframes pulse-ring {
-  0% {
-    transform: scale(1.1);
-    opacity: 0.2;
-  }
-  50% {
-    transform: scale(1.3);
-    opacity: 0.1;
-  }
-  100% {
-    transform: scale(1.5);
-    opacity: 0;
-  }
-}
-
-/* ================================
-   DASHBOARD MOCKUP ANIMATIONS
-   ================================ */
-
-@keyframes warning-pulse {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0.6;
-  }
-}
-
-@keyframes status-pulse {
-  0%, 100% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(52, 211, 153, 0.4);
-  }
-  50% {
-    opacity: 0.8;
-    box-shadow: 0 0 0 4px rgba(52, 211, 153, 0);
-  }
-}
-
-@keyframes progress-fill {
-  from {
-    width: 0%;
-  }
-}
-
-.animate-warning-pulse {
-  animation: warning-pulse 2s ease-in-out infinite;
-}
-
-.animate-status-pulse {
-  animation: status-pulse 2s ease-in-out infinite;
-}
-
-.animate-progress-fill {
-  animation: progress-fill 1.5s ease-out forwards;
-}
-
-/* ================================
-   LIVE DEMO ANIMATIONS
-   ================================ */
-
-@keyframes scan-line {
-  0% {
-    top: 0;
-    opacity: 0;
-  }
-  5% {
-    opacity: 0.6;
-  }
-  95% {
-    opacity: 0.6;
-  }
-  100% {
-    top: 100%;
-    opacity: 0;
-  }
-}
-
-@keyframes field-glow {
-  0% {
-    box-shadow: 0 0 0 rgba(0, 212, 207, 0);
-    background-color: transparent;
-  }
-  30% {
-    box-shadow: 0 0 20px rgba(0, 212, 207, 0.4);
-    background-color: rgba(0, 212, 207, 0.05);
-  }
-  100% {
-    box-shadow: 0 0 0 rgba(0, 212, 207, 0);
-    background-color: transparent;
-  }
-}
-
-@keyframes cursor-blink {
-  0%, 100% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-}
-
-@keyframes status-chip-pulse {
-  0%, 100% {
-    box-shadow: 0 0 0 0 rgba(0, 212, 207, 0.4);
-  }
-  50% {
-    box-shadow: 0 0 0 8px rgba(0, 212, 207, 0);
-  }
-}
-
-@keyframes event-fade-in {
-  0% {
-    opacity: 0;
-    transform: translateX(-10px);
-  }
-  100% {
-    opacity: 1;
     transform: translateX(0);
   }
+  100% {
+    transform: translateX(-50%);
+  }
 }
 
-.animate-scan-line {
-  animation: scan-line 3s linear infinite;
+.animate-marquee {
+  animation: marquee 40s linear infinite;
 }
 
-.animate-field-glow {
-  animation: field-glow 0.6s ease-out forwards;
-}
-
-.animate-cursor-blink {
-  animation: cursor-blink 0.8s step-end infinite;
-}
-
-.animate-status-chip-pulse {
-  animation: status-chip-pulse 2s ease-in-out infinite;
-}
-
-.animate-event-fade-in {
-  animation: event-fade-in 0.3s ease-out forwards;
+.animate-marquee:hover {
+  animation-play-state: paused;
 }
 
 /* ================================
-   VAPI CALL BUTTON ANIMATIONS
+   GRADIENT BUTTON
    ================================ */
 
-@keyframes bar-idle {
-  0%, 100% {
-    transform: scaleY(0.15);
-  }
-  50% {
-    transform: scaleY(0.25);
+@property --gradient-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --gradient-angle-offset {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@property --gradient-percent {
+  syntax: "<percentage>";
+  initial-value: 5%;
+  inherits: false;
+}
+
+@property --gradient-shine {
+  syntax: "<color>";
+  initial-value: white;
+  inherits: false;
+}
+
+.gradient-button {
+  --gradient-angle: 0deg;
+  --gradient-angle-offset: 0deg;
+  --gradient-percent: 5%;
+  --gradient-shine: rgba(20, 184, 166, 0.5);
+  position: relative;
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+  border: none;
+  cursor: pointer;
+  isolation: isolate;
+}
+
+.gradient-button::before,
+.gradient-button::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  z-index: -1;
+  background: conic-gradient(
+    from calc(var(--gradient-angle) - var(--gradient-angle-offset)),
+    transparent,
+    var(--accent) var(--gradient-percent),
+    var(--gradient-shine) calc(var(--gradient-percent) * 2),
+    var(--accent) calc(var(--gradient-percent) * 3),
+    transparent calc(var(--gradient-percent) * 4)
+  );
+  transition: --gradient-angle-offset 0.4s ease,
+              --gradient-percent 0.3s ease,
+              --gradient-shine 0.3s ease;
+  animation: gradient-rotate 4s linear infinite;
+}
+
+.gradient-button::after {
+  filter: blur(12px);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.gradient-button:hover::before {
+  --gradient-angle-offset: 90deg;
+  --gradient-percent: 10%;
+  --gradient-shine: rgba(20, 184, 166, 0.8);
+}
+
+.gradient-button:hover::after {
+  opacity: 0.5;
+}
+
+.gradient-button-text {
+  position: relative;
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.25rem;
+}
+
+@keyframes gradient-rotate {
+  to {
+    --gradient-angle: 360deg;
   }
 }
 
-.animate-bar-idle {
-  animation: bar-idle 1.2s ease-in-out infinite;
+/* ================================
+   CPU ARCHITECTURE SVG
+   ================================ */
+
+.circuit-path {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.25;
+  fill: none;
+}
+
+.terminal-node {
+  fill: var(--bg-elevated);
+  stroke: var(--accent);
+  stroke-width: 1.5;
+  opacity: 0.5;
+}
+
+.energy-dot {
+  opacity: 0.9;
+  filter: drop-shadow(0 0 6px var(--accent));
+}
+
+/* ================================
+   SHIMMER BUTTON ANIMATIONS
+   ================================ */
+
+@theme {
+  --animate-shimmer-slide: shimmer-slide 8s ease-in-out infinite;
+  --animate-spin-around: spin-around 4s linear infinite;
+}
+
+@keyframes shimmer-slide {
+  to {
+    transform: translate(calc(100cqw - 100%), 0);
+  }
+}
+
+@keyframes spin-around {
+  0% {
+    transform: translateZ(0) rotate(0);
+  }
+  15%, 35% {
+    transform: translateZ(0) rotate(90deg);
+  }
+  65%, 85% {
+    transform: translateZ(0) rotate(270deg);
+  }
+  100% {
+    transform: translateZ(0) rotate(360deg);
+  }
 }
