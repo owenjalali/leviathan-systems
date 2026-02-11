@@ -33,9 +33,9 @@ export default function ReframeSection() {
             </div>
           </div>
 
-          {/* CPU Architecture diagram — prominent sizing */}
-          <div className="hidden md:flex items-center justify-center">
-            <CpuArchitecture className="w-full max-w-[500px] aspect-square" />
+          {/* CPU Architecture diagram — visible on all breakpoints */}
+          <div className="flex items-center justify-center mt-8 lg:mt-0">
+            <CpuArchitecture className="w-full max-w-[320px] md:max-w-[500px] aspect-square" />
           </div>
         </div>
       </SectionWrapper>
