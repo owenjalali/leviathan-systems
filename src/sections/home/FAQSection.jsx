@@ -10,15 +10,15 @@ const questions = [
   },
   {
     id: 'faq-2',
-    title: 'How is this different from a marketing agency?',
+    title: 'What kind of infrastructure can you build?',
     content:
-      'Agencies generate leads. We make sure those leads actually convert. If your team takes two hours to respond to an inquiry, no amount of ad spend fixes that. We build the infrastructure that responds instantly, qualifies automatically, and routes to the right person — so the leads you\'re already paying for don\'t slip through the cracks.',
+      'It depends on your business. That\'s the point — every system is tailored. It could be quoting infrastructure that gets estimates out faster. It could be a CRM-lite system that gives you visibility into your pipeline. It could be a website built as an intake system, not a brochure. Follow-up automation, confirmation sequences, scheduling flows, reputation capture — the infrastructure looks different for every business, but the goal is always the same: reduce friction, reduce leakage, increase reliability.',
   },
   {
     id: 'faq-3',
     title: 'What does the free audit include?',
     content:
-      'We audit your current operation — how leads come in, how they\'re handled, where follow-up breaks down, and where revenue is leaking. You get a bottleneck map and a system recommendation: what to build first, why, and what outcome it targets. No pitch deck, no fluff — just a clear breakdown of what\'s costing you money and exactly how infrastructure fixes it.',
+      'We audit your current operation — your processes, your bottlenecks, and where execution breaks down. You get a bottleneck map and a system recommendation: what to build first, why, and what outcome it targets. No pitch deck, no fluff — just a clear breakdown of where your business is losing time or money and exactly how infrastructure fixes it.',
   },
   {
     id: 'faq-4',
@@ -30,13 +30,13 @@ const questions = [
     id: 'faq-5',
     title: 'Do I need to replace my existing tools?',
     content:
-      'No. We integrate with what you already use — your CRM, calendar, phone system, email, quoting tools. Our infrastructure sits on top of your existing stack and connects everything. Nothing gets ripped out.',
+      'No. We integrate with what you already use — your CRM, calendar, phone system, email, quoting tools. Our infrastructure sits on top of your existing stack and connects everything together. Nothing gets ripped out.',
   },
   {
     id: 'faq-6',
     title: 'What happens after the system is built?',
     content:
-      'Every system includes human override and real-time monitoring. You get alerts when something needs attention and can step in at any point. We host and manage the infrastructure, and ongoing support is available when the system needs maintenance or iteration. The infrastructure runs independently — but you always have full control.',
+      'We host and manage the infrastructure. Every system includes human override and real-time monitoring — you get alerts when something needs attention and can step in at any point. Ongoing support is available when the system needs maintenance or iteration. The infrastructure runs independently, but you always have full control.',
   },
 ]
 
