@@ -4,7 +4,8 @@ import gsap from 'gsap'
 import ScrollTrigger from 'gsap/ScrollTrigger'
 import { Check, Clock } from 'lucide-react'
 import WindowFrame from '../../components/ui/WindowFrame'
-import { demoParts, approvalAction } from '../../content/home'
+import { demoParts } from '../../content/home'
+import { approvalAction } from '../../content/demo-data'
 
 gsap.registerPlugin(ScrollTrigger)
 

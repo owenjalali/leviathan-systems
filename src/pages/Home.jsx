@@ -1,9 +1,7 @@
 import HeroSection from '../sections/home/HeroSection'
 import ProblemSection from '../sections/home/ProblemSection'
 import ReframeSection from '../sections/home/ReframeSection'
-import DemoIntroSection from '../sections/home/DemoIntroSection'
-import DemoPartOne from '../sections/home/DemoPartOne'
-import DemoPartTwo from '../sections/home/DemoPartTwo'
+import DemoSection from '../sections/home/DemoSection'
 import PillarsSection from '../sections/home/PillarsSection'
 import TestimonialsSection from '../sections/home/TestimonialsSection'
 import FAQSection from '../sections/home/FAQSection'
@@ -19,9 +17,7 @@ export default function Home() {
       <HeroSection />
       <ProblemSection />
       <ReframeSection />
-      <DemoIntroSection />
-      <DemoPartOne />
-      <DemoPartTwo />
+      <DemoSection />
       <PillarsSection />
       <TestimonialsSection />
       <FAQSection />
