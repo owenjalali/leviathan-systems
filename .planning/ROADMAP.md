@@ -7,7 +7,7 @@ updated: 2026-02-11
 # Roadmap
 
 > **Current Phase:** 4 - Interactive Demos
-> **Status:** planning
+> **Status:** planned
 
 ## Must-Haves (from SPEC)
 
@@ -57,24 +57,29 @@ Assembled full homepage flow: Hero, Problem (bento grid), Reframe (CPU diagram),
 **Depends on:** Phase 3
 
 **What gets built:**
-- Demo Part I: Customer Experience (auto-fill form, SMS phone mockup)
-- Demo Part II: System Logic (GSAP ScrollTrigger, node graph, SVG stroke animations)
-- Demo Part III: Owner Dashboard (three-rail layout, counters, pipeline cards)
-- Mobile fallback (auto-play on touch devices)
-- Seamless transitions between all three parts
+- Demo Part I: Customer Experience (auto-fill form, iPhone SMS phone mockup)
+- Demo Part II: System Logic (node graph, SVG stroke-dashoffset animations)
+- Demo Part III: Owner Dashboard (window frame mockup, activity feed, approve/override)
+- All three parts auto-play on viewport entry (no scroll-scrub)
+- Distinct sections with clear separation
+- Mobile responsive, prefers-reduced-motion static fallback
 
 **Success criteria:**
 1. Demo Part I plays on viewport entry with auto-filling form and SMS conversation
-2. Demo Part II scroll-scrubs forward and backward on desktop
-3. Demo Part II auto-plays on mobile (touch detection)
-4. Demo Part III shows animated counters and pipeline data
-5. All three parts feel like one continuous demo
-6. No GSAP memory leaks (navigate away and back — clean restart)
-7. prefers-reduced-motion shows static state
-8. Build succeeds
+2. Demo Part II auto-plays on viewport entry (not scroll-scrub — per CONTEXT.md)
+3. Demo Part III shows animated activity feed and approval action
+4. All three parts are distinct sections with clear separation
+5. No GSAP memory leaks (navigate away and back — clean restart)
+6. prefers-reduced-motion shows static state
+7. Build succeeds
 
-**Plans:**
-- [ ] Plan 4.1: TBD
+**Plans:** 4 plans
+
+Plans:
+- [ ] 04-01-PLAN.md — Demo Part I: Customer Experience (form + phone mockup)
+- [ ] 04-02-PLAN.md — Demo Part II: System Logic (node graph + SVG animations)
+- [ ] 04-03-PLAN.md — Demo Part III: Owner Dashboard (window frame + activity feed)
+- [ ] 04-04-PLAN.md — Integration: wire all three parts into DemoSection + visual verification
 
 ---
 
@@ -110,7 +115,7 @@ Assembled full homepage flow: Hero, Problem (bento grid), Reframe (CPU diagram),
 | 1 | ✅ | Done |
 | 2 | ✅ | Done |
 | 3 | ✅ | Done |
-| 4 | 🔄 | Planning |
+| 4 | 🔄 | Planned |
 | 5 | ⬜ | — |
 
 **Coverage:** 32 total requirements / 21 complete / 11 remaining
