@@ -87,11 +87,11 @@ export const nav = {
 
 export const pillars = [
     {
-        id: 'revenue-capture',
-        title: 'Revenue Capture',
+        id: 'bottleneck-removal',
+        title: 'Bottleneck Mapping & Resolution',
         description:
-            'Every inbound opportunity acknowledged, qualified, and routed — automatically. No lead falls through the cracks, no matter the time of day.',
-        tags: ['Instant Response', 'Lead Routing', 'Auto-Qualify'],
+            'We identify where your operation breaks down — slow responses, missed steps, manual handoffs — then build a system that handles it automatically. The bottleneck gets replaced with a process that runs on its own.',
+        tags: ['Audit', 'Custom Systems', 'Automation'],
         status: 'Active',
     },
     {

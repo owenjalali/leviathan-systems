@@ -3,13 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { pillars } from '../../content/home'
 
 // Custom SVG icons — purpose-built for each pillar
-function RevenueCaptureIcon({ size = 18, className = '' }) {
+function BottleneckIcon({ size = 18, className = '' }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" fill="none" className={className}>
-      <path d="M12 2L12 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <path d="M4 10L12 14L20 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <path d="M4 10L4 16L12 20L20 16L20 10" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      <circle cx="12" cy="14" r="2" fill="currentColor" opacity="0.6" />
+      <circle cx="12" cy="5" r="2" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M8 5H4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M20 5H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M12 7V11" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 14L12 11L16 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M12 14V18" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M8 21H16" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+      <circle cx="12" cy="18" r="1" fill="currentColor" opacity="0.6" />
     </svg>
   )
 }
@@ -41,13 +45,13 @@ function HumanSafeIcon({ size = 18, className = '' }) {
 }
 
 const pillarIcons = {
-  'revenue-capture': RevenueCaptureIcon,
+  'bottleneck-removal': BottleneckIcon,
   'operational-control': OperationalControlIcon,
   'human-safe-autonomy': HumanSafeIcon,
 }
 
 // Premium SVG illustrations — seamless background blending (no borders)
-function RevenueIllustration() {
+function BottleneckIllustration() {
   return (
     <svg viewBox="0 0 400 300" fill="none" className="w-full h-full">
       {/* Subtle grid dots */}
@@ -64,55 +68,74 @@ function RevenueIllustration() {
         ))
       )}
 
-      {/* Incoming signal paths — three streams converging */}
-      <path d="M30 80 C60 80 80 100 120 120 C160 140 180 160 200 170" stroke="var(--accent)" strokeWidth="1.5" opacity="0.3" strokeLinecap="round" />
-      <path d="M30 150 C80 150 130 155 160 160 C190 165 195 168 200 170" stroke="var(--accent)" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
-      <path d="M30 220 C70 215 100 200 140 190 C170 182 190 175 200 170" stroke="var(--accent)" strokeWidth="1.5" opacity="0.3" strokeLinecap="round" />
+      {/* LEFT SIDE — Chaotic, scattered processes (the bottleneck) */}
+      {/* Scattered dots representing disorganized work */}
+      {[
+        [45, 60], [70, 45], [35, 100], [80, 85], [55, 130],
+        [90, 115], [40, 160], [75, 175], [60, 200], [85, 220],
+      ].map(([x, y], i) => (
+        <g key={`chaos-${i}`}>
+          <circle cx={x} cy={y} r="4" fill="var(--accent)" opacity={0.15 + i * 0.02} />
+          <circle cx={x} cy={y} r="2" fill="#ef4444" opacity={0.3 + i * 0.03}>
+            <animate attributeName="opacity" values={`${0.3 + i * 0.03};${0.1};${0.3 + i * 0.03}`} dur={`${2 + i * 0.3}s`} repeatCount="indefinite" />
+          </circle>
+        </g>
+      ))}
 
-      {/* Signal pulses on paths */}
-      <circle cx="70" cy="85" r="3" fill="var(--accent)" opacity="0.7">
-        <animate attributeName="opacity" values="0.7;0.2;0.7" dur="2s" repeatCount="indefinite" />
+      {/* "Bottleneck" label area */}
+      <rect x="20" y="244" width="80" height="16" rx="4" fill="var(--accent)" opacity="0.06" />
+      <rect x="26" y="249" width="36" height="6" rx="2" fill="#ef4444" opacity="0.25" />
+
+      {/* MIDDLE — The funnel / mapping zone */}
+      {/* Converging paths into the system */}
+      <path d="M100 60 C130 80 150 110 170 140" stroke="var(--accent)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
+      <path d="M100 130 C130 135 150 140 170 145" stroke="var(--accent)" strokeWidth="1" opacity="0.3" strokeLinecap="round" />
+      <path d="M100 210 C130 195 150 170 170 155" stroke="var(--accent)" strokeWidth="1" opacity="0.2" strokeLinecap="round" />
+
+      {/* Central system node — the solution */}
+      <rect x="168" y="120" width="64" height="64" rx="10" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="1" opacity="0.5" />
+      <rect x="176" y="128" width="48" height="48" rx="6" fill="var(--accent)" opacity="0.05" />
+
+      {/* Gear/process indicator inside */}
+      <circle cx="200" cy="152" r="12" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.4" />
+      <circle cx="200" cy="152" r="6" fill="none" stroke="var(--accent)" strokeWidth="1" opacity="0.3" />
+      <circle cx="200" cy="152" r="2.5" fill="var(--accent)" opacity="0.7">
+        <animate attributeName="opacity" values="0.7;0.4;0.7" dur="2s" repeatCount="indefinite" />
       </circle>
-      <circle cx="110" cy="152" r="3" fill="var(--accent)" opacity="0.8">
-        <animate attributeName="opacity" values="0.8;0.3;0.8" dur="1.5s" repeatCount="indefinite" />
+
+      {/* RIGHT SIDE — Clean, organized output (resolved flow) */}
+      {/* Parallel organized paths */}
+      <path d="M232 135 C260 130 290 110 340 100" stroke="var(--accent)" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
+      <path d="M232 152 C270 152 310 152 340 152" stroke="var(--accent)" strokeWidth="1.5" opacity="0.5" strokeLinecap="round" />
+      <path d="M232 169 C260 174 290 194 340 204" stroke="var(--accent)" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
+
+      {/* Resolved output nodes — clean status cards */}
+      <rect x="340" y="88" width="40" height="24" rx="5" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="0.5" opacity="0.5" />
+      <circle cx="350" cy="100" r="3" fill="var(--accent)" opacity="0.6" />
+      <rect x="357" y="97" width="16" height="3" rx="1" fill="var(--accent)" opacity="0.3" />
+
+      <rect x="340" y="140" width="40" height="24" rx="5" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="0.5" opacity="0.6" />
+      <circle cx="350" cy="152" r="3" fill="var(--accent)" opacity="0.7" />
+      <rect x="357" y="149" width="16" height="3" rx="1" fill="var(--accent)" opacity="0.3" />
+
+      <rect x="340" y="192" width="40" height="24" rx="5" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="0.5" opacity="0.5" />
+      <circle cx="350" cy="204" r="3" fill="var(--accent)" opacity="0.6" />
+      <rect x="357" y="201" width="16" height="3" rx="1" fill="var(--accent)" opacity="0.3" />
+
+      {/* Flow pulses on output paths */}
+      <circle cx="290" cy="120" r="2" fill="var(--accent)" opacity="0.6">
+        <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2s" repeatCount="indefinite" />
       </circle>
-      <circle cx="90" cy="210" r="3" fill="var(--accent)" opacity="0.6">
+      <circle cx="300" cy="152" r="2" fill="var(--accent)" opacity="0.7">
+        <animate attributeName="opacity" values="0.7;0.3;0.7" dur="1.5s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="290" cy="185" r="2" fill="var(--accent)" opacity="0.6">
         <animate attributeName="opacity" values="0.6;0.2;0.6" dur="2.5s" repeatCount="indefinite" />
       </circle>
 
-      {/* Central processing node */}
-      <rect x="190" y="140" width="60" height="60" rx="8" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="1" opacity="0.6" />
-      <rect x="198" y="148" width="44" height="44" rx="4" fill="var(--accent)" opacity="0.06" />
-
-      {/* Processing indicator */}
-      <circle cx="220" cy="170" r="8" fill="none" stroke="var(--accent)" strokeWidth="1.5" opacity="0.5" />
-      <circle cx="220" cy="170" r="3" fill="var(--accent)" opacity="0.8">
-        <animate attributeName="r" values="3;4;3" dur="1.5s" repeatCount="indefinite" />
-      </circle>
-
-      {/* Output paths — organized streams */}
-      <path d="M250 155 C280 150 310 135 340 130" stroke="var(--accent)" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
-      <path d="M250 170 C280 170 310 170 340 170" stroke="var(--accent)" strokeWidth="1.5" opacity="0.5" strokeLinecap="round" />
-      <path d="M250 185 C280 190 310 205 340 210" stroke="var(--accent)" strokeWidth="1.5" opacity="0.4" strokeLinecap="round" />
-
-      {/* Captured data cards */}
-      <rect x="340" y="118" width="36" height="24" rx="4" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="0.5" opacity="0.5" />
-      <rect x="346" y="124" width="12" height="3" rx="1" fill="var(--accent)" opacity="0.4" />
-      <rect x="346" y="130" width="20" height="3" rx="1" fill="var(--accent)" opacity="0.2" />
-
-      <rect x="340" y="158" width="36" height="24" rx="4" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="0.5" opacity="0.6" />
-      <rect x="346" y="164" width="16" height="3" rx="1" fill="var(--accent)" opacity="0.4" />
-      <rect x="346" y="170" width="22" height="3" rx="1" fill="var(--accent)" opacity="0.2" />
-
-      <rect x="340" y="198" width="36" height="24" rx="4" fill="var(--bg-primary)" stroke="var(--accent)" strokeWidth="0.5" opacity="0.5" />
-      <rect x="346" y="204" width="10" height="3" rx="1" fill="var(--accent)" opacity="0.4" />
-      <rect x="346" y="210" width="18" height="3" rx="1" fill="var(--accent)" opacity="0.2" />
-
-      {/* Status bar at bottom */}
-      <rect x="30" y="262" width="340" height="1" fill="var(--accent)" opacity="0.08" />
-      <circle cx="44" cy="278" r="4" fill="var(--accent)" opacity="0.6" />
-      <rect x="56" y="275" width="48" height="6" rx="3" fill="var(--accent)" opacity="0.1" />
-      <rect x="56" y="275" width="36" height="6" rx="3" fill="var(--accent)" opacity="0.3" />
+      {/* "Resolved" label area */}
+      <rect x="330" y="244" width="56" height="16" rx="4" fill="var(--accent)" opacity="0.08" />
+      <rect x="336" y="249" width="28" height="6" rx="2" fill="var(--accent)" opacity="0.3" />
     </svg>
   )
 }
@@ -230,7 +253,7 @@ function AutonomyIllustration() {
 }
 
 const illustrations = {
-  'revenue-capture': RevenueIllustration,
+  'bottleneck-removal': BottleneckIllustration,
   'operational-control': ControlIllustration,
   'human-safe-autonomy': AutonomyIllustration,
 }
