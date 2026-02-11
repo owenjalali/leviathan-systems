@@ -1,38 +1,60 @@
-# Roadmap: Leviathan Systems Website Redesign
+---
+milestone: Website Redesign
+version: 1.0.0
+updated: 2026-02-11
+---
 
-**Created:** 2026-02-10
-**Last updated:** 2026-02-11
-**Approach:** Divide and conquer — each phase discussed before execution
+# Roadmap
+
+> **Current Phase:** 4 - Interactive Demos
+> **Status:** planning
+
+## Must-Haves (from SPEC)
+
+- [x] All homepage copy finalized
+- [x] Design system built
+- [x] Homepage assembled and polished
+- [ ] Three-part cohesive demo
+- [ ] Production-ready polish
 
 ---
 
-## Completed Work (Phases 1-3)
+## Phases
 
-All content, design system, and homepage assembly work is done. Details archived in `.planning/completed/`.
+### Phase 1: Content & Cleanup
+**Status:** ✅ Complete
+**Objective:** Nail every word of copy and clean the codebase.
+**Requirements:** COPY-01 through COPY-10, CLEAN-01 through CLEAN-06
 
-**Phase 1 — Content & Cleanup:** Finalized all copy (`home.js`, `demo-data.js`), removed old components/hooks/pages (Vapi, calculator, old demos), swapped `@vapi-ai/web` for `gsap` + `@gsap/react`, cleaned `index.css`.
-
-**Phase 2 — Design System & Components:** Built design tokens (CSS variables), self-hosted Inter variable font. Created UI components: SectionWrapper, BackgroundPaths, BackgroundBeams, GlassButton, CpuArchitecture, BentoGrid, FeatureCard, Timeline, MarqueeTrack, TestimonialCard, PulseBeams. Navbar with scroll-aware behavior. Footer.
-
-**Phase 3 — Homepage Assembly & Polish:** Assembled full homepage flow: Hero, Problem (bento grid), Reframe (CPU diagram), Demo intro, Pillars (doctrine-aligned), Testimonials, FAQ (6 accordion items), CTA. Iterated on: glass buttons, pillar naming/illustrations, FAQ doctrine alignment, mobile responsiveness, CPU visual visibility.
-
-**21 of 32 requirements complete.**
+Finalized all copy (`home.js`, `demo-data.js`), removed old components/hooks/pages (Vapi, calculator, old demos), swapped `@vapi-ai/web` for `gsap` + `@gsap/react`, cleaned `index.css`.
 
 ---
 
-## Phase 4: Interactive Demos — NEXT
+### Phase 2: Design System & Components
+**Status:** ✅ Complete
+**Objective:** Build the visual language using 21st.dev saved components as foundation.
+**Requirements:** DESGN-01 through DESGN-05
+**Depends on:** Phase 1
 
-**Goal:** Build the three-part cohesive demo — the centerpiece of the site.
+Built design tokens (CSS variables), self-hosted Inter variable font. Created UI components: SectionWrapper, BackgroundPaths, BackgroundBeams, GlassButton, CpuArchitecture, BentoGrid, FeatureCard, Timeline, MarqueeTrack, TestimonialCard, PulseBeams. Navbar with scroll-aware behavior. Footer.
 
+---
+
+### Phase 3: Homepage Assembly & Polish
+**Status:** ✅ Complete
+**Objective:** Assemble the full homepage, iterate on visual quality based on user feedback.
+**Requirements:** HOME-01 through HOME-06, LAYOUT-01 through LAYOUT-03
+**Depends on:** Phase 2
+
+Assembled full homepage flow: Hero, Problem (bento grid), Reframe (CPU diagram), Demo intro, Pillars (doctrine-aligned), Testimonials, FAQ (6 accordion items), CTA. Iterated on: glass buttons, pillar naming/illustrations, FAQ doctrine alignment, mobile responsiveness, CPU visual visibility.
+
+---
+
+### Phase 4: Interactive Demos
+**Status:** 🔄 In Progress
+**Objective:** Build the three-part cohesive demo — the centerpiece of the site.
 **Requirements:** DEMO-01 through DEMO-05
-
-**What needs to be discussed:**
-- Animation timing and easing for each part
-- Exact scroll distance for Part II scrub
-- Mobile auto-play behavior
-- How the three parts transition into each other
-- What data to show in dashboard mockup
-- Node graph layout and connection paths
+**Depends on:** Phase 3
 
 **What gets built:**
 - Demo Part I: Customer Experience (auto-fill form, SMS phone mockup)
@@ -51,13 +73,16 @@ All content, design system, and homepage assembly work is done. Details archived
 7. prefers-reduced-motion shows static state
 8. Build succeeds
 
+**Plans:**
+- [ ] Plan 4.1: TBD
+
 ---
 
-## Phase 5: Polish & Ship
-
-**Goal:** Production-ready. Every pixel, every device, every edge case.
-
+### Phase 5: Polish & Ship
+**Status:** ⬜ Not Started
+**Objective:** Production-ready. Every pixel, every device, every edge case.
 **Requirements:** POLISH-01 through POLISH-06
+**Depends on:** Phase 4
 
 **What gets built/verified:**
 - Responsive QA across full range (320px to 1536px)
@@ -78,16 +103,14 @@ All content, design system, and homepage assembly work is done. Details archived
 
 ---
 
-## Phase Dependencies
+## Progress Summary
 
-```
-Phases 1-3 (Content, Design, Homepage) ..... COMPLETE
-  |
-Phase 4 (Interactive Demos) ................ NEXT
-  |
-Phase 5 (Polish & Ship)
-```
+| Phase | Status | Complete |
+|-------|--------|----------|
+| 1 | ✅ | Done |
+| 2 | ✅ | Done |
+| 3 | ✅ | Done |
+| 4 | 🔄 | Planning |
+| 5 | ⬜ | — |
 
----
-*Roadmap created: 2026-02-10*
-*Last updated: 2026-02-11*
+**Coverage:** 32 total requirements / 21 complete / 11 remaining
