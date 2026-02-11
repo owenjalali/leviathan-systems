@@ -3,7 +3,7 @@
 
 export const formFields = [
     { label: 'Name', value: 'Sarah Mitchell' },
-    { label: 'Phone', value: '(416) 555-0172' },
+    { label: 'Phone', value: '123-456-7890' },
     { label: 'Service', value: 'General service request' },
     { label: 'Preferred Date', value: 'Next available' },
 ]
@@ -11,23 +11,23 @@ export const formFields = [
 export const smsConversation = [
     {
         sender: 'system',
-        text: "Hi Sarah! Thanks for reaching out. We got your request and we're on it. Let me get you booked in.",
+        text: "Hi Sarah! Thanks for submitting your request. We've got everything we need. Do you have any questions?",
     },
     {
         sender: 'customer',
-        text: 'That was fast! Yes please.',
+        text: 'No, I\'m all good!',
     },
     {
         sender: 'system',
-        text: 'I have Tuesday at 2pm or Wednesday at 10am available. Which works better?',
+        text: 'Great! Would you like to book a time slot?',
     },
     {
         sender: 'customer',
-        text: 'Tuesday at 2pm.',
+        text: 'Yeah, can we do Saturday at 2?',
     },
     {
         sender: 'system',
-        text: "You're confirmed for Tuesday at 2pm. You'll get a reminder the day before. See you then!",
+        text: "Saturday at 2pm works perfectly. You're all booked! You'll get a reminder the day before.",
     },
 ]
 
@@ -50,9 +50,9 @@ export const dashboardMetrics = [
 ]
 
 export const approvalAction = {
-    text: 'Approve meeting with Sarah Mitchell — Tuesday at 2pm',
+    text: 'Approve meeting with Sarah Mitchell — Saturday at 2pm',
     name: 'Sarah Mitchell',
-    time: 'Tuesday at 2pm',
+    time: 'Saturday at 2pm',
 }
 
 // Testimonials — structure defined, content provided by user later

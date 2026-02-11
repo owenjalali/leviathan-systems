@@ -5,7 +5,22 @@
       "Bash(git worktree:*)",
       "Bash(git add:*)",
       "Bash(git commit -m \"$\\(cat <<''EOF''\nRedesign Engagement Model with system-state UI panels\n\n- Replace fake metrics with capability indicators \\(Mapped, Loaded, Armed, etc.\\)\n- Add dashboard mockups with visual drama \\(glows, animations\\)\n- Zone 1: Exposure Analysis with leakage detection states\n- Zone 2: System Architecture with channel/automation status\n- Zone 3: System Status with coverage and monitoring states\n- Enhanced CTA section with teal/purple background elements\n- Improved text visibility throughout section\n\n🤖 Generated with [Claude Code]\\(https://claude.com/claude-code\\)\n\nCo-Authored-By: Claude Opus 4.5 <noreply@anthropic.com>\nEOF\n\\)\")",
-      "Bash(git commit:*)"
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git branch:*)",
+      "mcp__magic__21st_magic_component_inspiration",
+      "Bash(npm run build:*)",
+      "Bash(git checkout:*)",
+      "Bash(del \"C:\\\\Users\\\\owenj\\\\leviathan-systems\\\\tailwind.config.js\")",
+      "mcp__playwright__browser_take_screenshot",
+      "mcp__magic__21st_magic_component_builder",
+      "WebFetch(domain:21st.dev)",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_close",
+      "mcp__playwright__browser_navigate",
+      "Bash(npm run dev:*)",
+      "WebSearch",
+      "Bash(node:*)"
     ]
   }
 }

@@ -8,17 +8,9 @@ import { demoParts } from '../../content/home'
 
 gsap.registerPlugin(ScrollTrigger)
 
-/**
- * DemoPartTwo — System Logic visualization
- * Shows the node graph with animated connections drawing on viewport entry.
- * Nodes glow as connections reach them.
- */
-
 export default function DemoPartTwo() {
     const containerRef = useRef(null)
-    const tlRef = useRef()
 
-    // Define connections based on systemNodes flow
     const connections = [
         { from: 'new-lead', to: 'qualify' },
         { from: 'qualify', to: 'route' },
@@ -31,110 +23,98 @@ export default function DemoPartTwo() {
         { from: 'confirm', to: 'review' },
     ]
 
-    const part = demoParts[1] // Part II
+    const part = demoParts[1]
 
-    useGSAP(
-        () => {
-            const mm = gsap.matchMedia()
+    useGSAP(() => {
+        const mm = gsap.matchMedia()
 
-            // Full animation for users with no motion preference
-            mm.add('(prefers-reduced-motion: no-preference)', () => {
-                tlRef.current = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: 'top 75%',
-                        once: true,
-                    },
-                })
+        mm.add('(prefers-reduced-motion: no-preference)', () => {
+            const nodes = containerRef.current?.querySelectorAll('.node-group')
+            const paths = containerRef.current?.querySelectorAll('.connection-path')
 
-                const nodes = containerRef.current?.querySelectorAll('.node-group')
-                const paths = containerRef.current?.querySelectorAll('.connection-path')
+            if (!nodes?.length || !paths?.length) return
 
-                if (!nodes?.length || !paths?.length) return
+            // Prepare stroke-dashoffset for each path
+            const pathLengths = []
+            paths.forEach((path) => {
+                if (!path) return
+                const length = path.getTotalLength()
+                pathLengths.push(length)
+                gsap.set(path, { strokeDasharray: length })
+            })
 
-                // Step 1: Fade in nodes with stagger based on level order
-                tlRef.current.to(
-                    nodes,
-                    {
-                        opacity: 1,
-                        duration: 0.5,
-                        stagger: 0.1,
-                        ease: 'power2.out',
-                    },
-                    0
-                )
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: containerRef.current,
+                    start: 'top 75%',
+                    once: true,
+                },
+                repeat: -1,
+                repeatDelay: 2,
+            })
 
-                // Step 2: Animate connection paths with stroke-dashoffset
+            // Reset at start of each loop
+            tl.set(nodes, { opacity: 0 })
+            tl.call(() => {
                 paths.forEach((path, i) => {
-                    // CRITICAL: Null-check before getTotalLength()
                     if (!path) return
-
-                    const length = path.getTotalLength()
-
-                    // Set up: path invisible, fully offset
-                    gsap.set(path, {
-                        strokeDasharray: length,
-                        strokeDashoffset: length,
-                        opacity: 1,
-                    })
-
-                    // Animate: draw the line
-                    tlRef.current.to(
-                        path,
-                        {
-                            strokeDashoffset: 0,
-                            duration: 0.8,
-                            ease: 'power2.inOut',
-                        },
-                        0.8 + i * 0.25 // Stagger by 0.25s after nodes appear
-                    )
-
-                    // Step 3: Add subtle glow as connection completes
-                    tlRef.current.to(
-                        path,
-                        {
-                            filter: 'drop-shadow(0 0 4px rgba(212, 175, 55, 0.6))',
-                            duration: 0.3,
-                            ease: 'power2.out',
-                        },
-                        0.8 + i * 0.25 + 0.6 // Near end of draw animation
-                    )
-
-                    // Fade glow after 0.5s
-                    tlRef.current.to(
-                        path,
-                        {
-                            filter: 'drop-shadow(0 0 0px rgba(212, 175, 55, 0))',
-                            duration: 0.4,
-                            ease: 'power2.in',
-                        },
-                        0.8 + i * 0.25 + 0.9
-                    )
+                    gsap.set(path, { strokeDashoffset: pathLengths[i], opacity: 1 })
                 })
             })
 
-            // Simplified for reduced motion users
-            mm.add('(prefers-reduced-motion: reduce)', () => {
-                tlRef.current = gsap.timeline({
-                    scrollTrigger: {
-                        trigger: containerRef.current,
-                        start: 'top 75%',
-                        once: true,
-                    },
-                })
+            // 1. Nodes fade in with stagger
+            tl.to(nodes, {
+                opacity: 1,
+                duration: 0.4,
+                stagger: 0.12,
+                ease: 'power2.out',
+            })
 
-                const nodes = containerRef.current?.querySelectorAll('.node-group')
-                const paths = containerRef.current?.querySelectorAll('.connection-path')
+            // 2. Connection paths draw sequentially
+            paths.forEach((path, i) => {
+                if (!path) return
+                tl.to(path, {
+                    strokeDashoffset: 0,
+                    duration: 0.6,
+                    ease: 'power2.inOut',
+                }, `-=${i === 0 ? 0 : 0.35}`)
 
-                // Just fade everything in
-                tlRef.current.to([nodes, paths], {
-                    opacity: 1,
+                // Node glow as connection arrives
+                tl.to(path, {
+                    filter: 'drop-shadow(0 0 6px rgba(212, 175, 55, 0.6))',
                     duration: 0.3,
+                    ease: 'power2.out',
+                }, '-=0.3')
+                tl.to(path, {
+                    filter: 'drop-shadow(0 0 0px rgba(212, 175, 55, 0))',
+                    duration: 0.5,
+                    ease: 'power2.in',
                 })
             })
-        },
-        { scope: containerRef }
-    )
+
+            // 3. Hold completed state
+            tl.to({}, { duration: 3 })
+
+            // 4. Fade out before repeat
+            tl.to([nodes, paths], {
+                opacity: 0,
+                duration: 0.8,
+                ease: 'power2.in',
+            })
+        })
+
+        mm.add('(prefers-reduced-motion: reduce)', () => {
+            const nodes = containerRef.current?.querySelectorAll('.node-group')
+            const paths = containerRef.current?.querySelectorAll('.connection-path')
+            gsap.set(nodes, { opacity: 1 })
+            if (paths) {
+                paths.forEach((path) => {
+                    if (!path) return
+                    gsap.set(path, { opacity: 1, strokeDashoffset: 0 })
+                })
+            }
+        })
+    }, { scope: containerRef })
 
     return (
         <section
@@ -142,7 +122,6 @@ export default function DemoPartTwo() {
             className="relative py-20 md:py-28 bg-[var(--bg-primary)]"
         >
             <div className="container mx-auto px-4">
-                {/* Section header */}
                 <div className="max-w-3xl mx-auto text-center mb-12 md:mb-16">
                     <div className="inline-block px-3 py-1 mb-4 text-xs font-semibold tracking-wider uppercase border border-[var(--border)] rounded-full text-[var(--text-secondary)]">
                         Part {part.part}
@@ -155,7 +134,6 @@ export default function DemoPartTwo() {
                     </p>
                 </div>
 
-                {/* Node graph */}
                 <div className="flex justify-center">
                     <NodeGraph nodes={systemNodes} connections={connections} />
                 </div>

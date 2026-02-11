@@ -1,74 +1,63 @@
 /**
- * NodeGraph — Clean node flow diagram component
- * Renders nodes and connection paths for system logic visualization.
+ * NodeGraph — Top-down flow diagram component
+ * Renders nodes vertically and connection paths for system logic visualization.
  * Used in Demo Part II to show automation decision tree.
  */
 
 export default function NodeGraph({ nodes, connections }) {
-    // Layout constants
-    const NODE_WIDTH = 120
-    const NODE_HEIGHT = 50
-    const LEVEL_SPACING = 140
-    const BRANCH_OFFSET = 80
-    const BASE_Y = 150
-    const PADDING_LEFT = 60
+    const NODE_WIDTH = 140
+    const NODE_HEIGHT = 52
+    const LEVEL_SPACING = 100
+    const BRANCH_OFFSET = 160
+    const CENTER_X = 400
+    const PADDING_TOP = 40
 
-    // Compute node positions based on level and branch
+    // Compute node positions — top-down layout
     const nodePositions = nodes.map((node) => {
-        const x = PADDING_LEFT + node.level * LEVEL_SPACING
-        let y = BASE_Y
+        const y = PADDING_TOP + node.level * LEVEL_SPACING
+        let x = CENTER_X - NODE_WIDTH / 2 // centered by default
 
-        // Handle branching at level 3 and 4
         if (node.branch === 'left') {
-            y = BASE_Y - BRANCH_OFFSET
+            x = CENTER_X - BRANCH_OFFSET - NODE_WIDTH / 2
         } else if (node.branch === 'right') {
-            y = BASE_Y + BRANCH_OFFSET
+            x = CENTER_X + BRANCH_OFFSET - NODE_WIDTH / 2
         }
 
-        return {
-            ...node,
-            x,
-            y,
-        }
+        return { ...node, x, y }
     })
 
-    // Generate connection paths with smooth curves
+    // Generate connection paths with smooth vertical curves
     const connectionPaths = connections.map((conn) => {
         const fromNode = nodePositions.find((n) => n.id === conn.from)
         const toNode = nodePositions.find((n) => n.id === conn.to)
 
         if (!fromNode || !toNode) return null
 
-        const x1 = fromNode.x + NODE_WIDTH
-        const y1 = fromNode.y + NODE_HEIGHT / 2
-        const x2 = toNode.x
-        const y2 = toNode.y + NODE_HEIGHT / 2
+        const x1 = fromNode.x + NODE_WIDTH / 2
+        const y1 = fromNode.y + NODE_HEIGHT
+        const x2 = toNode.x + NODE_WIDTH / 2
+        const y2 = toNode.y
 
-        // Use curved paths for smoother flow
-        const midX = (x1 + x2) / 2
-        const path = `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`
+        // Vertical bezier curve
+        const midY = (y1 + y2) / 2
+        const path = `M ${x1} ${y1} C ${x1} ${midY}, ${x2} ${midY}, ${x2} ${y2}`
 
-        return {
-            ...conn,
-            d: path,
-        }
+        return { ...conn, d: path }
     }).filter(Boolean)
 
-    // Calculate viewBox dimensions
-    const viewBoxWidth = PADDING_LEFT * 2 + (nodes.length > 0
-        ? Math.max(...nodes.map(n => n.level)) * LEVEL_SPACING + NODE_WIDTH
-        : 800)
-    const viewBoxHeight = BASE_Y * 2 + BRANCH_OFFSET * 2
+    const viewBoxWidth = CENTER_X * 2
+    const maxLevel = Math.max(...nodes.map(n => n.level))
+    const viewBoxHeight = PADDING_TOP * 2 + maxLevel * LEVEL_SPACING + NODE_HEIGHT
 
     return (
         <svg
             viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-            className="w-full max-w-5xl mx-auto"
-            style={{ minHeight: '400px' }}
+            className="w-full max-w-3xl mx-auto"
+            style={{ minHeight: '500px' }}
         >
             <title>System Logic Flow</title>
 
-            {/* Connection paths — render before nodes for layering */}
+            {/* Connection paths */}
             {connectionPaths.map((conn, i) => (
                 <path
                     key={`conn-${i}`}
@@ -77,23 +66,18 @@ export default function NodeGraph({ nodes, connections }) {
                     stroke="var(--accent, #d4af37)"
                     strokeWidth={2}
                     fill="none"
-                    style={{ opacity: 0 }}
                 />
             ))}
 
             {/* Nodes */}
             {nodePositions.map((node) => (
-                <g
-                    key={node.id}
-                    className="node-group"
-                    style={{ opacity: 0 }}
-                >
+                <g key={node.id} className="node-group">
                     <rect
                         x={node.x}
                         y={node.y}
                         width={NODE_WIDTH}
                         height={NODE_HEIGHT}
-                        rx={10}
+                        rx={12}
                         fill="var(--bg-secondary, #1a1a1a)"
                         stroke="var(--border, #333)"
                         strokeWidth={1.5}
@@ -104,7 +88,7 @@ export default function NodeGraph({ nodes, connections }) {
                         textAnchor="middle"
                         dominantBaseline="middle"
                         fill="var(--text-primary, #ffffff)"
-                        fontSize="14"
+                        fontSize="15"
                         fontWeight="500"
                     >
                         {node.label}
