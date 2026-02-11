@@ -134,7 +134,7 @@ export default function DemoPartTwo() {
                     </p>
                 </div>
 
-                <div className="flex justify-center">
+                <div className="flex justify-center px-2 sm:px-4 md:px-8">
                     <NodeGraph nodes={systemNodes} connections={connections} />
                 </div>
             </div>

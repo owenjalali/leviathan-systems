@@ -5,12 +5,12 @@
  */
 
 export default function NodeGraph({ nodes, connections }) {
-    const NODE_WIDTH = 140
-    const NODE_HEIGHT = 52
-    const LEVEL_SPACING = 100
-    const BRANCH_OFFSET = 160
-    const CENTER_X = 400
-    const PADDING_TOP = 40
+    const NODE_WIDTH = 200
+    const NODE_HEIGHT = 68
+    const LEVEL_SPACING = 130
+    const BRANCH_OFFSET = 220
+    const CENTER_X = 500
+    const PADDING_TOP = 50
 
     // Compute node positions — top-down layout
     const nodePositions = nodes.map((node) => {
@@ -52,8 +52,8 @@ export default function NodeGraph({ nodes, connections }) {
     return (
         <svg
             viewBox={`0 0 ${viewBoxWidth} ${viewBoxHeight}`}
-            className="w-full max-w-3xl mx-auto"
-            style={{ minHeight: '500px' }}
+            className="w-full max-w-5xl mx-auto"
+            style={{ minHeight: '600px' }}
         >
             <title>System Logic Flow</title>
 
@@ -77,7 +77,7 @@ export default function NodeGraph({ nodes, connections }) {
                         y={node.y}
                         width={NODE_WIDTH}
                         height={NODE_HEIGHT}
-                        rx={12}
+                        rx={14}
                         fill="var(--bg-secondary, #1a1a1a)"
                         stroke="var(--border, #333)"
                         strokeWidth={1.5}
@@ -88,7 +88,7 @@ export default function NodeGraph({ nodes, connections }) {
                         textAnchor="middle"
                         dominantBaseline="middle"
                         fill="var(--text-primary, #ffffff)"
-                        fontSize="15"
+                        fontSize="17"
                         fontWeight="500"
                     >
                         {node.label}
