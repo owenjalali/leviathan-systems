@@ -58,16 +58,18 @@ export const approvalAction = {
 // Testimonials — structure defined, content provided by user later
 export const testimonials = [
     {
-        quote: 'The system paid for itself in the first week. We went from missing half our leads to catching every single one.',
-        name: 'James R.',
+        quote: 'Working with Leviathan has been an incredible experience. They build with quality, professionalism, and integrity.',
+        name: 'Sam Ho',
         role: 'Owner',
-        business: 'Service Company',
+        business: 'Leaside Fades',
+        image: '/testimonials/sam-po.png',
     },
     {
-        quote: "I used to spend 3 hours a day on follow-ups. Now it's zero. The system handles everything and my calendar stays full.",
-        name: 'Maria K.',
-        role: 'Operations Manager',
-        business: 'Professional Services',
+        quote: 'The system you built has completely streamlined how we handle bookings. Everything syncs, reminders go out automatically, and we are not chasing clients anymore. It honestly feels like we added an operations manager without hiring one.',
+        name: 'Carter Jenkins',
+        role: 'Owner',
+        business: 'Midtown Painting Home Services',
+        image: '/testimonials/carter-jenkins.png',
     },
     {
         quote: "Our response time went from hours to seconds. Clients notice the difference — and they tell their friends.",

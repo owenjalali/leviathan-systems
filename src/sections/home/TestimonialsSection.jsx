@@ -98,13 +98,23 @@ export default function TestimonialsSection() {
                 <blockquote className="text-xl md:text-2xl lg:text-3xl font-medium leading-snug text-[var(--text-primary)] mb-8">
                   &ldquo;{activeReview.quote}&rdquo;
                 </blockquote>
-                <div>
-                  <p className="text-base font-semibold text-[var(--text-primary)]">
-                    {activeReview.name}
-                  </p>
-                  <p className="text-sm text-[var(--text-muted)]">
-                    {activeReview.role}, {activeReview.business}
-                  </p>
+                <div className="flex items-center gap-3">
+                  {activeReview.image ? (
+                    <img
+                      src={activeReview.image}
+                      alt={`${activeReview.name} headshot`}
+                      className="w-12 h-12 rounded-full object-cover border border-[var(--border)]"
+                      loading="lazy"
+                    />
+                  ) : null}
+                  <div>
+                    <p className="text-base font-semibold text-[var(--text-primary)]">
+                      {activeReview.name}
+                    </p>
+                    <p className="text-sm text-[var(--text-muted)]">
+                      {activeReview.role}, {activeReview.business}
+                    </p>
+                  </div>
                 </div>
               </motion.div>
             </AnimatePresence>
