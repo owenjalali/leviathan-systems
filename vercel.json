@@ -1,0 +1,20 @@
+{
+  "rewrites": [
+    {
+      "source": "/about",
+      "destination": "/"
+    },
+    {
+      "source": "/audit",
+      "destination": "/"
+    },
+    {
+      "source": "/manage-booking",
+      "destination": "/"
+    },
+    {
+      "source": "/begin",
+      "destination": "/"
+    }
+  ]
+}

@@ -8,24 +8,38 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-    "verify:tailwind": "node scripts/verify-tailwind-v4.mjs"
+    "test": "node --test",
+    "smoke:booking": "node scripts/booking-smoke.mjs",
+    "backfill:manage": "node scripts/backfill-booking-manage.mjs",
+    "dev:trigger": "trigger dev",
+    "deploy:trigger": "trigger deploy",
+    "deploy:trigger:staging": "trigger deploy --env staging",
+    "deploy:trigger:prod": "trigger deploy --env prod",
+    "deploy:vercel:preview": "vercel deploy",
+    "deploy:vercel:prod": "vercel deploy --prod"
   },
   "dependencies": {
     "@gsap/react": "^2.1.2",
     "@radix-ui/react-slot": "^1.2.4",
+    "@trigger.dev/sdk": "4.4.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "framer-motion": "^12.34.0",
+    "googleapis": "^171.4.0",
     "gsap": "^3.14.2",
     "lucide-react": "^0.562.0",
+    "luxon": "^3.7.2",
+    "nodemailer": "^8.0.3",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router-dom": "^7.11.0",
-    "tailwind-merge": "^3.4.0"
+    "tailwind-merge": "^3.4.0",
+    "zod": "^4.3.6"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",
     "@tailwindcss/vite": "^4.1.18",
+    "@trigger.dev/build": "4.4.3",
     "@types/react": "^19.2.5",
     "@types/react-dom": "^19.2.3",
     "@vitejs/plugin-react": "^5.1.1",
@@ -34,6 +48,8 @@
     "eslint-plugin-react-refresh": "^0.4.24",
     "globals": "^16.5.0",
     "tailwindcss": "^4.1.18",
+    "trigger.dev": "4.4.3",
+    "vercel": "50.35.0",
     "vite": "^7.2.4"
   }
 }

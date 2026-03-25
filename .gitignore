@@ -11,6 +11,9 @@ node_modules
 dist
 dist-ssr
 *.local
+.env
+.env.*
+!.env.example
 
 # Editor directories and files
 .vscode/*
@@ -33,5 +36,10 @@ nul
 
 # AI tool infrastructure
 .agent/
+.claude/
 .gemini/
 .gsd/
+.planning/
+.playwright-mcp/
+
+.vercel

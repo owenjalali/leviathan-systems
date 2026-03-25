@@ -3,6 +3,7 @@ import MainLayout from './layouts/MainLayout'
 import Home from './pages/Home'
 import About from './pages/About'
 import Audit from './pages/Audit'
+import ManageBooking from './pages/ManageBooking'
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
           <Route index element={<Home />} />
           <Route path="about" element={<About />} />
           <Route path="audit" element={<Audit />} />
+          <Route path="manage-booking" element={<ManageBooking />} />
           {/* Redirect old routes */}
           <Route path="begin" element={<Navigate to="/audit" replace />} />
         </Route>

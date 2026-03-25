@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { pillars } from '../../content/home'
 
+const MotionButton = motion.button
+const MotionDiv = motion.div
+
 // Custom SVG icons — purpose-built for each pillar
 function BottleneckIcon({ size = 18, className = '' }) {
   return (
@@ -290,7 +293,7 @@ export default function PillarsSection() {
             {pillars.map((pillar, index) => {
               const StepIcon = pillarIcons[pillar.id]
               return (
-                <motion.button
+                <MotionButton
                   key={pillar.id}
                   className="flex items-start gap-6 w-full text-left"
                   onClick={() => {
@@ -301,7 +304,7 @@ export default function PillarsSection() {
                   animate={{ opacity: index === currentPillar ? 1 : 0.4 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <motion.div
+                  <MotionDiv
                     className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
                       index === currentPillar
                         ? 'bg-[var(--accent)] border-[var(--accent)] text-[var(--bg-primary)]'
@@ -313,7 +316,7 @@ export default function PillarsSection() {
                     ) : (
                       <StepIcon size={18} />
                     )}
-                  </motion.div>
+                  </MotionDiv>
 
                   <div className="flex-1 pt-1">
                     <h3 className="text-lg md:text-xl font-semibold text-[var(--text-primary)] mb-1">
@@ -323,7 +326,7 @@ export default function PillarsSection() {
                       {pillar.description}
                     </p>
                     {pillar.tags.length > 0 && index === currentPillar && (
-                      <motion.div
+                      <MotionDiv
                         className="flex flex-wrap gap-2 mt-3"
                         initial={{ opacity: 0, y: 8 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -337,10 +340,10 @@ export default function PillarsSection() {
                             {tag}
                           </span>
                         ))}
-                      </motion.div>
+                      </MotionDiv>
                     )}
                   </div>
-                </motion.button>
+                </MotionButton>
               )
             })}
           </div>
@@ -348,7 +351,7 @@ export default function PillarsSection() {
           {/* Illustration — seamless, no border wrapper */}
           <div className="order-1 md:order-2 relative h-[250px] md:h-[400px] overflow-hidden rounded-xl">
             <AnimatePresence mode="wait">
-              <motion.div
+              <MotionDiv
                 key={currentPillar}
                 className="absolute inset-0 rounded-xl overflow-hidden"
                 initial={{ y: 60, opacity: 0, rotateX: -10 }}
@@ -357,7 +360,7 @@ export default function PillarsSection() {
                 transition={{ duration: 0.5, ease: 'easeInOut' }}
               >
                 <Illustration />
-              </motion.div>
+              </MotionDiv>
             </AnimatePresence>
           </div>
         </div>

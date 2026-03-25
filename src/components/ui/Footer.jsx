@@ -2,6 +2,8 @@ import { Link } from 'react-router-dom'
 import { motion, useReducedMotion } from 'framer-motion'
 import { footer } from '../../content/home'
 
+const MotionDiv = motion.div
+
 const footerSections = [
   {
     label: 'Navigation',
@@ -24,7 +26,7 @@ function AnimatedContainer({ className, delay = 0.1, children }) {
   }
 
   return (
-    <motion.div
+    <MotionDiv
       initial={{ filter: 'blur(4px)', translateY: -8, opacity: 0 }}
       whileInView={{ filter: 'blur(0px)', translateY: 0, opacity: 1 }}
       viewport={{ once: true }}
@@ -32,7 +34,7 @@ function AnimatedContainer({ className, delay = 0.1, children }) {
       className={className}
     >
       {children}
-    </motion.div>
+    </MotionDiv>
   )
 }
 

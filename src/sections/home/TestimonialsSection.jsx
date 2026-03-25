@@ -4,6 +4,8 @@ import { ArrowLeft, ArrowRight, Quote } from 'lucide-react'
 import { testimonials } from '../../content/demo-data'
 import { testimonialsSection } from '../../content/home'
 
+const MotionDiv = motion.div
+
 export default function TestimonialsSection() {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [direction, setDirection] = useState('right')
@@ -82,7 +84,7 @@ export default function TestimonialsSection() {
           {/* Quote content */}
           <div className="md:col-span-8 relative min-h-[200px]">
             <AnimatePresence initial={false} custom={direction} mode="wait">
-              <motion.div
+              <MotionDiv
                 key={currentIndex}
                 custom={direction}
                 variants={textVariants}
@@ -116,7 +118,7 @@ export default function TestimonialsSection() {
                     </p>
                   </div>
                 </div>
-              </motion.div>
+              </MotionDiv>
             </AnimatePresence>
           </div>
 
