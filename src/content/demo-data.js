@@ -74,6 +74,13 @@ export const testimonials = [
   },
   {
     quote:
+      "Working with Leviathan has been a crucial step to my company's success. They took full control of my online interface and made it as simple and straightforward on my end as possible. Now I can focus on business operations instead of chasing leads.",
+    name: "Alister D'Souza",
+    role: 'Owner',
+    business: 'JAT Home Solutions',
+  },
+  {
+    quote:
       'Our response time went from hours to seconds. Clients notice the difference, and they tell their friends.',
     name: 'David L.',
     role: 'Founder',
