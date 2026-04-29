@@ -1,4 +1,5 @@
 import assert from 'node:assert/strict'
+import { existsSync } from 'node:fs'
 import test from 'node:test'
 
 import { testimonials } from '../../src/content/demo-data.js'
@@ -13,4 +14,6 @@ test('Alister D Souza testimonial is the third testimonial', () => {
     testimonial.quote,
     "Working with Leviathan has been a crucial step to my company's success. They took full control of my online interface and made it as simple and straightforward on my end as possible. Now I can focus on business operations instead of chasing leads.",
   )
+  assert.equal(testimonial.image, '/testimonials/alister-dsouza.png')
+  assert.equal(existsSync('public/testimonials/alister-dsouza.png'), true)
 })

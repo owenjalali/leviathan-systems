@@ -78,6 +78,7 @@ export const testimonials = [
     name: "Alister D'Souza",
     role: 'Owner',
     business: 'JAT Home Solutions',
+    image: '/testimonials/alister-dsouza.png',
   },
   {
     quote:
